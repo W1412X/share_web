@@ -1,0 +1,55 @@
+<script>
+    export default {
+        data() {
+            return {
+                inputValue: 'Initial Value',
+            }
+        },
+        methods: {
+            showAlert() {
+                // 获取v-autocomplete组件的值
+                const iv = this.$refs.search_input.inputValue
+                // 弹出警告框显示文本框内容
+                alert(iv)
+            },
+            toSelfPage() {
+                //点击个人头像跳转到个人信息界面
+            },
+            toAuthorPage() {
+
+            },
+            add_item_card(title, subtitle, content, img_url, time, author_avatar_url, author_name) {//向对应的列表中添加item  
+                const cardElement = document.createElement('div');
+                cardElement.innerHTML = `
+          <!-- 这里填写与您提供的卡片结构类似的HTML代码 -->
+          <!-- 注意使用${}来插入变量 -->
+        `;
+                // 初始化Vue实例来挂载这个元素，确保Vuetify指令能正常工作
+                // 实际应用中可能需要更复杂的处理来确保所有依赖被正确初始化
+                new Vue({
+                    el: cardElement,
+                    vuetify: new Vuetify(), // 确保Vuetify实例已创建
+                    data() {
+                        return {
+                            // 这里放置需要动态绑定的数据
+                            title,
+                            subtitle,
+                            content,
+                            img_url,
+                            time,
+                            author_avatar_url,
+                            author_name
+                        };
+
+                    },
+
+                    methods: {
+                    }
+
+                });
+                // 将创建好的卡片添加到页面指定容器
+                this.$refs.container.appendChild(cardElement);
+            }
+        },
+    }
+</script>
