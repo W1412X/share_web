@@ -6,13 +6,13 @@
         <v-autocomplete
           v-model="inputValue"
           type="text"
-          ref="search_input"
+          ref="searchInput"
           class="search_input"
           label="search"
           :items="['计算机图形学', '数据结构', '机器学习', '自主机器人', '计算机网络', '操作系统']"
           variant="outlined"
         ></v-autocomplete>
-        <v-btn icon @click="showAlert">
+        <v-btn icon @click="load_items">
           <v-icon>mdi-magnify</v-icon>
         </v-btn>
         <v-spacer></v-spacer>
@@ -22,91 +22,25 @@
         <v-btn icon>
           <v-icon>mdi-history</v-icon>
         </v-btn>
-        <v-btn icon @click="toSelfPage">
+        <v-btn icon @click="load_items">
           <v-icon>mdi-account-outline</v-icon>
         </v-btn>
       </v-app-bar>
       <v-main>
         <v-container fluid>
-          <v-row ref='item_container' dense>
-            <v-card
-              elevation="3"
-              :style="{'width':'750px','margin-left':'10%','margin-top':'20px','height':'170px',position:'relative'}"
-            >
-              <v-row>
-                <v-col
-                  :style="{'margin-left':'3px','margin-bottom':'3px','margin-top': '3px','margin-right':'3px',width:'150px',position:'relative'}"
-                >
-                  <v-img
-                    @click="showAlert"
-                    :lazy-src="`https://picsum.photos/10/6?image=10`"
-                    :src="`http://39.101.160.55/source/IMG_202406194002_100x100.png`"
-                    aspect-ratio="1"
-                    :style="{width:'140px',height:'140px','margin-top':'4px','margin-left':'4px',position:'relative'}"
-                    cover
-                  />
-                  <span
-                    :style="{width:'100px','color':'#8a8a8a', 'font-size': '12px','position':'relative','margin-top':'5px','margin-left':'5px'}"
-                    >时间 2024-2-12 20:00</span
-                  >
-                </v-col>
-                <v-col
-                  :style="{'margin-left':'4px','margin-bottom':'1px','margin-top':'4px',width:'590px'}"
-                >
-                  <v-row :style="{'margin-top':'0px',height:'35px'}">
-                    <v-card-title
-                      :style="{
-                      'display': '-webkit-box',
-                      '-webkit-line-clamp': '1',
-                      'font-size': '20px',
-                      'line-height': '1',
-                      'font-family': 'Arial, sans-serif'
-                      }"
-                      >这是标题部分</v-card-title
-                    >
-                  </v-row>
-                  <v-row :style="{height:'20px'}">
-                    <v-card-subtitle width="520px"
-                      >这是副标题部分</v-card-subtitle
-                    >
-                  </v-row>
-                  <v-row>
-                    <v-card-text
-                      width="520px"
-                      height="20px"
-                      :style="{
-                      'display': '-webkit-box',
-                      '-webkit-line-clamp': '2',
-                      '-webkit-box-orient': 'vertical',  
-                      'overflow': 'scroll',
-                      'font-size': '12px',
-                      'line-height': '1.2',
-                      'margin-top':'4px'
-                      }"
-                      >这是简介部分ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-                    </v-card-text>
-                  </v-row>
-                  <v-row
-                    width="520px"
-                    :style="{display:'flex','flex-direction':'row-reverse','margin-top':'px'}"
-                  >
-                    <span
-                      :style="{width:'100px','color':'#8a8a8a', 'font-size': '13px','position':'relative','margin-top':'17px'}"
-                      >@W1412X</span
-                    >
-                    <v-avatar
-                      :style="{width: '25px',height: '25px','margin-right':'5px','margin-top':'15px'}"
-                      @click="toAuthorPage"
-                    >
-                      <img
-                        src="https://pic4.zhimg.com/v2-02665279a4cff59469f1bb959260ffb7_r.jpg?source=1940ef5c"
-                        :style="{'max-width':'100%'}"
-                      />
-                    </v-avatar>
-                  </v-row>
-                </v-col>
-              </v-row>
-            </v-card>
+          <v-row ref="item_container">
+
+    <ResourceItem
+      v-for="resource in items"
+      :key="resource.id"
+      :title="resource.title"
+      :subtitle="resource.subtitle"
+      :author_avatar_url="resource.author_avatar_url"
+      :content="resource.content"
+      :publish_time="resource.publish_time"
+      :img_src="resource.img_src"
+      :author_name="resource.author_name"
+    />
           </v-row>
         </v-container>
       </v-main>
@@ -133,28 +67,40 @@
 </style>
 
 <script>
-  export default {
-    data() {
-      return {
-        inputValue: 'Initial Value',
-      }
+import ResourceItem from '@/components/ResourceItem.vue'
+export default {
+  components: {
+    ResourceItem, // 确保在这里注册了组件
+  },
+  data() {
+    return {
+      inputValue: '',
+      items: [],//存储要渲染的项目数据 
+    }
+  },
+  methods: {
+    showAlert() {
+      // 获取v-autocomplete组件的值
+      const iv = this.inputValue; 
+      console.log(iv)
+      // 弹出警告框显示文本框内容
+      alert(iv)
     },
-    methods: {
-      showAlert() {
-        // 获取v-autocomplete组件的值
-        const iv = this.$refs.search_input.inputValue
-        // 弹出警告框显示文本框内容
-        alert(iv)
-      },
-      toSelfPage() {
-        //点击个人头像跳转到个人信息界面
-      },
-      toAuthorPage() {
-
-      },
-      add_item_card(title,subtitle,content,img_url,time,author_avatar_url,author_name){//向对应的列表中添加item  
-      
+    load_items() {
+      const new_item={
+        title: '资源标题',
+        subtitle: '资源副标题',
+        author_avatar_url: '作者头像URL',
+        content: '资源简介内容',
+        publish_time: '发布日期',
+        img_src: '资源图片URL',
+        author_name: '作者名称',
       }
-    },
+      this.items.push(new_item)
+    }
+  },
+  mounted() {
+    this.load_items();
   }
+}
 </script>
