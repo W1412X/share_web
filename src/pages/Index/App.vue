@@ -12,7 +12,7 @@
           :items="['计算机图形学', '数据结构', '机器学习', '自主机器人', '计算机网络', '操作系统']"
           variant="outlined"
         ></v-autocomplete>
-        <v-btn icon @click="load_items">
+        <v-btn icon>
           <v-icon>mdi-magnify</v-icon>
         </v-btn>
         <v-spacer></v-spacer>
@@ -22,7 +22,7 @@
         <v-btn icon>
           <v-icon>mdi-history</v-icon>
         </v-btn>
-        <v-btn icon @click="load_items">
+        <v-btn icon @click="navigateToSelf">
           <v-icon>mdi-account-outline</v-icon>
         </v-btn>
       </v-app-bar>
@@ -67,8 +67,23 @@
 </style>
 
 <script>
-import ResourceItem from '@/components/ResourceItem.vue'
+import ResourceItem from '@/components/ResourceItem.vue';
+import {useRouter} from 'vue-router';
 export default {
+  setup() {
+
+    const router = useRouter();
+    const navigateToIndex = () => {
+      router.push({ name: 'Index' }); // 使用路由名称跳转
+    };
+    const navigateToSelf = () => {
+      router.push('/Self'); // 直接使用路径跳转
+    };
+    return {
+      navigateToIndex,
+      navigateToSelf,
+    };
+  },
   components: {
     ResourceItem, // 确保在这里注册了组件
   },
@@ -89,15 +104,14 @@ export default {
     load_items() {
       const new_item={
         title: '资源标题',
-        subtitle: '资源副标题',
-        author_avatar_url: '作者头像URL',
-        content: '资源简介内容',
-        publish_time: '发布日期',
-        img_src: '资源图片URL',
+        author_avatar_url: 'https://tse3-mm.cn.bing.net/th/id/OIP-C.6szqS1IlGtWsaiHQUtUOVwHaQC?rs=1&pid=ImgDetMain',
+        content: '资源简介内诉讼诉讼诉讼诉讼诉讼诉讼诉讼诉讼诉讼诉讼诉讼诉讼诉讼诉讼诉讼诉讼诉讼诉讼诉讼诉讼诉讼诉讼诉讼诉讼诉讼诉讼诉讼诉讼诉讼诉讼诉讼诉讼容',
+        publish_time: '2024-05-16 08:20',
+        img_src: 'https://tse3-mm.cn.bing.net/th/id/OIP-C.6szqS1IlGtWsaiHQUtUOVwHaQC?rs=1&pid=ImgDetMain',
         author_name: '作者名称',
       }
       this.items.push(new_item)
-    }
+    },
   },
   mounted() {
     this.load_items();
