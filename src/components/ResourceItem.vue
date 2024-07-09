@@ -61,14 +61,14 @@
         'overflow': 'scroll',
         'text-overflow': 'ellipsis',
         '-webkit-box-orient': 'vertical',
-        'min-height':'60px',
+        'height':'60px',
         'padding-left':'0px',
         'padding-right':'20px'}"
         >
         {{content}}
         </v-card-text>
         <v-row
-          :style="{'padding-left':'10px','padding-top':'25px','padding-right':'20px','color':'#8a8a8a'}"
+          :style="{'padding-left':'10px','padding-top':'37px','padding-right':'20px','color':'#8a8a8a','font-size':'13px'}"
           dir="rtl"
         >
           {{ author_name }}@
