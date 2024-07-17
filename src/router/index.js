@@ -3,6 +3,10 @@ import IndexPage from '../pages/IndexPage.vue'
 import SelfPage from '../pages/SelfPage.vue'
 const routes = [
   {
+    path: '/',
+    component: IndexPage,
+  },
+  {
     path: '/index',
     name: 'IndexPage',
     component: IndexPage
