@@ -1,16 +1,16 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Index from '../pages/Index/App.vue'
-import Self from '../pages/Self/App.vue'
+import IndexPage from '../pages/IndexPage.vue'
+import SelfPage from '../pages/SelfPage.vue'
 const routes = [
   {
-    path: '/Index',
-    name: 'Index',
-    component: Index
+    path: '/index',
+    name: 'IndexPage',
+    component: IndexPage
   },
   {
-    path: '/Self',
-    name: 'Self',
-    component: Self
+    path: '/self',
+    name: 'SelfPage',
+    component: SelfPage
   }
 ]
 const router = createRouter({
