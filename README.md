@@ -27,3 +27,19 @@
 - 关注某个用户?
 #### 搜索
 - 可通过搜索直接搜索到**课程话题**或者**资源博客**  
+
+### 数据库创建
+- 用户表
+```mysql
+CREATE TABLE users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(30) NOT NULL,
+    password VARCHAR(25) NOT NULL,
+    email VARCHAR(50),
+    cookie VARCHAR(255),
+    collected_articles JSON,
+    published_articles JSON,
+    UNIQUE (username)
+);
+```
+- 
