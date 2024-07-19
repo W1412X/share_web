@@ -137,7 +137,7 @@
 
       <!-- 注册第三部分 -->
       <v-tabs-window-item v-if="registerStep===2" value="register">
-        <v-card-title :style="{'margin-left':'200px','font-size':'25px'}">
+        <v-card-title :style="{'margin-left':'0px','font-size':'25px'}">
           验证您的账户
         </v-card-title>
         <v-card-text
@@ -162,7 +162,7 @@
           variant="flat"
           width="70%"
           @click="register3"
-          :style="{width:'200px','margin-left':'200px'}"
+          :style="{width:'200px','margin-left':'0px'}"
         ></v-btn>
         <div
           class="text-caption"

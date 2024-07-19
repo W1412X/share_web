@@ -71,13 +71,12 @@ import ResourceItem from '@/components/ResourceItem.vue';
 import {useRouter} from 'vue-router';
 export default {
   setup() {
-
     const router = useRouter();
     const navigateToIndex = () => {
       router.push({ name: 'Index' }); // 使用路由名称跳转
     };
     const navigateToSelf = () => {
-      router.push('/Self'); // 直接使用路径跳转
+      router.push({name: 'Self'});
     };
     return {
       navigateToIndex,
@@ -89,7 +88,9 @@ export default {
   },
   data() {
     return {
-      inputValue: '',
+      search_content: 'RECOMMAND',
+      user_id:'00000000',//用户ID  
+      user_name: 'visitor',//用户名称
       items: [],//存储要渲染的项目数据 
     }
   },
@@ -113,7 +114,7 @@ export default {
       this.items.push(new_item)
     },
   },
-  mounted() {
+  mounted(){
     this.load_items();
   }
 }
