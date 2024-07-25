@@ -51,21 +51,21 @@
             计算机
           </v-btn>
         </v-row>
-        <v-scrollbar> </v-scrollbar>
         <v-card-text
           :style="{'padding-top':'7px',
         'padding-bottom':'2px',
         'color':'#8a8a8a',
         'display': '-webkit-box',
         '-webkit-line-clamp': '3',
-        'overflow': 'scroll',
+        'overflow-y': 'hidden',
         'text-overflow': 'ellipsis',
         '-webkit-box-orient': 'vertical',
-        'height':'60px',
+        'line-height':'1.4',
+        'height':'4.5em',
         'padding-left':'0px',
         'padding-right':'20px'}"
         >
-        {{content}}
+          {{content}}
         </v-card-text>
         <v-row
           :style="{'padding-left':'10px','padding-top':'37px','padding-right':'20px','color':'#8a8a8a','font-size':'13px'}"
@@ -83,10 +83,7 @@
           <v-avatar
             :style="{width: '25px',height: '25px','margin-top':'11px','padding':'0px','margin-bottom':'6px'}"
           >
-            <img
-              :src="author_avatar_url"
-              :style="{'max-width':'100%'}"
-            />
+            <img :src="author_avatar_url" :style="{'max-width':'100%'}" />
           </v-avatar>
           <v-spacer></v-spacer>
           <v-btn
@@ -119,17 +116,40 @@
   </v-card>
 </template>
 <script>
-export default {
-  name: 'ResourceItem',
-  props: {
-    id:String,
-    title: String,
-    author_avatar_url: String,  
-    content: String,  
-    publish_time: String,  
-    img_src: String,   
-    author_name: String
+  export default {
+    name: 'ResourceItem',
+    props: {
+      id: {
+        type: String,
+        default: '00000000',
+      },
+      title: {
+        type: String,
+        default: '这是标题',
+      },
+      author_avatar_url: {
+        type: String,
+        default:
+          'https://tse1-mm.cn.bing.net/th/id/OIP-C.PO7d9IfnPUy2RO173QYt6wHaHV?w=216&h=213&c=7&r=0&o=5&pid=1.7',
+      },
+      content: {
+        type: String,
+        default:
+          '这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍',
+      },
+      publish_time: {
+        type: String,
+        default: '2024-08-24 07:54',
+      },
+      img_src: {
+        type: String,
+        default:
+          'https://tse2-mm.cn.bing.net/th/id/OIP-C.B6see3otwDOwdcSecD_W8QHaHa?w=173&h=180&c=7&r=0&o=5&pid=1.7',
+      },
+      author_name: {
+        type: String,
+        default: 'visitor',
+      },
+    },
   }
-
-};
 </script>

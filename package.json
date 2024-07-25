@@ -9,12 +9,14 @@
   },
   "dependencies": {
     "core-js": "^3.8.3",
+    "marked": "^13.0.2",
     "vue": "^3.2.13",
     "vue-router": "^4.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
     "@babel/eslint-parser": "^7.12.16",
+    "@babel/plugin-transform-private-methods": "^7.24.7",
     "@mdi/font": "^7.4.47",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
