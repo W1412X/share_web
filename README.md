@@ -185,3 +185,10 @@ CREATE TABLE course_questions (
     FOREIGN KEY (course_id) REFERENCES courses
     (course_id)
 );
+
+
+### 添加makrdown文本配置
+```shell
+npm install maked
+npm install --save-dev @babel/plugin-transform-private-methods
+```
