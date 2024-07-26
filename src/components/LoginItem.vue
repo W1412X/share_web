@@ -176,7 +176,24 @@
   </v-card>
 </template>
 <script>
+import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
   export default {
+    setup(){
+      const router=useRouter();
+      const store=useStore();
+      const updateUser = (user) => {
+        store.dispatch('updateUser', user);
+      };
+      const navigateToIndex=()=>{
+        router.push({name:'IndexPage'});
+      }
+      return{
+        router,
+        updateUser,
+        navigateToIndex,
+      }
+    },
     data() {
       return {
         rules: {
@@ -262,9 +279,10 @@
       },
       loginByUsername() {
         // 登陆逻辑
-        window.alert(
-          this.loginByUsernameForm.username + this.loginByUsernameForm.password
-        )
+        const user={id:'12345678',name:this.loginByUsernameForm.username,cookie:'None'};
+        this.updateUser(user);
+        window.alert(user.id);
+        this.navigateToIndex();
         //补充获取到结果的逻辑
       },
       loginByEmail() {

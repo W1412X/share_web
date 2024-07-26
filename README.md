@@ -192,3 +192,12 @@ CREATE TABLE course_questions (
 npm install maked
 npm install --save-dev @babel/plugin-transform-private-methods
 ```
+
+### 添加Vuex配置  
+```shell
+npm install vuex --save
+```
+### 添加图标配置  
+```shell
+npm install @mdi/js @jamescoyle/vue-icon @mdi/light-js
+```

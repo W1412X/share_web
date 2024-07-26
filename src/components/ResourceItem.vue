@@ -88,27 +88,31 @@
           <v-spacer></v-spacer>
           <v-btn
             elevation="0"
-            icon="mdi-alert-circle-outline"
+            icon
             :style="{'width':'25px',
             'padding':'0px',
             'height':'25px',
             'margin-top':'5px',
             'color':'#8a8a8a',
-            'margin-left':'1px'
+            'margin-left':'1px',
             }"
           >
+          <svg-icon type="mdi" :path="icon.alert"></svg-icon>
           </v-btn>
           <v-btn
             elevation="0"
-            icon="mdi-heart-outline"
-            :style="{'width':'25px',
-            'padding':'0px',
-            'height':'25px',
+            icon
+            :style="{'max-width':'25px',
+            'padding-left':'0px',
+            'max-height':'25px',
             'color':'#8a8a8a',            
             'margin-top':'10px',
-            'margin-left':'2px'
+            'margin-left':'2px',
+            'border-radius': '100%',
+
             }"
           >
+          <svg-icon type="mdi" :path="icon.heart"></svg-icon>
           </v-btn>
         </div>
       </v-col>
@@ -116,7 +120,20 @@
   </v-card>
 </template>
 <script>
+import SvgIcon from '@jamescoyle/vue-icon'
+import { mdiAlertCircleOutline,mdiHeartOutline } from '@mdi/js';
   export default {
+    data(){
+      return{
+        icon:{
+          alert:mdiAlertCircleOutline,
+          heart:mdiHeartOutline,
+        }
+      }
+    },
+    components:{
+      SvgIcon,
+    },
     name: 'ResourceItem',
     props: {
       id: {

@@ -20,11 +20,37 @@
     </v-app>
   </template>
   <script>
+  import {computed} from 'vue'
+  import { useStore } from 'vuex';
+  import { useRouter } from 'vue-router';
   export default {
+    setup(){
+      const router=useRouter();
+      const store=useStore();
+      const user= computed(() => store.getters.getUser);
+      const navigateToLogin =() =>{
+        router.push({name:'LoginPage'})
+      };
+      return {
+        user,
+        router,
+        navigateToLogin,
+      }
+    },
     data() {
       return {
-        drawer: null
       };
+    },
+    methods:{
+      checkLoginState(){//检查登陆状态，游客状态就跳转到登陆界面
+        if(this.user.id=='00000000'){
+          window.alert('请登陆');
+          this.navigateToLogin();
+        }
+      },
+    },
+    mounted(){
+      this.checkLoginState();  
     }
   }
   </script>

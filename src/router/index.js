@@ -6,6 +6,7 @@ import ArticlePage from '@/pages/ArticlePage.vue'
 const routes = [
   {
     path: '/',
+    name: 'LoginPage',
     component: LoginPage,
   },
   {

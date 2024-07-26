@@ -10,7 +10,7 @@
           <v-card width="100%" height="100%">
             <!-- 设置卡片的宽高为100%，但这样会导致溢出，因此使用内部的flex布局 -->
             <v-card-text class="text-center">
-              <LoginItem />
+              <LoginItem  />
             </v-card-text>
           </v-card>
         </v-layout>
@@ -29,11 +29,40 @@
 </style>
 
 <script>
+import { computed } from 'vue';
 import LoginItem from '../components/LoginItem.vue';
-
+import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 export default {
+  setup(){
+    const router=useRouter();
+    const store=useStore();
+    const user=computed(()=> store.getters.getUser);
+    const navigateToIndex = () => {
+      router.push({ name: 'IndexPage' }); // 使用路由名称跳转
+    };
+    return {
+      router,
+      user,
+      navigateToIndex,
+    }
+  },
   components: {
     LoginItem,
+  },
+  data(){
+
+  },
+  methods:{
+    checkLoginState(){
+      if(this.user.id!='00000000'){
+        window.alert("已登陆，若要注销请前往个人设置界面");
+        this.navigateToIndex();
+      }
+    }
+  },
+  mounted(){
+    this.checkLoginState();
   },
 };
 </script>

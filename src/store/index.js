@@ -1,7 +1,11 @@
 import { createStore } from 'vuex';
 const store = createStore({
   state: {
-    user: null // 初始状态为空
+    user: {
+      id:'00000000',
+      name:'visitor',
+      cookie:'None',
+    }
   },
   mutations: {
     setUser(state, user) {
@@ -16,8 +20,10 @@ const store = createStore({
   getters: {
     getUser(state) {
       return state.user;
+    },
+    getUserId(state){
+      return state.user.id;
     }
   }
 });
-
 export default store;

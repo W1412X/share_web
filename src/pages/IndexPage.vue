@@ -13,17 +13,17 @@
           variant="outlined"
         ></v-autocomplete>
         <v-btn icon>
-          <v-icon>mdi-magnify</v-icon>
+          <svg-icon type="mdi" :path="icon.magnify"></svg-icon>
         </v-btn>
         <v-spacer></v-spacer>
         <v-btn icon>
-          <v-icon>mdi-upload</v-icon>
+          <svg-icon type="mdi" :path="icon.upload"></svg-icon>
         </v-btn>
         <v-btn icon>
-          <v-icon>mdi-history</v-icon>
+          <svg-icon type="mdi" :path="icon.history"></svg-icon>
         </v-btn>
         <v-btn icon @click="navigateToSelf">
-          <v-icon>mdi-account-outline</v-icon>
+          <svg-icon type="mdi" :path="icon.account"></svg-icon>
         </v-btn>
       </v-app-bar>
       <v-main>
@@ -67,27 +67,46 @@
 </style>
 
 <script>
+import SvgIcon from '@jamescoyle/vue-icon'
+import { mdiMagnify,mdiHistory,mdiUpload,mdiAccountOutline } from '@mdi/js'
 import ResourceItem from '@/components/ResourceItem.vue';
 import {useRouter} from 'vue-router';
+import {computed} from 'vue'
+import { useStore } from 'vuex';
 export default {
   setup() {
     const router = useRouter();
     const navigateToIndex = () => {
-      router.push({ name: 'Index' }); // 使用路由名称跳转
+      router.push({ name: 'IndexPage' }); // 使用路由名称跳转
     };
     const navigateToSelf = () => {
-      router.push({name: 'Self'});
+      router.push({name: 'SelfPage'});
     };
+    const navigateToLogin =() =>{
+      router.push({name:'LoginPage'})
+    }
+    const store=useStore();
+    const user= computed(() => store.getters.getUser);
     return {
+      user,
+      router,
       navigateToIndex,
       navigateToSelf,
+      navigateToLogin,
     };
   },
   components: {
     ResourceItem, // 确保在这里注册了组件
+    SvgIcon,
   },
   data() {
     return {
+      icon:{
+        magnify:mdiMagnify,
+        history:mdiHistory,
+        account:mdiAccountOutline,
+        upload:mdiUpload,
+      },
       search_content: 'RECOMMAND',
       user_id:'00000000',//用户ID  
       user_name: 'visitor',//用户名称
@@ -113,8 +132,15 @@ export default {
       }
       this.items.push(new_item)
     },
+    checkLoginState(){//检查登陆状态，游客状态就跳转到登陆界面
+      if(this.user.id=='00000000'){
+        window.alert('请登陆');
+        this.navigateToLogin();
+      }
+    },
   },
   mounted(){
+    this.checkLoginState();
     this.load_items();
   }
 }
