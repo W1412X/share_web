@@ -11,7 +11,9 @@
           </v-list>
           <v-divider></v-divider>
           <v-list density="compact" active-color="#9c0c13" nav>
-            <v-list-item color="#9c0c13" prepend-icon="mdi-folder"  title="资源" value="sources"></v-list-item>
+            <v-list-item color="#9c0c13" prepend-icon="mdi-folder"  title="资源" value="sources">
+              <v-btn @click="clearCookie"></v-btn>
+            </v-list-item>
             <v-list-item color="#9c0c13" prepend-icon="mdi-email" title="消息" value="messages"></v-list-item>
             <v-list-item color="#9c0c13" prepend-icon="mdi-star" title="收藏" value="starred"></v-list-item>
           </v-list>
@@ -23,6 +25,7 @@
   import {computed} from 'vue'
   import { useStore } from 'vuex';
   import { useRouter } from 'vue-router';
+  import { clearCookie } from '@/utils/cookie';
   export default {
     setup(){
       const router=useRouter();
@@ -42,15 +45,11 @@
       };
     },
     methods:{
-      checkLoginState(){//检查登陆状态，游客状态就跳转到登陆界面
-        if(this.user.id=='00000000'){
-          window.alert('请登陆');
-          this.navigateToLogin();
-        }
-      },
+      clearCookie(){
+        clearCookie('authToken');
+      }
     },
-    mounted(){
-      this.checkLoginState();  
+    mounted(){ 
     }
   }
   </script>

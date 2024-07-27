@@ -54,15 +54,8 @@ export default {
 
   },
   methods:{
-    checkLoginState(){
-      if(this.user.id!='00000000'){
-        window.alert("已登陆，若要注销请前往个人设置界面");
-        this.navigateToIndex();
-      }
-    }
   },
   mounted(){
-    this.checkLoginState();
   },
 };
 </script>

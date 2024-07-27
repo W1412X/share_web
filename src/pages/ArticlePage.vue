@@ -105,17 +105,10 @@
     methods:{
       toSource(){//去文章的源站  
       },
-      checkLoginState(){//检查登陆状态，游客状态就跳转到登陆界面
-        if(this.user.id=='00000000'){
-          window.alert('请登陆');
-          this.navigateToLogin();
-        }
-      },
     },
     mounted() {
       // 在组件加载完成后，将Markdown文本解析为HTML并赋值给renderedMarkdown
       this.renderedContent = marked(this.article.content)
-      this.checkLoginState();
     },
   }
 </script>

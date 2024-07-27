@@ -177,20 +177,16 @@
 </template>
 <script>
 import { useRouter } from 'vue-router';
-import { useStore } from 'vuex';
+import { mapMutations } from 'vuex';
+import { login } from '@/utils/api';
   export default {
     setup(){
       const router=useRouter();
-      const store=useStore();
-      const updateUser = (user) => {
-        store.dispatch('updateUser', user);
-      };
       const navigateToIndex=()=>{
         router.push({name:'IndexPage'});
       }
       return{
         router,
-        updateUser,
         navigateToIndex,
       }
     },
@@ -270,6 +266,7 @@ import { useStore } from 'vuex';
       },
     },
     methods: {
+      ...mapMutations(['setUser','setAuthToken']),
       changeLoginMethod() {
         if (this.loginMethod === 'username') {
           this.loginMethod = 'email'
@@ -279,10 +276,18 @@ import { useStore } from 'vuex';
       },
       loginByUsername() {
         // 登陆逻辑
-        const user={id:'12345678',name:this.loginByUsernameForm.username,cookie:'None'};
-        this.updateUser(user);
-        window.alert(user.id);
-        this.navigateToIndex();
+        const response=login('username', this.loginByUsernameForm.username, this.loginByUsernameForm.password)
+          .then(state => {
+          // 处理成功登录后的逻辑
+          console.log('Login state:', state);
+          // 可以根据 state 做进一步处理
+        })
+        .catch(error => {
+          // 处理登录失败的逻辑
+          console.error('Error logging in:', error);
+          window.alert('调用异常处理');
+        });
+        window.alert(response);
         //补充获取到结果的逻辑
       },
       loginByEmail() {

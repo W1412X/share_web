@@ -201,3 +201,6 @@ npm install vuex --save
 ```shell
 npm install @mdi/js @jamescoyle/vue-icon @mdi/light-js
 ```
+### 自定义的cookie管理
+
+### 出现CORS问题，在服务器端进行配置

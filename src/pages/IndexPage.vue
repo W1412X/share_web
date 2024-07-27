@@ -132,15 +132,8 @@ export default {
       }
       this.items.push(new_item)
     },
-    checkLoginState(){//检查登陆状态，游客状态就跳转到登陆界面
-      if(this.user.id=='00000000'){
-        window.alert('请登陆');
-        this.navigateToLogin();
-      }
-    },
   },
   mounted(){
-    this.checkLoginState();
     this.load_items();
   }
 }
