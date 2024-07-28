@@ -12,6 +12,7 @@
           :src="img_src"
           :style="{'padding-left':'8px',position: 'relative', width:'140px',height:'140px',border:'2px','border-radius':'2px',padding:'0px'}"
           cover
+          @click="navigateToArticle"
           aspect-ratio="1/1"
         >
         </v-img>
@@ -22,6 +23,7 @@
         </span>
       </v-col>
       <v-col
+        @click="navigateToArticle"
         :style="{flex:'65',height:'100%',width:'100%',position:'relative','padding':'0px'}"
       >
         <v-card-title
@@ -122,7 +124,15 @@
 <script>
 import SvgIcon from '@jamescoyle/vue-icon'
 import { mdiAlertCircleOutline,mdiHeartOutline } from '@mdi/js';
+import { useRouter } from 'vue-router';
   export default {
+    setup(){
+      const router=useRouter();
+      const navigateToArticle=()=>{router.push({name:'ArticlePage'});}
+      return{
+        navigateToArticle,
+      }
+    },
     data(){
       return{
         icon:{
@@ -130,6 +140,8 @@ import { mdiAlertCircleOutline,mdiHeartOutline } from '@mdi/js';
           heart:mdiHeartOutline,
         }
       }
+    },
+    methods:{
     },
     components:{
       SvgIcon,
