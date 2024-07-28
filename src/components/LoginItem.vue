@@ -1,5 +1,5 @@
 <template>
-  <v-card :style="{width:'600px',height:'350px',display:'relative'}">
+  <v-card :style="{width:'600px',height:'350px',display:'relative','margin-top':'50px'}">
     <v-tabs v-model="logtab" bg-color="indigo-darken-2" fixed-tabs>
       <v-tab
         :style="{background:'#9c0c13','font-size':'18px'}"
@@ -177,7 +177,8 @@
 </template>
 <script>
 import { useRouter } from 'vue-router';
-import { mapMutations } from 'vuex';
+import { mapActions } from 'vuex';
+import { useStore } from 'vuex';
 import { login } from '@/utils/api';
   export default {
     setup(){
@@ -185,7 +186,9 @@ import { login } from '@/utils/api';
       const navigateToIndex=()=>{
         router.push({name:'IndexPage'});
       }
+      const store=useStore();
       return{
+        store,
         router,
         navigateToIndex,
       }
@@ -266,7 +269,7 @@ import { login } from '@/utils/api';
       },
     },
     methods: {
-      ...mapMutations(['setUser','setAuthToken']),
+      ...mapActions(['storeLogin']),//导入cookie的处理函数
       changeLoginMethod() {
         if (this.loginMethod === 'username') {
           this.loginMethod = 'email'
@@ -277,17 +280,38 @@ import { login } from '@/utils/api';
       loginByUsername() {
         // 登陆逻辑
         const response=login('username', this.loginByUsernameForm.username, this.loginByUsernameForm.password)
-          .then(state => {
+          .then(data => {
           // 处理成功登录后的逻辑
-          console.log('Login state:', state);
-          // 可以根据 state 做进一步处理
+          console.log(response);
+          if(data.state=='Y'){
+            const tmp={
+              'id':data.userId,
+              'cookie':data.cookie
+            }
+            this.storeLogin(tmp);
+            const message={
+              'color':'green',
+              'content':'登陆成功'
+            }
+            this.$emit('processed',message);
+            this.router.push({name:'IndexPage'});
+          }else{
+            const message={
+              'color':'red',
+              'content':'验证信息错误'
+            }
+            this.$emit('processed',message);
+          }
         })
         .catch(error => {
           // 处理登录失败的逻辑
           console.error('Error logging in:', error);
-          window.alert('调用异常处理');
+          const message={
+              'color':'red',
+              'content':'未知错误，请联系开发者'
+            }
+          this.$emit('processed',message);
         });
-        window.alert(response);
         //补充获取到结果的逻辑
       },
       loginByEmail() {

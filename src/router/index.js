@@ -3,8 +3,7 @@ import IndexPage from '../pages/IndexPage.vue';
 import SelfPage from '../pages/SelfPage.vue';
 import LoginPage from '../pages/LoginPage.vue';
 import ArticlePage from '@/pages/ArticlePage.vue';
-import { useStore } from 'vuex';
-
+import { getCookie } from '@/utils/cookie';
 const routes = [
   {
     path: '/',
@@ -38,12 +37,11 @@ const router = createRouter({
 
 // 路由守卫，用于检查登录状态
 router.beforeEach((to, from, next) => {
-  const store = useStore();
   if (to.matched.some(record => record.meta.requiresAuth)) {
     //需要认证的页面
-    if (!store.getters.isLoggedIn) {
+    if (getCookie('cookie')==null || getCookie('cookie')=='') {
       // 如果用户未登录，则重定向到登录页面
-      window.alert('未登录');
+      window.alert('未登陆');
       next({name:'LoginPage'});
     } else {
       //进入界面

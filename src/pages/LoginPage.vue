@@ -10,11 +10,41 @@
           <v-card width="100%" height="100%">
             <!-- 设置卡片的宽高为100%，但这样会导致溢出，因此使用内部的flex布局 -->
             <v-card-text class="text-center">
-              <LoginItem  />
+              <LoginItem  @processed="showNotification" />
             </v-card-text>
           </v-card>
         </v-layout>
       </v-container>
+      <v-alert
+        v-if="ifShowRedAlert"
+        variant="outlined"
+        :style="{ 'position': 'fixed',
+                  'top': '20px',
+                  'left': '50%',
+                  'width': '150px',
+                  'height': '40px',
+                  'transform': 'translateX(-50%)',
+                  'text-align':'center',
+                  'color':'#ff0000',
+                  'background-color': 'rgba(255, 0, 0, 0.2)','padding': '10px 20px',
+                  'border': '1px solid rgba(255, 0, 0, 0.3)',
+                  'border-radius': '4px','z-index': '1000'}"
+      >{{ redAlertMessage }}</v-alert>
+      <v-alert
+        v-if="ifShowGreenAlert"
+        variant="outlined"
+        :style="{ 'position': 'fixed',
+                  'top': '20px',
+                  'left': '50%',
+                  'width': '150px',
+                  'height': '40px',
+                  'transform': 'translateX(-50%)',
+                  'text-align':'center',
+                  'color':'#00ee00',
+                  'background-color': 'rgba(0, 255, 0, 0.1)','padding': '10px 20px',
+                  'border': '1px solid rgba(0, 255, 0, 0.2)',
+                  'border-radius': '4px','z-index': '1000'}"
+        >{{ greenAlertMessage }}</v-alert>
     </v-main>
   </v-app>
 </template>
@@ -51,9 +81,35 @@ export default {
     LoginItem,
   },
   data(){
-
+    return{
+      ifShowRedAlert:false,
+      ifShowGreenAlert:false,
+      redAlertMessage:'',
+      greenAlertMessage:'',
+    }
   },
   methods:{
+    showNotification(message){
+      if(message.color=='red'){
+        this.redAlertMessage=message.content;
+        this.showRedAlert();
+      }else{
+        this.greenAlertMessage=message.content;
+        this.showGreenAlert();
+      }
+    },
+    showGreenAlert(){
+      this.ifShowGreenAlert = true;
+      setTimeout(() => {
+        this.ifShowGreenAlert = false;
+      }, 5000);
+    },
+    showRedAlert(){
+      this.ifShowRedAlert = true;
+      setTimeout(() => {
+        this.ifShowRedAlert = false;
+      }, 5000);
+    },
   },
   mounted(){
   },

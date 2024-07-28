@@ -1,13 +1,14 @@
 <template>
-  <div :style="{'justify-content':'center','width':'100%','display':'flex'}">
-    <v-card
-      :style="{'max-width':'1000px','width':'1000px','background-color':'#eef0f4'}"
-    >
+  <div>
+    <main :style="{'justify-content':'center','width':'100%','display':'flex','padding-bottom':'50px'}">
       <v-card
-        :style="{'margin-right':'2px','margin-left':'2px','margin-top':'2px','height':'110px'}"
+      :style="{'max-width':'1000px','width':'1000px','background-color':'#eef0f4'}"
+      >
+      <v-card
+        :style="{'margin-right':'2px','margin-left':'2px','margin-top':'2px','height':'130px'}"
       >
         <v-card-title
-          :style="{'font-size':'22px','font-weight':'bold','color':'#2f2f2f'}"
+          :style="{'font-size':'30px','font-weight':'bold','color':'#2f2f2f'}"
         >
           这是标题这是标题这是标题这是标题这是标题这是标题这是标题这是标题这是标题这是标题这是标题这是标题这是标题这是标题这是标题
         </v-card-title>
@@ -27,41 +28,41 @@
             :no-gutters="true"
             :style="{'margin-top':'10px','margin-left':'10px','margin-right':'10px','padding-left':'0px','padding-right':'0px'}"
           >
-            <v-icon
-              icon="mdi-clock"
-              size="18"
-              :style="{'margin-top':'-2px','margin-left':'5px'}"
-            ></v-icon>
-            <span :style="{'margin-left':'5px','font-size':'14px'}"
-              >编辑于 2024-07-28 08:55</span
-            >
+            <v-row :style="{'margin-top':'0px'}">
+              <svg-icon type="mdi" :path="icons.timeClock" size="18" :style="{'padding-top':'0px','margin-bottom':'0px','margin-left':'5px'}"></svg-icon>
+              <span :style="{'margin-left':'5px','font-size':'14px'}"
+                >编辑于 2024-07-28 08:55</span
+              >
+            </v-row>
           </div>
           <div
             :no-gutters="true"
-            :style="{'max-width':'100px','margin-top':'10px','margin-left':'10px','margin-right':'10px','padding-left':'0px','padding-right':'0px'}"
+            :style="{'max-width':'100px','margin-top':'10px','margin-left':'15px','margin-right':'0px','padding-left':'0px','padding-right':'0px'}"
           >
-            <v-icon
-              size="18"
-              icon="mdi-eye-outline"
-              :style="{'margin-top':'-2px','margin-left':'5px'}"
-            ></v-icon>
-            <span :style="{'margin-left':'5px','font-size':'14px'}">9999</span>
+            <v-row :style="{'margin-top':'0px','margin-left':'0px','margin-right':'0px'}">
+              <svg-icon type="mdi" :path="icons.viewCount" size="18" :style="{'padding-top':'0px','margin-bottom':'0px','margin-left':'5px'}"></svg-icon>
+              <span :style="{'margin-left':'5px','font-size':'14px'}">9999</span>
+            </v-row>
           </div>
           <div
-            :style="{'max-width':'px','margin-top':'10px','margin-left':'10px','margin-right':'50px','padding-left':'0px','padding-right':'0px'}"
+            :style="{'max-width':'100px','margin-top':'10px','margin-left':'10px','margin-right':'50px','padding-left':'0px','padding-right':'0px'}"
           >
-            <v-icon
-              icon="mdi-star"
-              size="18"
-              :style="{'margin-top':'-3px','margin-left':'10px'}"
-            ></v-icon>
-            <span :style="{'margin-left':'4px','font-size':'14px'}">9999</span>
+            <v-row :style="{'margin-top':'0px','margin-left':'0px','margin-right':'0px'}">
+              <svg-icon type="mdi" :path="icons.starCount" size="18" :style="{'padding-top':'0px','margin-bottom':'0px','margin-left':'5px'}"></svg-icon>
+              <span :style="{'margin-left':'4px','font-size':'14px'}">9999</span>
+            </v-row>
           </div>
         </v-row>
         <div :style="{'font-size':'12px','color':'#8a8a8a','font-weight':'bold','margin-left':'20px','margin-top':'22px'}">原创 <span click="toSource">{{author.name}}</span></div>
       </v-card>
-      <div v-html="renderedContent" :style="{'max-width':'900px','width':'900px'}"></div>
+      <div v-html="renderedContent" :style="{'max-width':'900px','margin-left':'10px','margin-right':'10px','margin-top':'30px','margin-bottom':'30px','width':'900px'}"></div>
     </v-card>
+    </main>
+    <div :style="{'justify-content':'center','display':'flex'}">
+      <v-spacer></v-spacer>
+      <articlue-bottom-bar/>
+      <v-spacer></v-spacer>
+    </div>
   </div>
 </template>
 <script>
@@ -69,6 +70,9 @@
   import { useStore } from 'vuex';
   import { computed } from 'vue';
   import {useRouter} from 'vue-router';
+  import ArticlueBottomBar from '@/components/ArticlueBottomBar.vue';
+  import { mdiClock,mdiEyeOutline,mdiStar } from '@mdi/js';
+  import SvgIcon from '@jamescoyle/vue-icon'
   export default {
     setup(){
       const router=useRouter();
@@ -83,8 +87,17 @@
         navigateToLogin,
       }
     },
+    components:{
+      ArticlueBottomBar,
+      SvgIcon,
+    },
     data() {
       return {
+        icons:{
+          timeClock:mdiClock,
+          viewCount:mdiEyeOutline,
+          starCount:mdiStar,
+        },
         article: {
           title: '这是一个标题',
           authorName: '这是作者名称',
@@ -92,7 +105,7 @@
           tags: [],
           stars: '0',
           views: '0',
-          content: '# 计算机网络复习  \n'
+          content: '# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n# 这是内容  \n\n'
         },
         author: {
           name: '游客',

@@ -7,7 +7,7 @@ import { createVuetify } from "vuetify";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 import { createStore } from 'vuex';
-import { setCookie,getCookie, clearCookie } from './utils/cookie';
+import { setCookie,getCookie, clearCookie } from './utils/cookie';//cookie服务
 const vuetify = createVuetify({
   components,
   directives,
@@ -15,37 +15,37 @@ const vuetify = createVuetify({
 const store=createStore({
   state: {//状态存储
     user: null,
-    authToken: getCookie('authToken'),
+    cookie: getCookie('cookie'),
   },
   getters: {//计算逻辑
-    isLoggedIn: (state) => !!state.authToken
+    isLoggedIn: (state) => !!state.cookie
   },
   mutations: {//修改state的唯一路径，定义所有修改用户状态的方法
     setUser(state, user) {
       state.user = user
     },
-    setAuthToken(state, token) {
-      state.authToken = token;
-      setCookie('authToken',token);
+    setcookie(state, cookie) {
+      state.cookie = cookie;
+      setCookie('cookie',cookie,1);
     },
     clearUser(state) {
       state.user = null
-      state.authToken = null;
-      clearCookie('authToken');
+      state.cookie = null;
+      clearCookie('cookie');
     }
   },
   actions: {//处理异步操作的集合
-    login({ commit }, user) {
-        commit('setUser',user);
-        commit('setAuthToken','test_cookie');
+    storeLogin({ commit }, IdCookie) {
+        commit('setUser',IdCookie.id);
+        commit('setcookie',IdCookie.cookie);
     },
-    logout({ commit }) {
+    storeLogout({ commit }) {
       commit('clearUser')
     }
   }
 });
-createApp(App)
-  .use(router)
+const app=createApp(App);
+app.use(router)
   .use(vuetify)
   .use(store)
   .mount('#app');

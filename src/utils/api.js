@@ -20,7 +20,7 @@ export const login = (type, username, passwd) => {
     passwd: passwd
   };
   return axiosInstance.post('http://118.89.82.46:1412/api/login', data)
-    .then(response => response.data.state)
+    .then(response => response.data)
     .catch(error => {
       console.error('Error logging in:', error);
       throw error; // 如果需要在上层继续处理错误，可以选择抛出错误
