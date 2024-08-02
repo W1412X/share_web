@@ -32,6 +32,7 @@ const store=createStore({
       state.user = null
       state.cookie = null;
       clearCookie('cookie');
+      clearCookie('user_id');
     }
   },
   actions: {//处理异步操作的集合

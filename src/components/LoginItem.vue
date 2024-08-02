@@ -279,7 +279,12 @@ import { login } from '@/utils/api';
       },
       loginByUsername() {
         // 登陆逻辑
-        const response=login('username', this.loginByUsernameForm.username, this.loginByUsernameForm.password)
+        const data={
+          'type':'username',
+          'username':this.loginByUsernameForm.username,
+          'passwd':this.loginByUsernameForm.password
+        }
+        const response=login(data)
           .then(data => {
           // 处理成功登录后的逻辑
           console.log(response);

@@ -13,12 +13,7 @@ export const fetchData = () => {
     });
 };
 // 定义登录请求方法
-export const login = (type, username, passwd) => {
-  const data = {
-    type: type,
-    username: username,
-    passwd: passwd
-  };
+export const login = (data) => {
   return axiosInstance.post('http://118.89.82.46:1412/api/login', data)
     .then(response => response.data)
     .catch(error => {
