@@ -18,7 +18,7 @@
         <v-spacer></v-spacer>
         <v-col cols="4" class="text-right" :style="{}">
           <svg-icon type="mdi" :path="icons.star" size="25" :style="{'color':'#8a8a8a','margin-left':'5px','margin-right':'8px'}"></svg-icon>
-          <svg-icon type="mdi" :path="icons.commentQuestion" size="25" :style="{'color':'#8a8a8a','margin-left':'8px','margin-right':'8px'}"></svg-icon>
+          <svg-icon type="mdi" :path="icons.commentQuestion" @click="this.showComment()" size="25" :style="{'color':'#8a8a8a','margin-left':'8px','margin-right':'8px'}"></svg-icon>
           <svg-icon type="mdi" :path="icons.alertCircle" size="25" :style="{'color':'#8a8a8a','margin-left':'8px','margin-right':'20px'}"></svg-icon>
         </v-col>
       </v-row>
@@ -60,7 +60,11 @@
           }
         }
       },
-      method: {},
+      methods: {
+        showComment(){
+          this.$emit('get_comment',null);
+        },
+      },
     }
   </script>
   

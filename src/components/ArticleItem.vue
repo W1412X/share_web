@@ -1,7 +1,7 @@
 <template>
   <v-card
     elevation="3"
-    :style="{ width: '750px', 'margin-left': '1%', 'margin-top': '20px', height: '175px',display: 'grid', 'place-items': 'center'}"
+    :style="{ width: '750px', 'margin': '5px', height: '175px',display: 'grid', 'place-items': 'center'}"
   >
     <v-row :style="{width:'100%','height':'100%',position:'relative'}">
       <v-col
@@ -9,7 +9,7 @@
       >
         <v-img
           class="bg-grey-lighten-2"
-          :src="img_src"
+          :src="article.imgUrl"
           :style="{'padding-left':'8px',position: 'relative', width:'140px',height:'140px',border:'2px','border-radius':'2px',padding:'0px'}"
           cover
           @click="navigateToArticle"
@@ -19,7 +19,7 @@
         <span
           :style="{'font-size':'14px',color:'#8a8a8a','padding-bottom':'3px'}"
         >
-          {{publish_time}}
+          {{article.publishTime}}
         </span>
       </v-col>
       <v-col
@@ -32,6 +32,7 @@
           'padding-top':'12px',
           'padding-bottom':'0px',
           'font-size':'18px',
+          'font-style':'bold',
           'line-height':'1.2',
           'padding-right':'20px',
           'overflow': 'hidden',
@@ -39,7 +40,7 @@
           'white-space': 'nowrap',
           'max-width': '400px'}"
         >
-          {{title}}
+          {{article.title}}
         </v-card-title>
         <v-row
           :style="{'margin-top':'0px','padding-top':'6px','padding-bottom':'12px','padding-left':'10px','font-size':'16px','font-style':'bold','color':'#8a8a8a'}"
@@ -67,13 +68,13 @@
         'padding-left':'0px',
         'padding-right':'20px'}"
         >
-          {{content}}
+          {{article.description}}
         </v-card-text>
         <v-row
           :style="{'padding-left':'10px','padding-top':'37px','padding-right':'20px','color':'#8a8a8a','font-size':'13px'}"
           dir="rtl"
         >
-          {{ author_name }}@
+          {{ article.authorName }}@
         </v-row>
       </v-col>
       <v-col
@@ -85,7 +86,7 @@
           <v-avatar
             :style="{width: '25px',height: '25px','margin-top':'11px','padding':'0px','margin-bottom':'6px'}"
           >
-            <img :src="author_avatar_url" :style="{'max-width':'100%'}" />
+            <img :src="article.profileUrl" :style="{'max-width':'100%'}" />
           </v-avatar>
           <v-spacer></v-spacer>
           <v-btn
@@ -99,7 +100,7 @@
             'margin-left':'1px',
             }"
           >
-          <svg-icon type="mdi" :path="icon.alert"></svg-icon>
+            <svg-icon type="mdi" :path="icon.alert"></svg-icon>
           </v-btn>
           <v-btn
             elevation="0"
@@ -114,7 +115,7 @@
 
             }"
           >
-          <svg-icon type="mdi" :path="icon.heart"></svg-icon>
+            <svg-icon type="mdi" :path="icon.heart"></svg-icon>
           </v-btn>
         </div>
       </v-col>
@@ -146,39 +147,27 @@ import { useRouter } from 'vue-router';
     components:{
       SvgIcon,
     },
-    name: 'ResourceItem',
+    name: 'ArticleItem',
     props: {
-      id: {
-        type: String,
-        default: '00000000',
+      article:{
+        type:Object,
+        default:function(){
+          return {
+            id: '00000000',
+            title: '这是文章标题',
+            tags: ['计算机', '测试'],
+            description:
+              '这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介',
+            publishTime: '2022-09-01 00:00',
+            imgUrl:
+              'https://tse2-mm.cn.bing.net/th/id/OIP-C.B6see3otwDOwdcSecD_W8QHaHa?w=173&h=180&c=7&r=0&o=5&pid=1.7',
+            authorName: '测试用户',
+            profileUrl:
+              'https://tse1-mm.cn.bing.net/th/id/OIP-C.PO7d9IfnPUy2RO173QYt6wHaHV?w=216&h=213&c=7&r=0&o=5&pid=1.7',
+          }
+        }
       },
-      title: {
-        type: String,
-        default: '这是标题',
-      },
-      author_avatar_url: {
-        type: String,
-        default:
-          'https://tse1-mm.cn.bing.net/th/id/OIP-C.PO7d9IfnPUy2RO173QYt6wHaHV?w=216&h=213&c=7&r=0&o=5&pid=1.7',
-      },
-      content: {
-        type: String,
-        default:
-          '这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍',
-      },
-      publish_time: {
-        type: String,
-        default: '2024-08-24 07:54',
-      },
-      img_src: {
-        type: String,
-        default:
-          'https://tse2-mm.cn.bing.net/th/id/OIP-C.B6see3otwDOwdcSecD_W8QHaHa?w=173&h=180&c=7&r=0&o=5&pid=1.7',
-      },
-      author_name: {
-        type: String,
-        default: 'visitor',
-      },
+      
     },
   }
 </script>

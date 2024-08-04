@@ -5,6 +5,7 @@ import LoginPage from '../pages/LoginPage.vue';
 import ArticlePage from '@/pages/ArticlePage.vue';
 import { getCookie,setCookie } from '@/utils/cookie';
 import { login } from '@/utils/api';
+import TestPage from '@/pages/TestPage.vue';
 const routes = [
   {
     path: '/',
@@ -29,6 +30,11 @@ const routes = [
     component: ArticlePage,
     meta: { requiresAuth: true },
   },
+  {
+    path: '/test',
+    name: 'TestPage',
+    component: TestPage,
+  }
 ];
 
 const router = createRouter({
