@@ -6,6 +6,8 @@ import ArticlePage from '@/pages/ArticlePage.vue';
 import { getCookie,setCookie } from '@/utils/cookie';
 import { login } from '@/utils/api';
 import TestPage from '@/pages/TestPage.vue';
+import TestPage2 from '@/pages/TestPage2.vue';
+import EditorPage from '@/pages/EditorPage.vue';
 const routes = [
   {
     path: '/',
@@ -31,9 +33,19 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
+    path:'/editor',
+    name:'EditorPage',
+    component: EditorPage,
+  },
+  {
     path: '/test',
     name: 'TestPage',
     component: TestPage,
+  },
+  {
+    path: '/test2',
+    name: 'TestPage2',
+    component: TestPage2,
   }
 ];
 

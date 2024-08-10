@@ -1,16 +1,14 @@
 <template>
   <div style="border: 1px solid #ccc">
-    <Toolbar style="border-bottom: 1px solid #ccc;width: 900px;" :editor="editorRef" :defaultConfig="toolbarConfig"
-      :mode="mode" />
+    <v-btn @click="test()"></v-btn>
     <Editor style="width:900px;height: 100vh; overflow-y: hidden;" v-model="valueHtml" :defaultConfig="editorConfig"
       :mode="mode" @onCreated="handleCreated" />
   </div>
 </template>
 <script>
-import { editorUploadImage } from '@/utils/api'
 import '@wangeditor/editor/dist/css/style.css' // 引入 css
 import { onBeforeUnmount, ref, shallowRef, inject } from 'vue'
-import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
+import { Editor } from '@wangeditor/editor-for-vue'
 import { Boot } from '@wangeditor/editor'
 import formulaModule from '@wangeditor/plugin-formula'
 import { DomEditor } from '@wangeditor/editor'
@@ -24,7 +22,7 @@ import os
 ... ... </code></pre><blockquote>引用部分</blockquote><p><br></p>`
     }
   },
-  components: { Editor, Toolbar },
+  components: { Editor },
   setup() {
     const store = inject('store');
     if (!store.state.ifRegisterEditor) {
@@ -35,78 +33,6 @@ import os
     const editorRef = shallowRef()
     // 内容 HTML
     const valueHtml = ref('<p>Hello World!</p>');
-    const editorConfig = {
-      hoverbarKeys: {
-        formula: {
-          menuKeys: ['editFormula'],
-        },
-      },
-      // 其他配置项
-      MENU_CONF: {}
-    };
-    editorConfig.MENU_CONF['uploadImage'] = {
-      customUpload(file, insertFn) {
-        // file 即选中的文件
-        // 自己实现上传，并得到图片 url alt href
-        // 最后插入图片
-        console.log(file);
-        const data = new FormData();
-        data.append('file', file);
-        const response = editorUploadImage(data)
-          .then(data => {
-            console.log(response);
-            console.log("上传成功");
-            console.log(data)
-            //上传成功
-            if (data.errno == 0) {
-              console.log(data.data.url)
-              insertFn(data.data.url, '', '');
-            } else {//失败
-              console.log(data.message);
-            }
-          })
-          .catch(error => {//异常
-            console.log(error);
-          });
-      },
-      // 上传进度的回调函数
-      onProgress(progress) {
-        // progress 是 0-100 的数字
-        console.log('progress', progress)
-      },
-      // 单个文件上传成功之后
-      onSuccess(file, res) {
-        console.log(`${file.name} 上传成功`, res)
-      },
-      // 单个文件上传失败
-      onFailed(file, res) {
-        console.log(`${file.name} 上传失败`, res)
-      },
-      // 上传错误，或者触发 timeout 超时
-      onError(file, err, res) {
-        console.log(`${file.name} 上传出错`, err, res)
-      },
-    };
-    const toolbarConfig = {
-      insertKeys: {
-        index: 0,
-        keys: [
-          'insertFormula',//插入
-          'editFormula'//编辑
-        ],
-      },
-      // 其他配置项
-    };
-    /*toolbarConfig.excludeKeys=[//取出上传视频的工具
-      'group-video'
-    ]*/
-    editorConfig.MENU_CONF['uploadVideo'] = {
-      customUpload(file, insertFn) {  // TS 语法
-        console.log(file);
-        console.log(insertFn);
-        window.alert('暂不支持上传视频')
-      }
-    }
     // 组件销毁时，也及时销毁编辑器
     onBeforeUnmount(() => {
       const editor = editorRef.value
@@ -115,6 +41,7 @@ import os
     })
     const handleCreated = (editor) => {
       editorRef.value = editor // 记录 editor 实例，重要！
+      editor.disable();
       console.log(editor);
       console.log(editorRef.value);
       console.log("创建编辑器完成");
@@ -123,10 +50,7 @@ import os
       editorRef,
       valueHtml,
       mode: 'default', // 或 'simple'
-      toolbarConfig,
-      editorConfig,
       handleCreated,
-      store
     };
   },
   methods: {

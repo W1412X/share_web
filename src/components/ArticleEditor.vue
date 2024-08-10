@@ -1,20 +1,21 @@
 <template>
   <div style="border: 1px solid #ccc">
-    <Toolbar style="border-bottom: 1px solid #ccc;width: 900px;" :editor="editorRef" :defaultConfig="toolbarConfig"
+    <Toolbar style="border-bottom: 1px solid #ccc;width: 1000px;" :editor="editorRef" :defaultConfig="toolbarConfig"
       :mode="mode" />
-    <Editor style="width:900px;height: 100vh; overflow-y: hidden;" v-model="valueHtml" :defaultConfig="editorConfig"
+    <Editor style="width:1000px;min-height: 1000px;" v-model="html" :defaultConfig="editorConfig"
       :mode="mode" @onCreated="handleCreated" />
   </div>
 </template>
 <script>
 import { editorUploadImage } from '@/utils/api'
 import '@wangeditor/editor/dist/css/style.css' // 引入 css
-import { onBeforeUnmount, ref, shallowRef, inject } from 'vue'
+import { onBeforeUnmount, shallowRef, inject } from 'vue'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
 import { Boot } from '@wangeditor/editor'
 import formulaModule from '@wangeditor/plugin-formula'
 import { DomEditor } from '@wangeditor/editor'
 export default {
+  name:'ArticleEditor',
   props: {
     initialHtml: {
       type: String,
@@ -34,7 +35,6 @@ import os
     // 编辑器实例，必须用 shallowRef
     const editorRef = shallowRef()
     // 内容 HTML
-    const valueHtml = ref('<p>Hello World!</p>');
     const editorConfig = {
       hoverbarKeys: {
         formula: {
@@ -44,6 +44,7 @@ import os
       // 其他配置项
       MENU_CONF: {}
     };
+    editorConfig.scroll=false;
     editorConfig.MENU_CONF['uploadImage'] = {
       customUpload(file, insertFn) {
         // file 即选中的文件
@@ -121,7 +122,6 @@ import os
     }
     return {
       editorRef,
-      valueHtml,
       mode: 'default', // 或 'simple'
       toolbarConfig,
       editorConfig,
@@ -129,16 +129,19 @@ import os
       store
     };
   },
+  data(){
+    const html=this.initialHtml;
+    return{
+      html,
+    }
+  },
   methods: {
     test() {
-      console.log(this.editorRef);
       console.log(DomEditor.getToolbar(this.editorRef).getConfig().toolbarKeys);
-      console.log(this.valueHtml);
     }
   },
   created(){//在组件创建时赋值initHtml
     console.log("创建组件");
-    this.valueHtml=this.initialHtml;
   },
   mounted(){
   }

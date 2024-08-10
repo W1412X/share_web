@@ -14,11 +14,6 @@ module.exports = defineConfig({
   },
   devServer: {
     proxy: {
-      '/source/': {
-        target: 'http://39.101.160.55/source/',
-        changeOrigin: true,
-        secure: false,
-      },
-    },
-  },
+    }
+  }
 });
