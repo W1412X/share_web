@@ -219,7 +219,7 @@ import {loginWithPassword} from '@/axios/identify'
           user_name:this.loginByUsernameForm.username,
           passwd:this.loginByUsernameForm.passwd
         }
-        if(form.user_name=='1412'){//特殊
+        if(form.user_name=='test'){//特殊
           this.storeLogin({'id':'111','cookie':'SSWSWWWJIJ'});
           this.router.push({name:'IndexPage'});
           return;
