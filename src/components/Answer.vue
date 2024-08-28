@@ -1,6 +1,6 @@
 <template>
   <v-card
-    :style="{'width':'600px','box-shadow':'none','box-radius':'0','border':'1px solid #8a8a8a'}"
+    :style="{'width':'750px','box-shadow':'none','box-radius':'0','border':'1px solid #8a8a8a'}"
     outline
     tile
   >

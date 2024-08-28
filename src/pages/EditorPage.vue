@@ -14,23 +14,23 @@
           </div>
           <div style="justify-content: center;width:1000px;margin-left:0px;margin-right:0px;margin-top:50px">
             <v-card style="padding:0px;margin:0px">
-              <ArticleEditorBar ref="editorBarRef"></ArticleEditorBar>
+              <ArticleEditorBar ref="editorBarRef" @alert="alert"></ArticleEditorBar>
               <v-btn @click="submit()" color="#9c0c13" variant="outlined" style="width: 960px; margin: 20px">发布</v-btn>
             </v-card>
           </div>
         </v-row>
       </v-card>
     </main>
-    <v-snackbar :color="alertSet.color" v-model="alertSet.state" vertical>
-      <div class="text-subtitle-1 pb-2">{{ alertSet.title }}</div>
-      <p>{{ alertSet.text }}</p>
-      <template v-slot:actions>
-        <v-btn color="#ffffff" variant="outlined" @click="alertSet.state = false">
-          关闭
-        </v-btn>
-      </template>
-    </v-snackbar>
   </div>
+  <v-snackbar
+    :timeout="3000"
+    :color="alertSet.color"
+    variant="outlined"
+    v-model="alertSet.state"
+  >
+    <div class="text-subtitle-1 pb-2">{{ alertSet.title }}</div>
+    <p>{{ alertSet.content }}</p>
+  </v-snackbar>
 </template>
 <script>
 import ArticleEditor from '@/components/ArticleEditor.vue';
@@ -47,7 +47,7 @@ export default{
         state:false,
         title:'',
         color:'',
-        text:''
+        content:''
       };
       return {
         alertSet,

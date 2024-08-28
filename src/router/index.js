@@ -3,11 +3,13 @@ import IndexPage from '../pages/IndexPage.vue';
 import SelfPage from '../pages/SelfPage.vue';
 import LoginPage from '../pages/LoginPage.vue';
 import ArticlePage from '@/pages/ArticlePage.vue';
-import { getCookie,setCookie } from '@/utils/cookie';
-import { login } from '@/utils/api';
-import TestPage from '@/pages/TestPage.vue';
+import { getCookie,/*setCookie*/ } from '@/utils/cookie';
+/*import { login } from '@/utils/api';*/
 import TestPage2 from '@/pages/TestPage2.vue';
 import EditorPage from '@/pages/EditorPage.vue';
+import QuestionPage from '@/pages/QuestionPage.vue';
+import ErrorPage from '@/pages/ErrorPage.vue';
+import AuthorPage from '@/pages/AuthorPage.vue';
 const routes = [
   {
     path: '/',
@@ -38,14 +40,24 @@ const routes = [
     component: EditorPage,
   },
   {
-    path: '/test',
-    name: 'TestPage',
-    component: TestPage,
-  },
-  {
     path: '/test2',
     name: 'TestPage2',
     component: TestPage2,
+  },
+  {
+    path: '/question',
+    name:'QuestionPage',
+    component: QuestionPage
+  },
+  {
+    path:'/error',
+    name:'ErrorPage',
+    component: ErrorPage
+  },
+  {
+    path:'/author',
+    name:'AuthorPage',
+    component: AuthorPage,
   }
 ];
 
@@ -64,7 +76,8 @@ router.beforeEach((to, from, next) => {
         window.alert('未登陆');
         router.push({name:'LoginPage'});
       } else {
-        const data={
+        next();
+        /*const data={
           'type':'cookie',
           'cookie':getCookie('cookie')
         }
@@ -83,7 +96,7 @@ router.beforeEach((to, from, next) => {
           router.push({name:'LoginPage'});
         })
         //进入界面
-        next();
+        next();*/
       }
     }else{//如果存在，就直接跳转
       next();

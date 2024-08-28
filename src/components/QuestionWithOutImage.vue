@@ -90,6 +90,7 @@
               </v-row>
             </div>
             <v-btn
+              v-if="status=='reader'"
               elevation="0"
               icon
               :style="{'width':'25px',
@@ -103,6 +104,7 @@
               <svg-icon type="mdi" :path="icons.heart"></svg-icon>
             </v-btn>
             <v-btn
+              v-if="status=='reader'"
               elevation="0"
               icon
               :style="{'width':'25px',
@@ -114,6 +116,19 @@
                 'margin-left':'10px'}">
               <svg-icon type="mdi" :path="icons.alert"></svg-icon>
             </v-btn>
+            <v-btn
+              v-if="status=='writer'"
+              elevation="0"
+              icon
+              :style="{'width':'25px',
+                'background-color':'rgb(0,0,0,0)',
+                'padding':'0px',
+                'height':'25px',
+                'margin-top':'0px',
+                'color':'#8a8a8a',
+                'margin-left':'450px'}">
+              <svg-icon type="mdi" :path="icons.delete"></svg-icon>
+            </v-btn>
           </div>
         </v-col>
       </v-row>
@@ -121,11 +136,15 @@
   </template>
   <script>
   import SvgIcon from '@jamescoyle/vue-icon';
-  import { mdiAlertCircleOutline,mdiClock,mdiEyeOutline,mdiHeart,mdiHeartOutline, mdiMessage, mdiStar } from '@mdi/js';
+  import { mdiAlertCircleOutline,mdiClock,mdiEyeOutline,mdiHeart,mdiHeartOutline, mdiMessage, mdiStar,mdiTrashCanOutline } from '@mdi/js';
 import { computed } from 'vue';
     export default {
       name: 'QuestionWithoutImage',
       props: {
+        status:{
+          type:String,
+          default:'reader',
+        },
         question: {
           type: Object,
           default: function () {
@@ -170,6 +189,7 @@ import { computed } from 'vue';
             starCount:mdiStar,
             replyCount:mdiMessage,
             heartCount:mdiHeart,
+            delete:mdiTrashCanOutline,
           },
           backgound_color,
           border_color,

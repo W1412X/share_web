@@ -1,6 +1,5 @@
 <template>
   <v-card
-    @click="this.select()"
     :style="{'width':'750px','margin':'3px','border-width':border_width,'border-color':border_color,'background-color':backgound_color}"
   >
     <div
@@ -90,6 +89,7 @@
             </v-row>
           </div>
           <v-btn
+            v-if="status=='reader'"
             elevation="0"
             icon
             :style="{'width':'25px',
@@ -103,6 +103,7 @@
             <svg-icon type="mdi" :path="icons.heart"></svg-icon>
           </v-btn>
           <v-btn
+            v-if="status=='reader'"
             elevation="0"
             icon
             :style="{'width':'25px',
@@ -114,6 +115,19 @@
               'margin-left':'10px'}">
             <svg-icon type="mdi" :path="icons.alert"></svg-icon>
           </v-btn>
+          <v-btn
+            v-if="status=='writer'"
+            elevation="0"
+            icon
+            :style="{'width':'25px',
+              'background-color':'rgb(0,0,0,0)',
+              'padding':'0px',
+              'height':'25px',
+              'margin-top':'0px',
+              'margin-left':'500px',
+              'color':'#8a8a8a'}">
+            <svg-icon type="mdi" :path="icons.delete"></svg-icon>
+          </v-btn>
         </div>
       </v-col>
     </v-row>
@@ -121,11 +135,15 @@
 </template>
 <script>
 import SvgIcon from '@jamescoyle/vue-icon';
-import { mdiAlertCircleOutline,mdiClock,mdiEyeOutline,mdiHeart,mdiHeartOutline, mdiMessage, mdiStar } from '@mdi/js';
+import { mdiAlertCircleOutline,mdiClock,mdiEyeOutline,mdiHeart,mdiHeartOutline, mdiTrashCanOutline,mdiMessage, mdiStar } from '@mdi/js';
 import { computed } from 'vue';
   export default {
     name: 'QuestionWithoutImage',
     props: {
+      status:{
+        type:String,
+        default:'writer',
+      },
       question: {
         type: Object,
         default: function () {
@@ -170,6 +188,7 @@ import { computed } from 'vue';
           starCount:mdiStar,
           replyCount:mdiMessage,
           heartCount:mdiHeart,
+          delete:mdiTrashCanOutline,
         },
         backgound_color,
         border_color,
@@ -177,9 +196,6 @@ import { computed } from 'vue';
       }
     },
     methods:{
-      select(){//点击按钮时选中次函数
-        this.$emit('select_question',this.question.id);
-      }
     },
     computed:{
     }

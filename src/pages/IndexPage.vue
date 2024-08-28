@@ -1,9 +1,10 @@
 <template>
-  <v-layout>
+  <v-layout style="background-color: #ffffff;display: flex;justify-content: center;">
     <div style="position: relative;height: 100%;">
       <v-app-bar color="#9c0c13" style="margin-bottom:5px">
-        <v-app-bar-title>资源分享</v-app-bar-title>
+        <v-app-bar-title>☯SDU</v-app-bar-title>
         <v-autocomplete v-model="inputValue" type="text" ref="searchInput" class="search_input" label="search"
+          style="margin-left: 100px;"
           :items="['计算机图形学', '数据结构', '机器学习', '自主机器人', '计算机网络', '操作系统']" variant="outlined"></v-autocomplete>
         <v-btn icon>
           <svg-icon type="mdi" :path="icon.magnify"></svg-icon>
@@ -38,10 +39,13 @@
             ></v-tab>
           </v-tabs>
           <div v-if="this.itemType=='article'" style="width: 770px;">
-            <article-list :articleList="this.items"></article-list>
+            <article-list :articleList="this.articleItems"></article-list>
           </div>
           <div v-if="this.itemType=='question'" style="">
-            <question-and-answers></question-and-answers>
+            <SingleQuestion v-for="(obj,index) in this.questionItems" :key="index" :question="obj" style="margin: 5px;"></SingleQuestion>
+          </div>
+          <div v-if="this.itemType=='course'" style="">
+            <CourseItem v-for="(obj,index) in this.courseItems" :key="index" :course="obj" style="margin: 5px;"></CourseItem>
           </div>
           <div>
           </div>
@@ -75,7 +79,8 @@ import {useRouter} from 'vue-router';
 import {computed} from 'vue'
 import { useStore } from 'vuex';
 import ArticleList from '@/components/ArticleList.vue';
-import QuestionAndAnswers from '@/components/QuestionAndAnswers.vue';
+import SingleQuestion from '@/components/SingleQuestion.vue';
+import CourseItem from '@/components/CourseItem.vue';
 export default {
   setup() {
     const router = useRouter();
@@ -101,7 +106,8 @@ export default {
   components: {
     SvgIcon,
     ArticleList,
-    QuestionAndAnswers,
+    SingleQuestion,
+    CourseItem,
   },
   data() {
     return {
@@ -112,9 +118,15 @@ export default {
         upload:mdiUpload,
       },
       searchContent: 'RECOMMAND',
-      items: [
+      articleItems: [
 
-      ],//存储展示的文章的信息数组 
+      ],//存储展示的文章的信息数组
+      courseItems:[
+
+      ], 
+      questionItems:[
+
+      ],
       itemType:'article',
     }
   },
@@ -127,7 +139,7 @@ export default {
       alert(iv)
     },
     load_items() {//在向下划时调用
-      const new_item = {
+      const article_item = {
         id: '00000001',
         title: '这是文章2标题',
         tags: ['计算机2', '测试2'],
@@ -139,8 +151,36 @@ export default {
         authorName: '测试用户',
         profileUrl:
           'https://tse1-mm.cn.bing.net/th/id/OIP-C.PO7d9IfnPUy2RO173QYt6wHaHV?w=216&h=213&c=7&r=0&o=5&pid=1.7',
+        likeCount:10000,
+        replyCount:10000,
+        scanCount:100000,
       }
-      this.items.push(new_item)
+      const course_item={
+        name: '程序思维设计与实践',
+        teacher: '蔡晓军',
+        type: '必修',
+        teachMethod: '线上教学',
+        examineMethod: '考试',
+        rate: {
+          rate: 3.5,
+        },
+        semester: '大二 上学期',
+      }
+      const question_item={
+        id: '00000000',
+                    title: '这是一个测试题?',
+                    content: '这是问题的描述',
+                    time: '2022-09-01 00:00',
+                    replyCount: '99999',
+                    likeCount: '99999',
+                    authorName: 'visitor',
+                    authorId: '00000000',
+                    scanCount: '99999',
+                    profileUrl: 'https://pic2.zhimg.com/v2-0dda71bc9ced142bf7bb2d6adbebe4f0_r.jpg?source=1940ef5c'
+      }
+      this.articleItems.push(article_item );
+      this.courseItems.push(course_item);
+      this.questionItems.push(question_item);
     },
     test(){
       for(var i=0;i<10;i++){

@@ -4,40 +4,43 @@
     >
       <v-tabs v-model="type" style="width: 750px;background-color: #8a8a8a;" bg-color="indigo-darken-2" fixed-tabs>
         <v-tab
-          :style="{background:'#bbbbbb','font-size':'18px','min-width':'375px'}"
+          :style="{background:'#bbbbbb','font-size':'18px','min-width':'250px'}"
           value="article"
           text="文章"
         ></v-tab>
         <v-tab
-          :style="{background:'#bbbbbb','font-size':'18px','min-width':'375px'}"
+          :style="{background:'#bbbbbb','font-size':'18px','min-width':'250px'}"
           value="question"
           text="问答"
         ></v-tab>
+        <v-tab
+          :style="{background:'#bbbbbb','font-size':'18px','min-width':'250px'}"
+          value="course"
+          text="课程"
+        ></v-tab>
       </v-tabs>
       <div v-if="type=='article'" style="width: 100%;display: flex;flex-direction: column;">
-        <v-btn variant="outlined" style="width: 94%;margin-left: 3%;margin-right: 3%;" @click="editArticle()">编辑新文章</v-btn>
-        <article-item v-for="(article,index) in articleList" :key="index" :article="article" :status="'writer'"></article-item>
+        <article-item v-for="(article,index) in articleList" :key="index" :article="article" :status="'reader'"></article-item>
       </div>
       <div  v-if="type=='question'" style="width: 100%;display: flex;flex-direction: column;">
-        <v-btn variant="outlined" style="width: 94%;margin-left: 3%;margin-right: 3%;" @click="editQuestion()">发布新问题</v-btn>
-        <question-with-out-image v-for="(question,index) in questionList" :key="index" :question="question" :status="'writer'"></question-with-out-image>
+        <question-with-out-image v-for="(question,index) in questionList" :key="index" :question="question" :status="'reader'"></question-with-out-image>
+      </div>
+      <div  v-if="type=='course'" style="width: 100%;display: flex;flex-direction: column;">
+        <course-item v-for="(course,index) in courseList" :key="index" :course="course"></course-item>
       </div>
     </v-card>
   </template>
   <script>
 import ArticleItem from './ArticleItem.vue';
+import CourseItem from './CourseItem.vue';
 import QuestionWithOutImage from './QuestionWithOutImage.vue';
-import { useRouter } from 'vue-router';
+
     export default {
-      setup() {
-        const router=useRouter();
-        return {
-          router,
-        }
-      },
+      setup() {},
       components:{
         ArticleItem,
         QuestionWithOutImage,
+        CourseItem,
       },
       data() {
         const articleList=[//个人创作文章列表
@@ -100,21 +103,38 @@ import { useRouter } from 'vue-router';
                     profileUrl: 'https://pic2.zhimg.com/v2-0dda71bc9ced142bf7bb2d6adbebe4f0_r.jpg?source=1940ef5c'
         }
         ];
+        const courseList=[
+            {
+                name: '程序思维设计与实践',
+                teacher: '蔡晓军',
+                type: '必修',
+                teachMethod: '线上教学',
+                examineMethod: '考试',
+                rate: {
+                    rate: 3.5,
+                },
+                semester: '大二 上学期',
+            },
+            {
+                name: '程序思维设计与实践',
+                teacher: '蔡晓军',
+                type: '必修',
+                teachMethod: '线上教学',
+                examineMethod: '考试',
+                rate: {
+                    rate: 3.5,
+                },
+                semester: '大二 上学期',
+            }
+        ]
         const type = 'article'
         return {
           type,
           questionList,
-          articleList
+          articleList,
+          courseList
         }
       },
-      methods:{
-        editArticle(){
-          this.router.push({name:'EditorPage'});
-        },
-        editQuestion(){
-          window.alert('在/test2中有对应的控件示例');
-        }
-      }
     }
   </script>
   

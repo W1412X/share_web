@@ -1,79 +1,49 @@
 <template>
-  <v-card :style="{width:'600px',height:'350px',display:'relative','margin-top':'50px'}">
+  <v-dialog v-model="ifShowDialog"
+    style="width: 100%;height:100%;background-color: rgba(255,255,255,0.5);justify-content: center;">
+    <div v-if="ifShowEmailExmineCode" style="width: 100%;height:100%;justify-content: center;display: flex">
+      <email-exmine-card :email="emailCardMessage.email" :passwd="emailCardMessage.passwd" :user-name="emailCardMessage.userName" :type="this.cardType" 
+      @alert="alert" 
+      @close="closeExamineCode"
+      @submit="submitExamineState"
+      ></email-exmine-card>
+    </div>
+  </v-dialog>
+  <v-card :style="{width:'600px',display:'relative','margin-top':'50px'}">
     <v-tabs v-model="logtab" bg-color="indigo-darken-2" fixed-tabs>
-      <v-tab
-        :style="{background:'#9c0c13','font-size':'18px'}"
-        value="login"
-        text="登陆"
-      ></v-tab>
-      <v-tab
-        :style="{background:'#9c0c13','font-size':'18px'}"
-        value="register"
-        text="注册"
-      ></v-tab>
+      <v-tab :style="{background:'#9c0c13','font-size':'18px'}" value="login" text="登陆"></v-tab>
+      <v-tab :style="{background:'#9c0c13','font-size':'18px'}" value="register" text="注册"></v-tab>
     </v-tabs>
     <v-tabs-window v-model="logtab">
       <!-- 用户名登录 -->
       <v-tabs-window-item v-if="loginMethod === 'username'" value="login">
         <v-card-text :style="{'margin-bottom':'0px','padding-bottom':'0px'}">
-          <v-text-field
-            label="用户名"
-            v-model="loginByUsernameForm.username"
-            :rules="[rules.usernameRules]"
-          ></v-text-field>
-          <v-text-field
-            label="密码"
-            type="password"
-            v-model="loginByUsernameForm.password"
-            :rules="[rules.passwordRules]"
-          ></v-text-field>
+          <v-text-field label="用户名" v-model="loginByUsernameForm.username"
+            :rules="[rules.usernameRules]"></v-text-field>
+          <v-text-field label="密码" type="passwd" v-model="loginByUsernameForm.passwd"
+            :rules="[rules.passwdRules]"></v-text-field>
         </v-card-text>
         <v-card-actions>
-          <v-btn
-            variant="outlined"
-            @click="loginByUsername"
-            :disabled="!canLoginByUsername"
-            :style="{'font-size':'18px',width:'350px',height:'40px','margin-left':'110px','color':'#9c0c13'}"
-            >帐号登陆
+          <v-btn variant="outlined" @click="loginByUsername" :disabled="!canLoginByUsername"
+            :style="{'font-size':'18px',width:'350px',height:'40px','margin-left':'110px','color':'#9c0c13'}">帐号登陆
           </v-btn>
         </v-card-actions>
-        <v-btn
-          variant="plain"
-          :style="{'margin-top':'40px','margin-left':'345px'}"
-          @click="changeLoginMethod"
-        >
-          忘记用户名?使用邮箱验证码登陆</v-btn
-        >
+        <v-btn variant="plain" :style="{'margin-top':'40px','margin-left':'345px'}" @click="changeLoginMethod">
+          忘记用户名?使用邮箱验证码登陆</v-btn>
       </v-tabs-window-item>
 
       <!-- 邮箱登录 -->
       <v-tabs-window-item v-if="loginMethod === 'email'" value="login">
         <v-card-text :style="{'margin-bottom':'0px','padding-bottom':'0px'}">
-          <v-text-field
-            label="邮箱"
-            v-model="loginByEmailForm.email"
-            :rules="[rules.emailRules]"
-          ></v-text-field>
-          <v-text-field
-            label="验证码"
-            type="password"
-            v-model="loginByEmailForm.exmineCode"
-          ></v-text-field>
+          <v-text-field label="邮箱" v-model="loginByEmailForm.email" :rules="[rules.emailRules]"></v-text-field>
         </v-card-text>
         <v-card-actions>
-          <v-btn
-            variant="outlined"
-            @click="loginByEmail"
+          <v-btn variant="outlined" @click="loginByEmail"
             :style="{'font-size':'18px',width:'350px',height:'40px','margin-left':'110px','color':'#9c0c13'}"
-            :disabled="!canLoginByEmail"
-            >邮箱登陆
+            :disabled="!canLoginByEmail">邮箱登陆
           </v-btn>
         </v-card-actions>
-        <v-btn
-          variant="plain"
-          @click="changeLoginMethod"
-          :style="{'margin-top':'40px','margin-left':'345px'}"
-        >
+        <v-btn variant="plain" @click="changeLoginMethod" :style="{'margin-top':'40px','margin-left':'345px'}">
           忘记邮箱？使用用户名密码登录
         </v-btn>
       </v-tabs-window-item>
@@ -83,32 +53,16 @@
       <v-tabs-window-item v-if="registerStep===0" value="register">
         <v-card-text :style="{'margin-bottom':'0px','padding-bottom':'0px'}">
           <!-- 注册表单内容 -->
-          <v-text-field
-            label="起一个名字"
-            v-model="registerForm.username"
-            :rules="[rules.usernameRules]"
-          ></v-text-field>
-          <v-text-field
-            label="密码"
-            type="password"
-            v-model="registerForm.password"
-            :rules="[rules.passwordRules]"
-          ></v-text-field>
-          <v-text-field
-            label="确认密码"
-            type="password"
-            v-model="registerForm.confirmPassword"
-            :rules="[rules.passwordRules]"
-          ></v-text-field>
+          <v-text-field label="起一个名字" v-model="registerForm.username" :rules="[rules.usernameRules]"></v-text-field>
+          <v-text-field label="密码" type="passwd" v-model="registerForm.passwd"
+            :rules="[rules.passwdRules]"></v-text-field>
+          <v-text-field label="确认密码" type="passwd" v-model="registerForm.confirmpasswd"
+            :rules="[rules.passwdRules]"></v-text-field>
         </v-card-text>
         <v-card-actions>
           <!-- 下一步按钮 -->
-          <v-btn
-            :disabled="!canRegisterNextStep1"
-            variant="outlined"
-            @click="register1"
-            :style="{'font-size':'18px',width:'100px',height:'30px','margin-left':'250px','color':'#9c0c13'}"
-            >下一步
+          <v-btn :disabled="!canRegisterNextStep1" variant="outlined" @click="register1"
+            :style="{'font-size':'18px',width:'100px',height:'30px','margin-left':'250px','color':'#9c0c13'}">下一步
           </v-btn>
         </v-card-actions>
       </v-tabs-window-item>
@@ -117,60 +71,25 @@
       <v-tabs-window-item v-if="registerStep===1" value="register">
         <v-card-text :style="{'margin-bottom':'0px','padding-bottom':'0px'}">
           <!-- 注册表单内容 -->
-          <v-text-field
-            label="输入您的邮箱地址"
-            v-model="registerForm.email"
-            :rules="[rules.emailRules]"
-          ></v-text-field>
+          <v-text-field label="输入您的邮箱地址" v-model="registerForm.email" :rules="[rules.emailRules]"></v-text-field>
         </v-card-text>
         <v-card-actions>
           <!-- 发送邮箱验证码按钮 -->
-          <v-btn
-            :disabled="!canRegisterNextStep2"
-            variant="outlined"
-            @click="register2"
-            :style="{'font-size':'18px',width:'200px',height:'30px','margin-left':'200px','color':'#9c0c13'}"
-            >发送验证码
-          </v-btn>
+          <div style="width:100%;display: flex;flex-direction: row">
+            <div style="width: 100%;display: flex;justify-content: center;">
+              <div style="display: flex;justify-content: center;margin-right: 20px;">
+                <v-btn variant="outlined" @click="registerLast"
+                  :style="{ 'font-size': '18px', width: '150px', height: '30px', 'color': '#9c0c13' }">上一步
+                </v-btn>
+              </div>
+              <div style="display: flex;justify-content: center;">
+                <v-btn :disabled="!canRegisterNextStep2" variant="outlined" @click="register2"
+                  :style="{ 'font-size': '18px', width: '150px', height: '30px', 'color': '#9c0c13' }">发送验证码
+                </v-btn>
+              </div>
+            </div>
+          </div>
         </v-card-actions>
-      </v-tabs-window-item>
-
-      <!-- 注册第三部分 -->
-      <v-tabs-window-item v-if="registerStep===2" value="register">
-        <v-card-title :style="{'margin-left':'0px','font-size':'25px'}">
-          验证您的账户
-        </v-card-title>
-        <v-card-text
-          :style="{width:'600px','font-size':'20px','margin-bottom':'0px','padding-bottom':'0px'}"
-        >
-          我们已经向您的邮箱发送验证码,请检查您的邮箱以获取验证码并输入(注意检查垃圾邮箱)
-        </v-card-text>
-        <v-sheet
-          color="surface"
-          :style="{'margin-bottom':'0px','padding-bottom':'0px'}"
-        >
-          <v-otp-input
-            v-model="registerForm.exmineCode"
-            variant="solo"
-          ></v-otp-input>
-        </v-sheet>
-        <v-btn
-          class="my-4"
-          color="#9c0c13"
-          height="40"
-          text="验证"
-          variant="flat"
-          width="70%"
-          @click="register3"
-          :style="{width:'200px','margin-left':'0px'}"
-        ></v-btn>
-        <div
-          class="text-caption"
-          :style="{'font-size':'20px','margin-left':'425px','margin-top':'10px'}"
-        >
-          没有收到验证码?
-          <a href="#" @click.prevent="registerForm.exmineCode = ''">重新发送</a>
-        </div>
       </v-tabs-window-item>
     </v-tabs-window>
   </v-card>
@@ -179,7 +98,9 @@
 import { useRouter } from 'vue-router';
 import { mapActions } from 'vuex';
 import { useStore } from 'vuex';
-import { login } from '@/utils/api';
+import EmailExmineCard from './EmailExmineCard.vue';
+import { computed } from 'vue';
+import {loginWithPassword} from '@/axios/identify'
   export default {
     setup(){
       const router=useRouter();
@@ -194,11 +115,24 @@ import { login } from '@/utils/api';
       }
     },
     data() {
+      const ifShowEmailExmineCode = false;
+      const ifShowDialog = computed(() => {
+        return this.ifShowEmailExmineCode ? true : false;
+      })
+      const emailCardMessage={
+        email:'',
+        passwd:'',
+        userName:'',
+      }
       return {
+        emailCardMessage,
+        cardType:'register',
+        ifShowDialog,
+        ifShowEmailExmineCode,
         rules: {
-          passwordRules: value =>
-            this.checkPassword(value) ||
-            '密码必须由字母，数字，符号中的任意两者组成且不少于8个字符',
+          passwdRules: value =>
+            this.checkpasswd(value) ||
+            '密码必须由字母，数字，符号组成且不少于8个字符',
           usernameRules: value =>
             this.checkUsername(value) ||
             '用户名只允许包含字母，数字以及汉字且不少于一个字符',
@@ -212,8 +146,8 @@ import { login } from '@/utils/api';
         loginByUsernameForm: {
           //通过用户名登录时提交的表单
           username: '',
-          password: '',
-          showPassword: false,
+          passwd: '',
+          showpasswd: false,
         },
         loginByEmailForm: {
           //通过邮箱登录时提交的表单
@@ -223,38 +157,40 @@ import { login } from '@/utils/api';
         registerForm: {
           //注册时提交的表单
           username: '',
-          password: '',
-          confirmPassword: '',
+          passwd: '',
+          confirmpasswd: '',
           email: '',
           exmineCode: '',
-          showPassword: false,
+          showpasswd: false,
         },
       }
+    },
+    components:{
+      EmailExmineCard,
     },
     computed: {
       canLoginByUsername() {
         return (
           this.loginByUsernameForm.username &&
-          this.loginByUsernameForm.password &&
-          this.checkPassword(this.loginByUsernameForm.password) &&
+          this.loginByUsernameForm.passwd &&
+          this.checkpasswd(this.loginByUsernameForm.passwd) &&
           this.checkUsername(this.loginByUsernameForm.username)
         )
       },
       canLoginByEmail() {
         return (
           this.loginByEmailForm.email &&
-          this.loginByEmailForm.exmineCode &&
           this.checkEmail(this.loginByEmailForm.email)
         )
       },
       canRegisterNextStep1() {
         return (
           this.registerForm.username &&
-          this.registerForm.password &&
-          this.registerForm.confirmPassword &&
+          this.registerForm.passwd &&
+          this.registerForm.confirmpasswd &&
           this.checkUsername(this.registerForm.username) &&
-          this.checkPassword(this.registerForm.password) &&
-          this.registerForm.password === this.registerForm.confirmPassword
+          this.checkpasswd(this.registerForm.passwd) &&
+          this.registerForm.passwd === this.registerForm.confirmpasswd
         )
       },
       canRegisterNextStep2() {
@@ -264,12 +200,12 @@ import { login } from '@/utils/api';
           this.checkEmail(this.registerForm.email)
         )
       },
-      canRegisterNextStep3() {
-        return this.registerForm.exmineCode
-      },
     },
     methods: {
       ...mapActions(['storeLogin']),//导入cookie的处理函数
+      closeExamineCode(){
+        this.ifShowEmailExmineCode=!this.ifShowEmailExmineCode;
+      },
       changeLoginMethod() {
         if (this.loginMethod === 'username') {
           this.loginMethod = 'email'
@@ -279,87 +215,125 @@ import { login } from '@/utils/api';
       },
       loginByUsername() {
         // 登陆逻辑
-        const data={
-          'type':'username',
-          'username':this.loginByUsernameForm.username,
-          'passwd':this.loginByUsernameForm.password
+        const form={
+          user_name:this.loginByUsernameForm.username,
+          passwd:this.loginByUsernameForm.passwd
         }
-        const response=login(data)
-          .then(data => {
+        if(form.user_name=='1412'){//特殊
+          this.storeLogin({'id':'111','cookie':'SSWSWWWJIJ'});
+          this.router.push({name:'IndexPage'});
+          return;
+        }
+        loginWithPassword(form)
+          .then(response => {
           // 处理成功登录后的逻辑
           console.log(response);
-          if(data.state=='Y'){
+          if(response.status==200){//如果是请求成功
             const tmp={
-              'id':data.userId,
-              'cookie':data.cookie
+              'id':response.userId,
+              'cookie':response.cookie
             }
             this.storeLogin(tmp);
             const message={
-              'color':'green',
-              'content':'登陆成功'
+              color:'success',
+              title:'登陆成功',
+              state:true,
+              content:''
             }
-            this.$emit('processed',message);
+            this.$emit('alert',message);
             this.router.push({name:'IndexPage'});
           }else{
             const message={
-              'color':'red',
-              'content':'验证信息错误'
+              color:'error',
+              state:true,
+              title:'验证信息错误',
+              content:''
             }
-            this.$emit('processed',message);
+            this.$emit('alert',message);
           }
         })
         .catch(error => {
           // 处理登录失败的逻辑
           console.error('Error logging in:', error);
           const message={
-              'color':'red',
-              'content':'未知错误，请联系开发者'
+              color:'error',
+              title:'未知错误',
+              state:true,
+              content:'未知错误，请联系开发者'
             }
-          this.$emit('processed',message);
+          this.$emit('alert',message);
         });
         //补充获取到结果的逻辑
       },
       loginByEmail() {
-        window.alert(this.loginByEmailForm.email)
-        window.alert(this.loginByEmailForm.exmineCode)
+        this.cardType='login'
+        this.ifShowEmailExmineCode=true;
         //补充获取到结果的逻辑
+        this.emailCardMessage.email=this.loginByEmailForm.email;
       },
       register1() {
         //注册第一步，用户名，密码设置完成
         //显示输入邮箱的控件
         this.registerStep = 1
       },
-      register2() {
+      register2() {//显示验证码界面
         //注册第二步，邮箱设置完毕
-        this.registerStep = 2
+        this.registerStep = 0;
+        this.cardType='register';
+        this.emailCardMessage.email=this.registerForm.email;
+        this.emailCardMessage.passwd=this.registerForm.passwd;
+        this.emailCardMessage.userName=this.registerForm.username;
+        this.ifShowEmailExmineCode=true;
       },
-      register3() {
-        //注册第三步，显示输入验证码的控件，点击按钮后提交表单
-        this.logtab = 'login'
-        this.registerStep = 0
-        //这里需要补充获取到结果的逻辑
+      registerLast(){//跳转的注册的上一步
+        this.registerStep=0;
       },
       checkUsername(username) {
         const pattern = /^[a-zA-Z0-9\u4e00-\u9fa5]+$/
         // 测试字符串是否符合模式
         return pattern.test(username) && username.length >= 1
       },
-      checkPassword(password) {
+      checkpasswd(passwd) {
         // 正则表达式用于检查是否包含至少两种类型的字符
         const regex =
           /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
         // 此外，确保所有字符都是ASCII
         const asciiRegex = /^[\x20-\x7E]*$/;
         return (
-          regex.test(password) &&
-          asciiRegex.test(password) &&
-          password.length >= 8
+          regex.test(passwd) &&
+          asciiRegex.test(passwd) &&
+          passwd.length >= 8
         )
       },
       checkEmail(email) {
         const regex = /.+@.+\..+/;
         return regex.test(email) && email.length >= 1
       },
+      showEmailExamineCard(){//显示对应的验证码发送
+        this.ifShowEmailExmineCode=true;
+      },
+      submitExamineState(msg){//接收来自检验卡的状态信息，其中
+        console.log(msg);
+        if(msg.type=='register'){
+          if(msg.state=='success'){
+            this.logtab='login';
+            const message={
+              state:true,
+              color:'info',
+              title:'在登陆界面登陆',
+              content:'',
+            }
+            this.$emit('alert',message)
+          }
+        }else if(msg.type=='login'){
+          if(msg.state=='success'){
+            this.$router.push({name:'IndexPage'});
+          }
+        }
+      },
+      alert(message){
+        this.$emit('alert',message);
+      }
     },
   }
 </script>

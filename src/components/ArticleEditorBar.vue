@@ -176,11 +176,41 @@ export default {
   },
   methods: {
     confirmAddTag() {
+      if(this.inputTag==''){//标签为空，则直接返回
+        const msg={
+          state:true,
+          title:'标签不可为空',
+          content:'',
+          color:'warning'
+        }
+        this.$emit('alert',msg);
+        return;
+      }
+      if(this.tags.length>5){//标签的数量最多为五个
+        const msg={
+          state:true,
+          title:'最多可添加 5 个标签',
+          content:'',
+          color:'warning'
+        }
+        this.$emit('alert',msg);
+        return;
+      }
       this.tags.push(this.inputTag);
       this.inputTag = '';
       this.ifShowTagInput = false;
     },
     deleteLastTag() {
+      if(this.tags.length==0){
+        const msg={
+          state:true,
+          title:'无法继续删除标签',
+          content:'',
+          color:'warning'
+        }
+        this.$emit('alert',msg);
+        return;
+      }
       this.tags.pop();
     },
     alert(){
