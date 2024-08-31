@@ -99,8 +99,9 @@ import { useRouter } from 'vue-router';
 import { mapActions } from 'vuex';
 import { useStore } from 'vuex';
 import EmailExmineCard from './EmailExmineCard.vue';
-import { computed } from 'vue';
+import { computed,ref } from 'vue';
 import {loginWithPassword} from '@/axios/identify'
+import { setUser } from '@/utils/storage';
   export default {
     setup(){
       const router=useRouter();
@@ -108,17 +109,24 @@ import {loginWithPassword} from '@/axios/identify'
         router.push({name:'IndexPage'});
       }
       const store=useStore();
+      //控制对话框显示状态
+      const ifShowEmailExmineCode=ref(false);
+      const ifShowDialog=computed(()=>{
+        return ifShowEmailExmineCode.value;
+      })
+      const setEmailExmineCodeCardState=(state)=>{
+        ifShowEmailExmineCode.value=state;
+      }
       return{
         store,
         router,
         navigateToIndex,
+        ifShowDialog,
+        ifShowEmailExmineCode,
+        setEmailExmineCodeCardState,
       }
     },
     data() {
-      const ifShowEmailExmineCode = false;
-      const ifShowDialog = computed(() => {
-        return this.ifShowEmailExmineCode ? true : false;
-      })
       const emailCardMessage={
         email:'',
         passwd:'',
@@ -127,8 +135,6 @@ import {loginWithPassword} from '@/axios/identify'
       return {
         emailCardMessage,
         cardType:'register',
-        ifShowDialog,
-        ifShowEmailExmineCode,
         rules: {
           passwdRules: value =>
             this.checkpasswd(value) ||
@@ -204,7 +210,7 @@ import {loginWithPassword} from '@/axios/identify'
     methods: {
       ...mapActions(['storeLogin']),//导入cookie的处理函数
       closeExamineCode(){
-        this.ifShowEmailExmineCode=!this.ifShowEmailExmineCode;
+        this.setEmailExmineCodeCardState(false);
       },
       changeLoginMethod() {
         if (this.loginMethod === 'username') {
@@ -220,7 +226,12 @@ import {loginWithPassword} from '@/axios/identify'
           passwd:this.loginByUsernameForm.passwd
         }
         if(form.user_name=='test'){//特殊
-          this.storeLogin({'id':'111','cookie':'SSWSWWWJIJ'});
+          setUser({
+            id:'00000000',
+            userName:'test',
+            email:'test@test.com'
+          });
+          window.alert('临时游客登陆');
           this.router.push({name:'IndexPage'});
           return;
         }
@@ -229,11 +240,11 @@ import {loginWithPassword} from '@/axios/identify'
           // 处理成功登录后的逻辑
           console.log(response);
           if(response.status==200){//如果是请求成功
-            const tmp={
-              'id':response.userId,
-              'cookie':response.cookie
-            }
-            this.storeLogin(tmp);
+            setUser({
+              id:response.id,
+              userName:response.user_name
+            })
+            response.id
             const message={
               color:'success',
               title:'登陆成功',
@@ -267,7 +278,7 @@ import {loginWithPassword} from '@/axios/identify'
       },
       loginByEmail() {
         this.cardType='login'
-        this.ifShowEmailExmineCode=true;
+        this.setEmailExmineCodeCardState(true);
         //补充获取到结果的逻辑
         this.emailCardMessage.email=this.loginByEmailForm.email;
       },
@@ -283,7 +294,7 @@ import {loginWithPassword} from '@/axios/identify'
         this.emailCardMessage.email=this.registerForm.email;
         this.emailCardMessage.passwd=this.registerForm.passwd;
         this.emailCardMessage.userName=this.registerForm.username;
-        this.ifShowEmailExmineCode=true;
+        this.setEmailExmineCodeCardState(true);
       },
       registerLast(){//跳转的注册的上一步
         this.registerStep=0;
@@ -310,7 +321,7 @@ import {loginWithPassword} from '@/axios/identify'
         return regex.test(email) && email.length >= 1
       },
       showEmailExamineCard(){//显示对应的验证码发送
-        this.ifShowEmailExmineCode=true;
+        this.setEmailExmineCodeCardState(true);
       },
       submitExamineState(msg){//接收来自检验卡的状态信息，其中
         console.log(msg);

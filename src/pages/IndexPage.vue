@@ -1,4 +1,10 @@
 <template>
+  <v-dialog v-model="ifShowDialog"
+    style="display: flex;width: 100%;height:100%;background-color: rgba(255,255,255,0.5);justify-content: center;">
+    <div style="display: flex;justify-content: center;">
+      <QuestionEditor v-if="ifShowQuestionEditor" @close="close"></QuestionEditor>
+    </div>
+  </v-dialog>
   <v-layout style="background-color: #ffffff;display: flex;justify-content: center;">
     <div style="position: relative;height: 100%;">
       <v-app-bar color="#9c0c13" style="margin-bottom:5px">
@@ -10,11 +16,13 @@
           <svg-icon type="mdi" :path="icon.magnify"></svg-icon>
         </v-btn>
         <v-spacer></v-spacer>
-        <v-btn icon>
-          <svg-icon type="mdi" :path="icon.upload"></svg-icon>
+        <v-btn @click="writeQuestion">
+          <svg-icon type="mdi" :path="icon.question"></svg-icon>
+          <v-tooltip  style="margin-left: 2px;margin-bottom: 8px;" activator="parent" location="top">编辑问题</v-tooltip>
         </v-btn>
-        <v-btn icon>
-          <svg-icon type="mdi" :path="icon.history"></svg-icon>
+        <v-btn @click="writeArticle">
+          <svg-icon type="mdi" :path="icon.article"></svg-icon>
+          <v-tooltip  style="margin-left: 2px;margin-bottom: 8px;" activator="parent" location="top">写文章</v-tooltip>
         </v-btn>
         <v-btn icon @click="navigateToSelf">
           <svg-icon type="mdi" :path="icon.account"></svg-icon>
@@ -74,13 +82,15 @@
 
 <script>
 import SvgIcon from '@jamescoyle/vue-icon'
-import { mdiMagnify,mdiHistory,mdiUpload,mdiAccountOutline } from '@mdi/js'
+import QuestionEditor from '@/components/QuestionEditor.vue';
+import { mdiMagnify,mdiHistory,mdiUpload,mdiAccountOutline, mdiCommentQuestionOutline, mdiFileEditOutline } from '@mdi/js'
 import {useRouter} from 'vue-router';
-import {computed} from 'vue'
+import {computed,ref} from 'vue'
 import { useStore } from 'vuex';
 import ArticleList from '@/components/ArticleList.vue';
 import SingleQuestion from '@/components/SingleQuestion.vue';
 import CourseItem from '@/components/CourseItem.vue';
+import { getUser } from '@/utils/storage';
 export default {
   setup() {
     const router = useRouter();
@@ -88,19 +98,31 @@ export default {
       router.push({ name: 'IndexPage' }); // 使用路由名称跳转
     };
     const navigateToSelf = () => {
-      router.push({name: 'SelfPage'});
+      router.push({name: 'SelfPage',params:{id:getUser('id')}});
     };
     const navigateToLogin =() =>{
       router.push({name:'LoginPage'})
     }
     const store=useStore();
     const user= computed(() => store.getters.getUser);
+
+    //
+    const ifShowQuestionEditor=ref(false);
+    const ifShowDialog=computed(()=>{
+      return ifShowQuestionEditor.value;
+    })
+    const setQuestionEditorState=(state)=>{
+      ifShowQuestionEditor.value=state;
+    }
     return {
       user,
       router,
       navigateToIndex,
       navigateToSelf,
       navigateToLogin,
+      ifShowDialog,
+      ifShowQuestionEditor,
+      setQuestionEditorState,
     };
   },
   components: {
@@ -108,6 +130,7 @@ export default {
     ArticleList,
     SingleQuestion,
     CourseItem,
+    QuestionEditor,
   },
   data() {
     return {
@@ -116,6 +139,8 @@ export default {
         history:mdiHistory,
         account:mdiAccountOutline,
         upload:mdiUpload,
+        question:mdiCommentQuestionOutline,
+        article:mdiFileEditOutline
       },
       searchContent: 'RECOMMAND',
       articleItems: [
@@ -186,6 +211,15 @@ export default {
       for(var i=0;i<10;i++){
         this.load_items();      
       }
+    },
+    writeArticle(){
+      this.router.push({name:'EditorPage',params:{id:"00000000"}});
+    },
+    writeQuestion(){
+      this.setQuestionEditorState(true);
+    },
+    close(){
+      this.setQuestionEditorState(false);
     }
   },
   mounted(){

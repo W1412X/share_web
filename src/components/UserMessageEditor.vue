@@ -1,4 +1,14 @@
 <template>
+  <v-dialog v-model="ifShowDialog"
+    style="width: 100%;height:100%;background-color: rgba(255,255,255,0.5);justify-content: center;">
+    <div v-if="ifShowEmailExmineCode" style="width: 100%;height:100%;justify-content: center;display: flex">
+      <email-exmine-card :email="emailCardMessage.email" :new-passwd="this.editedMessage.passwd" :user-name="this.editedMessage.userName" :type="this.cardType" 
+      @alert="alert" 
+      @close="closeExamineCode"
+      @submit="submitExamineState"
+      ></email-exmine-card>
+    </div>
+  </v-dialog>
   <v-card style="padding: 10px; width: 700px">
     <div style="display: flex; flex-direction: row">
       <div
@@ -235,8 +245,9 @@
   </v-card>
 </template>
 <script>
-  import { computed } from 'vue'
-
+import EmailExmineCard from './EmailExmineCard.vue';
+import { deleteUser, getUser } from '@/utils/storage';
+  import { computed, ref } from 'vue';
   export default {
     props: {
       userMessage: {
@@ -253,6 +264,23 @@
         },
       },
     },
+    components:{
+      EmailExmineCard,
+    },
+    setup(){
+      const ifShowEmailExmineCode=ref(false);
+      const ifShowDialog=computed(()=>{
+        return ifShowEmailExmineCode.value;
+      })
+      const setEmailExmineCodeCardState=(state)=>{
+        ifShowEmailExmineCode.value=state;
+      }
+      return {
+        ifShowDialog,
+        ifShowEmailExmineCode,
+        setEmailExmineCodeCardState,
+      }
+    },
     data() {
       const buttonText = {
         email: computed(() => {
@@ -262,14 +290,19 @@
           return this.ifAbleEditPasswd ? '确认修改' : '修改密码'
         }),
         userName: computed(() => {
-          return this.ifAbleEditUserName ? '确认修改' : '修改用户民'
+          return this.ifAbleEditUserName ? '确认修改' : '修改用户名'
         }),
         introduce: computed(() => {
           return this.ifAbleEditIntroduce ? '确认修改' : '修改简介'
         }),
       }
+      //显示的邮箱验证码的卡片
+      const cardType='reset_passwd';
+      const emailCardMessage={
+        email:getUser('email')
+      }
+      //存储编辑的信息，默认传入的属性
       const editedMessage = {
-        //存储编辑的信息，默认传入的属性
         userName: this.userMessage.userName,
         passwd: this.userMessage.passwd,
         email: this.userMessage.email,
@@ -292,6 +325,7 @@
         return this.ifAbleEditIntroduce == true ? '#9c0c13' : '#8a8a8a'
       })
       return {
+        cardType,
         buttonText,
         ifAbleEditEmail,
         ifAbleEditPasswd,
@@ -302,6 +336,7 @@
         editedMessage,
         introduceButtonColor,
         ifAbleEditIntroduce,
+        emailCardMessage
       }
     },
     methods: {
@@ -328,9 +363,9 @@
         }
       },
       editPasswd() {
-        if (this.ifAbleEditPasswd) {
+        if (this.ifAbleEditPasswd) {//修改ing密码，显示邮箱验证谭传
           console.log(this.editedMessage.passwd)
-          this.ifAbleEditPasswd = false
+          this.setEmailExmineCodeCardState(true)//显示对应的邮箱验证码
         } else {
           this.ifAbleEditPasswd = true
         }
@@ -341,6 +376,30 @@
           this.ifAbleEditIntroduce = false
         } else {
           this.ifAbleEditIntroduce = true
+        }
+      },
+      
+      closeExamineCode(){//关闭邮箱验证码的窗口
+        this.ifShowEmailExmineCode=false;
+      },
+      submitExamineState(msg){//验证码的验证状态  //验证成功
+        if(msg.type=='reset_passwd'&&msg.state=='success'){//如果对应的状态为成功
+          this.ifAbleEditPasswd=false;
+          this.alert({
+            state:true,
+            color:'success',
+            title:'修改成功',
+            content:'现在您可以使用新密码登陆'
+          })
+          this.ifAbleEditPasswd = false;//在这里更新
+        }else{
+          this.alert({
+            state:true,
+            color:'error',
+            title:'修改失败',
+            content:'验证身份时出现错误，请重新尝试'
+          })
+          this.cancelPasswd();//修改失败，模拟恢复原状
         }
       },
       cancelUserName() {
@@ -360,8 +419,11 @@
         this.ifAbleEditIntroduce = false
       },
       logout() {
-        window.alert('推出登陆')
+        deleteUser();
       },
+      alert(msg){
+        this.$emit('alert',msg);
+      }
     },
   }
 </script>

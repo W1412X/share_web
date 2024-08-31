@@ -66,3 +66,19 @@ export const register = (data) => {//注册函数
       });
   };
   
+  export const resetPasswd=(data)=>{//重置密码
+    return axiosInstance.post(`/reset_password?send_code=1&email=email`,data)
+    .then(response=>response.data)
+    .catch(error=>{
+      console.error('Error reset passwd:',error);
+      throw error;
+    })
+  }
+export const sendResetPasswdCode =(email)=>{//发送重置密码的验证码
+  return axiosInstance.get(`/index/reset_passwd?send_code=1&email=${email}`)
+  .then(response => response.data)
+  .catch(error => {
+    console.error('Error sending reset code:', error);
+    throw error;
+  });
+}

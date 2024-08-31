@@ -40,7 +40,7 @@
     </v-card>
 </template>
 <script>
-import {register,loginWithEmail,sendLoginCode,sendRegisterCode} from '@/axios/identify.js'
+import {register,loginWithEmail,sendLoginCode,resetPasswd,sendResetPasswdCode,sendRegisterCode, sendDeleteCode, deleteAccount} from '@/axios/identify.js'
 export default {
     props: {
         email: {
@@ -60,6 +60,10 @@ export default {
             default:function(){
                 return ''
             }
+        },
+        newPasswd:{
+            type:String,
+            default:''
         },
         type:{//这个类型标注其对应的获取验证码的类型，有register/login/delete/reset_passwd
             type:String,
@@ -203,86 +207,93 @@ export default {
                     this.$emit('alert',this.alertSet);
                 })
             }else if(this.type=='delete'){//如果类型是注销，则提交邮箱以及验证码
+                const form={
+                    user_name:this.userName,
+                    email:this.email
+                }
+                deleteAccount(form)
+                .then(response=>{
+                    console.log(response)
+                })
+                .catch(error=>{
+                    console.error('delete account',error);
+                })
                 return
             }else if(this.type=='reset_passwd'){//如果类型是重置密码
+                const form={
+                    user_name:this.userName,
+                    email:this.email,
+                    new_passwd:this.newPasswd,
+                    email_code:this.code
+                }
+                resetPasswd(form)
+                .then(response=>{
+                    console.log(response);
+                    //代完善
+                })
+                .catch(error=>{
+                    console.error('reset passwd',error);
+                    //带完善
+                })
                 return
             }else{
                 return
             }
         },
-        resend() {
+        resend() {//重新发送验证码
             console.log('resend');
             if(this.type=='register'){
                 sendRegisterCode(this.email)
-                .then(response=>{
-                    console.log(response)
-                    if(response==200){
-                        this.alertSet.state = true;
-                        this.alertSet.color = 'success';
-                        this.alertSet.title = '发送成功';
-                        this.alertSet.content = '已成功发送验证码至邮箱'+this.emial+'，注意查收邮件';
-                        this.$emit('alert', this.alertSet); 
-                    }else if(response==429){
-                        this.alertSet.state = true;
-                        this.alertSet.color = 'error';
-                        this.alertSet.title = '请求过多';
-                        this.alertSet.content = '验证码请求过多，例如短时间内多次请求验证码';
-                        this.$emit('alert', this.alertSet); 
-                    }else{
-                        this.alertSet.state=true;
-                        this.alertSet.color='error';
-                        this.alertSet.title='未知错误';
-                        this.alertSet.content='接收到了未知的状态，请联系开发者报告此错误';
-                        this.$emit('alert',this.alertSet);  
-                    }
-                })
-                .catch(error=>{
-                    console.log(error);
-                    this.alertSet.state = true;
-                    this.alertSet.color = 'error';
-                    this.alertSet.title = '未知错误';
-                    this.alertSet.content = '程序出现了未知错误，请联系开发者报告此错误';
-                    this.$emit('alert',this.alertSet);
-                })
+                .then(response=>{this.handleSendCodeResponse(response)})
+                .catch(error=>{this.handleError(error)});
             }else if(this.type=='login'){
                 sendLoginCode(this.email)
-                .then(response=>{
-                    console.log(response)
-                    if(response==200){
-                        this.alertSet.state = true;
-                        this.alertSet.color = 'success';
-                        this.alertSet.title = '发送成功';
-                        this.alertSet.content = '已成功发送验证码至邮箱'+this.emial+'，注意查收邮件';
-                        this.$emit('alert', this.alertSet); 
-                    }else if(response==429){
-                        this.alertSet.state = true;
-                        this.alertSet.color = 'error';
-                        this.alertSet.title = '请求过多';
-                        this.alertSet.content = '验证码请求过多，例如短时间内多次请求验证码';
-                        this.$emit('alert', this.alertSet); 
-                    }else{
-                        this.alertSet.state=true;
-                        this.alertSet.color='error';
-                        this.alertSet.title='未知错误';
-                        this.alertSet.content='接收到了未知的状态，请联系开发者报告此错误';
-                        this.$emit('alert',this.alertSet);  
-                    }
-                })
-                .catch(error=>{
-                    console.log(error);
-                    this.alertSet.state = true;
-                    this.alertSet.color = 'error';
-                    this.alertSet.title = '未知错误';
-                    this.alertSet.content = '程序出现了未知错误，请联系开发者报告此错误';
-                    this.$emit('alert',this.alertSet);
-                })
+                .then(response=>{this.handleSendCodeResponse(response)})
+                .catch(error=>{this.handleError(error)});
+            }else if(this.type=='delete'){
+                sendDeleteCode(this.email)
+                .then(response=>{this.handleSendCodeResponse(response)})
+                .catch(error=>{this.handleError(error)});
+            }else if(this.type=='reset_passwd'){
+                sendResetPasswdCode(this.email)
+                .then(response=>{this.handleSendCodeResponse(response)})
+                .catch(error=>{this.handleError(error)});
             }
-            //重新发送验证码
         },
         cancelExamine() {
             //关闭这个窗口
             this.$emit('close');
-        }
+        },
+        handleSendCodeResponse(response){
+            console.log(response)
+            if (response == 200) {
+                this.alertSet.state = true;
+                this.alertSet.color = 'success';
+                this.alertSet.title = '发送成功';
+                this.alertSet.content = '已成功发送验证码至邮箱' + this.emial + '，注意查收邮件';
+                this.$emit('alert', this.alertSet);
+            } else if (response == 429) {
+                this.alertSet.state = true;
+                this.alertSet.color = 'error';
+                this.alertSet.title = '请求过多';
+                this.alertSet.content = '验证码请求过多，例如短时间内多次请求验证码';
+                this.$emit('alert', this.alertSet);
+            } else {
+                this.alertSet.state = true;
+                this.alertSet.color = 'error';
+                this.alertSet.title = '未知错误';
+                this.alertSet.content = '接收到了未知的状态，请联系开发者报告此错误';
+                this.$emit('alert', this.alertSet);
+            }
+        },
+        handleError(error){
+            console.log(error);
+            this.alertSet.state = true;
+            this.alertSet.color = 'error';
+            this.alertSet.title = '未知错误';
+            this.alertSet.content = '程序出现了未知错误，请联系开发者报告此错误';
+            this.$emit('alert', this.alertSet);
+        },
 
     },
     components: {},

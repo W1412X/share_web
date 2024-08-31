@@ -5,6 +5,15 @@
       <set-profile-card  @close_profile="closeSetProfileCard" @alert="alert"></set-profile-card>
     </div>
   </v-dialog>
+  <v-snackbar
+    :timeout="3000"
+    :color="alertSet.color"
+    variant="outlined"
+    v-model="alertSet.state"
+  >
+    <div class="text-subtitle-1 pb-2">{{ alertSet.title }}</div>
+    <p>{{ alertSet.content }}</p>
+  </v-snackbar>
   <v-app style="width: 100%;justify-content: center;">
     <v-layout style="width: 100%;justify-content: center;">
       <v-row style="width: 100%;justify-content: center;">
@@ -43,7 +52,7 @@
             </div>
           </div>
           <div v-if="this.currentView==='setting'" style="display: flex;flex-direction: column;padding: 10px;">
-            <div style="width:100%;height: 50px;display: flex;flex-direction: row;">开发者</div>
+            <setting-card></setting-card>
           </div>
           <div v-if="this.currentView==='message'" style="width:100%;display: flex;flex-direction: column;padding: 10px;">
             <div style="width:100%;display: flex; justify-content: center;">
@@ -56,7 +65,7 @@
             style="display: flex;justify-content: center;flex-direction: column;width: 100%;">
             <div style="display: flex;justify-content: center;">
               <div style="display: flex; flex-direction: column;">
-                <user-message-editor @set_profile="showSetProfileCard"></user-message-editor>
+                <user-message-editor @set_profile="showSetProfileCard" @alert="alert"></user-message-editor>
               </div>
             </div>
           </div>
@@ -65,17 +74,9 @@
       </v-row>
     </v-layout>
   </v-app>
-  <v-snackbar
-    :timeout="3000"
-    :color="alertSet.color"
-    variant="tonal"
-    v-model="alertSet.state"
-  >
-    <div class="text-subtitle-1 pb-2">{{ alertSet.title }}</div>
-    <p>{{ alertSet.content }}</p>
-  </v-snackbar>
 </template>
   <script>
+  import SettingCard from '@/components/SettingCard.vue';
   import { useRouter } from 'vue-router';
   import { mapActions } from 'vuex';
 import UserMessageEditor from '@/components/UserMessageEditor.vue';
@@ -103,6 +104,7 @@ import SelfStar from '@/components/SelfStar.vue';
       UserMessageReader,
       SelfCreate,
       SelfStar,
+      SettingCard,
     },
     data() {
       const ifShowSetProfileCard=false;

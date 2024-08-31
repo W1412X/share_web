@@ -118,6 +118,7 @@
         },
         cancel() {
           console.log('取消编辑')
+          this.$emit('close');
         },
       },
     }

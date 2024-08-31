@@ -1,4 +1,10 @@
 <template>
+  <v-dialog v-model="ifShowDialog"
+    style="width: 100%;height:100%;background-color: rgba(255,255,255,0.5);justify-content: center;">
+    <div v-if="ifShowEditQuestion" style="width: 100%;height:100%;justify-content: center;display: flex">
+      <question-editor @close="close"></question-editor>
+    </div>
+  </v-dialog>
     <v-card
       :style="{width:'100%',display:'relative','margin-top':'10px'}"
     >
@@ -25,19 +31,32 @@
     </v-card>
   </template>
   <script>
+import { computed,ref } from 'vue';
 import ArticleItem from './ArticleItem.vue';
 import QuestionWithOutImage from './QuestionWithOutImage.vue';
+import QuestionEditor from './QuestionEditor.vue';
 import { useRouter } from 'vue-router';
     export default {
       setup() {
         const router=useRouter();
+        const ifShowEditQuestion=ref(false);
+        const ifShowDialog=computed(()=>{
+          return ifShowEditQuestion.value;
+        })
+        const setEditQuestionState=(state)=>{
+          ifShowEditQuestion.value=state;
+        }
         return {
           router,
+          ifShowDialog,
+          ifShowEditQuestion,
+          setEditQuestionState,
         }
       },
       components:{
         ArticleItem,
         QuestionWithOutImage,
+        QuestionEditor,
       },
       data() {
         const articleList=[//个人创作文章列表
@@ -112,7 +131,10 @@ import { useRouter } from 'vue-router';
           this.router.push({name:'EditorPage'});
         },
         editQuestion(){
-          window.alert('在/test2中有对应的控件示例');
+          this.setEditQuestionState(true);
+        },
+        close(){
+          this.setEditQuestionState(false);
         }
       }
     }

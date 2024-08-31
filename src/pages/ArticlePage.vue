@@ -117,6 +117,7 @@
   import { useStore } from 'vuex';
   import { computed } from 'vue';
   import {useRouter} from 'vue-router';
+  import { useRoute } from 'vue-router';
   import ArticlueBottomBar from '@/components/ArticlueBottomBar.vue';
   import { mdiClock,mdiEyeOutline,mdiStar } from '@mdi/js';
   import SvgIcon from '@jamescoyle/vue-icon'
@@ -187,9 +188,12 @@ import QuestionAndAnswers from '@/components/QuestionAndAnswers.vue';
       },
     },
     mounted() {
+      const route=useRoute();
+      console.log(route);
+      //获取文章内容(通过 route.params.id)带访问
       document.addEventListener('click', this.handleDocumentClick);
       //在组件加载完成后，将Markdown文本解析为HTML并赋值给renderedMarkdown
-      this.renderedContent = marked(this.article.content)
+      this.renderedContent = marked(this.article.content);
     },
     beforeUnmount() {
       document.removeEventListener('click', this.handleDocumentClick);
