@@ -11,6 +11,7 @@ import EditorPage from '@/pages/EditorPage.vue';
 import QuestionPage from '@/pages/QuestionPage.vue';
 import ErrorPage from '@/pages/ErrorPage.vue';
 import AuthorPage from '@/pages/AuthorPage.vue';
+import CoursePage from '@/pages/CoursePage.vue';
 const routes = [
   {
     path: '/login',
@@ -63,6 +64,12 @@ const routes = [
     name:'AuthorPage',
     component: AuthorPage,
     meta: { requiresAuth: true },
+  },
+  {
+    path:'/course/:id',
+    name:'CoursePage',
+    component: CoursePage,
+    meta:{requiresAuth:true}
   }
 ];
 

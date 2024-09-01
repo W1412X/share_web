@@ -12,7 +12,7 @@
           </v-avatar>
         </v-col>
         <v-col cols="11">
-          <v-text :style="{'color':'#8a8a8a','margin-left':'0px'}"
+          <v-text :style="{'color':'#8a8a8a','margin-left':'0px','font-size':'18px'}"
             >{{ answer.name }}
           </v-text>
           <br />

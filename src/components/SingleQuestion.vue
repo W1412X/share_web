@@ -1,5 +1,6 @@
 <template>
   <v-card
+    @click="toQuestion"
     :style="{'width':'750px','margin':'3px','border-width':border_width,'border-color':border_color,'background-color':backgound_color}"
   >
     <div
@@ -40,7 +41,7 @@
           :style="{'max-width':'100px','margin-top':'10px','margin-left':'10px','margin-right':'0px','padding-left':'0px','padding-right':'0px'}"
         >
           <v-row :style="{'margin-top':'0px','margin-left':'0px','margin-right':'0px'}">
-            <svg-icon type="mdi" :path="icons.heartCount" size="18" :style="{'padding-top':'0px','margin-bottom':'0px','margin-left':'5px'}"></svg-icon>
+            <svg-icon type="mdi" :path="icons.starCount" size="18" :style="{'padding-top':'0px','margin-bottom':'0px','margin-left':'5px'}"></svg-icon>
             <span :style="{'margin-left':'4px','font-size':'14px'}">{{ question.likeCount }}</span>
           </v-row>
         </div>
@@ -135,7 +136,8 @@
 </template>
 <script>
 import SvgIcon from '@jamescoyle/vue-icon';
-import { mdiAlertCircleOutline,mdiClock,mdiEyeOutline,mdiHeart,mdiHeartOutline, mdiTrashCanOutline,mdiMessage, mdiStar } from '@mdi/js';
+import { mdiAlertCircleOutline,mdiClock,mdiEyeOutline,mdiStar,mdiStarOutline, mdiTrashCanOutline,mdiMessage } from '@mdi/js';
+import { useRouter } from 'vue-router';
 import { computed } from 'vue';
   export default {
     name: 'QuestionWithoutImage',
@@ -153,7 +155,7 @@ import { computed } from 'vue';
             content: '',
             time:'',
             replyCount: '',
-            likeCount: '',
+            starCount: '',
             authorName: '',
             authorId: '',
             scanCount: '',
@@ -169,6 +171,12 @@ import { computed } from 'vue';
     components:{
       SvgIcon,
     },
+    setup(){
+      const router=useRouter();
+      return {
+        router
+      }
+    },
     data(){
       const backgound_color=computed(()=>{
         return  this.isSelected ? '#def2f8' : '';
@@ -182,12 +190,11 @@ import { computed } from 'vue';
       return{
         icons:{
           alert:mdiAlertCircleOutline,
-          heart:mdiHeartOutline,
+          star:mdiStarOutline,
           timeClock:mdiClock,
           viewCount:mdiEyeOutline,
           starCount:mdiStar,
           replyCount:mdiMessage,
-          heartCount:mdiHeart,
           delete:mdiTrashCanOutline,
         },
         backgound_color,
@@ -196,6 +203,9 @@ import { computed } from 'vue';
       }
     },
     methods:{
+      toQuestion(){
+        this.router.push({name:'QuestionPage',params:{id:'00000000'}});
+      }
     },
     computed:{
     }

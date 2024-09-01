@@ -1,4 +1,13 @@
 <template>
+  <v-snackbar
+    :timeout="3000"
+    :color="alertSet.color"
+    variant="outlined"
+    v-model="alertSet.state"
+  >
+    <div class="text-subtitle-1 pb-2">{{ alertSet.title }}</div>
+    <p>{{ alertSet.content }}</p>
+  </v-snackbar>
   <div>
     <main
       :style="{ 'justify-content': 'center', 'width': '100%', 'display': 'flex', 'padding-bottom': '50px' }"
@@ -108,8 +117,8 @@
       <v-spacer></v-spacer>
     </div>
   </div>
-  <div ref="questionAndAnswer" style="right: 0;z-index: 9999;position: fixed;top: 0;">
-    <question-and-answers v-if="ifShowComment"></question-and-answers>
+  <div ref="questionAndAnswerRef" v-if="ifShowComment"  style="right: 0;position: fixed;top: 0;background-color: rgba(255,255,255,0);">
+    <question-and-answers :id="article.id" :type="'article'" @close_comment="closeComment" @alert="alert"></question-and-answers>
   </div>
 </template>
 <script>
@@ -145,6 +154,12 @@ import QuestionAndAnswers from '@/components/QuestionAndAnswers.vue';
     },
     data() {
       return {
+        alertSet:{
+          state:false,
+          color:'success',
+          title:'获取成功',
+          content:''
+        },
         icons:{
           timeClock:mdiClock,
           viewCount:mdiEyeOutline,
@@ -173,30 +188,23 @@ import QuestionAndAnswers from '@/components/QuestionAndAnswers.vue';
       toSource(){//去文章的源站  
       },
       getComment(){
-        this.ifShowComment=!this.ifShowComment;
+        this.ifShowComment=true;
       },
-      handleDocumentClick(event) {
-        if(this.ifShowComment && this.$refs.bottomBar.contains(event.target)){//点击的事件发生在bottombar而且为打开评论
-          return event;
-        }
-        else if (this.ifShowComment && !this.$refs.questionAndAnswer.contains(event.target)) {//如果已经显示而且点击在控件之外，隐藏
-          this.ifShowComment=!this.ifShowComment;
-          return;
-        }else{
-          return event;
-        }
+      closeComment(){
+        this.ifShowComment=false;
       },
+      alert(msg){
+        this.alertSet=msg;
+      }
     },
     mounted() {
       const route=useRoute();
       console.log(route);
       //获取文章内容(通过 route.params.id)带访问
-      document.addEventListener('click', this.handleDocumentClick);
       //在组件加载完成后，将Markdown文本解析为HTML并赋值给renderedMarkdown
       this.renderedContent = marked(this.article.content);
     },
     beforeUnmount() {
-      document.removeEventListener('click', this.handleDocumentClick);
     },
   }
 </script>

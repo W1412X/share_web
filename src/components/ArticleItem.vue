@@ -12,7 +12,7 @@
           :src="article.imgUrl"
           :style="{'padding-left':'8px',position: 'relative', width:'140px',height:'140px',border:'2px','border-radius':'2px',padding:'0px'}"
           cover
-          @click="navigateToArticle"
+          @click="navigateToArticle()"
           aspect-ratio="1/1"
         >
         </v-img>
@@ -23,7 +23,7 @@
         </span>
       </v-col>
       <v-col
-        @click="navigateToArticle"
+        @click="navigateToArticle()"
         :style="{flex:'65',height:'100%',width:'100%',position:'relative','padding':'0px'}"
       >
         <v-card-title
@@ -56,8 +56,8 @@
             :style="{'max-width':'100px','margin-top':'10px','margin-left':'10px','margin-right':'0px','padding-left':'0px','padding-right':'0px'}"
           >
             <div style="display: flex;flex-direction: row;">
-              <svg-icon type="mdi" :path="icon.heartCount" size="18" color="#8a8a8a" :style="{'padding-top':'0px','margin-bottom':'0px','margin-left':'5px'}"></svg-icon>
-              <div :style="{'margin-left':'4px','font-size':'14px','color':'#8a8a8a'}">{{ article.likeCount }}</div>
+              <svg-icon type="mdi" :path="icon.starCount" size="18" color="#8a8a8a" :style="{'padding-top':'0px','margin-bottom':'0px','margin-left':'5px'}"></svg-icon>
+              <div :style="{'margin-left':'4px','font-size':'14px','color':'#8a8a8a'}">{{ article.starCount }}</div>
             </div>
           </div>
           <div
@@ -146,7 +146,7 @@
 
             }"
           >
-            <svg-icon type="mdi" :path="icon.heart"></svg-icon>
+            <svg-icon type="mdi" :path="icon.star"></svg-icon>
           </v-btn>
           <v-btn
             v-if="status=='writer'"
@@ -184,7 +184,7 @@
 </template>
 <script>
   import SvgIcon from '@jamescoyle/vue-icon'
-  import { mdiAlertCircleOutline, mdiEye, mdiHeart, mdiHeartOutline, mdiMessage, mdiPencilCircleOutline, mdiStar, mdiTrashCanOutline } from '@mdi/js'
+  import { mdiAlertCircleOutline, mdiEye, mdiStarOutline, mdiMessage, mdiPencilCircleOutline, mdiStar, mdiTrashCanOutline } from '@mdi/js'
   import { useRouter } from 'vue-router'
   export default {
     props: {
@@ -207,7 +207,7 @@
             authorName: '测试用户',
             profileUrl:
               'https://tse1-mm.cn.bing.net/th/id/OIP-C.PO7d9IfnPUy2RO173QYt6wHaHV?w=216&h=213&c=7&r=0&o=5&pid=1.7',
-            likeCount:'99999',
+            starCount:'99999',
             scanCount:'99999',
             replyCount:'99999',
           }
@@ -215,29 +215,29 @@
       },
     },
     setup() {
-      const router = useRouter()
-      const navigateToArticle = () => {
-        router.push({ name: 'ArticlePage' })
-      }
+      const router = useRouter();
       return {
-        navigateToArticle,
+        router
       }
     },
     data() {
       return {
         icon: {
           alert: mdiAlertCircleOutline,
-          heart: mdiHeartOutline,
+          star: mdiStarOutline,
           delete: mdiTrashCanOutline,
           edit:mdiPencilCircleOutline,
           viewCount:mdiEye,
           starCount:mdiStar,
           replyCount:mdiMessage,
-          heartCount:mdiHeart,
         },
       }
     },
-    methods: {},
+    methods: {
+      navigateToArticle(){
+        this.router.push({name:'ArticlePage',params:{id:this.article.id}});
+      }
+    },
     components: {
       SvgIcon,
     },

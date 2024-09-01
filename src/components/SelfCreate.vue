@@ -21,11 +21,11 @@
         ></v-tab>
       </v-tabs>
       <div v-if="type=='article'" style="width: 100%;display: flex;flex-direction: column;">
-        <v-btn variant="outlined" style="width: 94%;margin-left: 3%;margin-right: 3%;" @click="editArticle()">编辑新文章</v-btn>
+        <v-btn variant="outlined" style="width: 94%;margin-left: 3%;margin-right: 3%;color:#9c0c13" @click="editArticle()">编辑新文章</v-btn>
         <article-item v-for="(article,index) in articleList" :key="index" :article="article" :status="'writer'"></article-item>
       </div>
       <div  v-if="type=='question'" style="width: 100%;display: flex;flex-direction: column;">
-        <v-btn variant="outlined" style="width: 94%;margin-left: 3%;margin-right: 3%;" @click="editQuestion()">发布新问题</v-btn>
+        <v-btn variant="outlined" style="width: 94%;margin-left: 3%;margin-right: 3%;color:#9c0c13" @click="editQuestion()">发布新问题</v-btn>
         <question-with-out-image v-for="(question,index) in questionList" :key="index" :question="question" :status="'writer'"></question-with-out-image>
       </div>
     </v-card>

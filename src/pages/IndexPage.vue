@@ -16,11 +16,11 @@
           <svg-icon type="mdi" :path="icon.magnify"></svg-icon>
         </v-btn>
         <v-spacer></v-spacer>
-        <v-btn @click="writeQuestion">
+        <v-btn icon @click="writeQuestion">
           <svg-icon type="mdi" :path="icon.question"></svg-icon>
           <v-tooltip  style="margin-left: 2px;margin-bottom: 8px;" activator="parent" location="top">编辑问题</v-tooltip>
         </v-btn>
-        <v-btn @click="writeArticle">
+        <v-btn icon @click="writeArticle">
           <svg-icon type="mdi" :path="icon.article"></svg-icon>
           <v-tooltip  style="margin-left: 2px;margin-bottom: 8px;" activator="parent" location="top">写文章</v-tooltip>
         </v-btn>
