@@ -116,10 +116,16 @@
             </div>
           </v-row>
           <div
-            :style="{ 'font-size': '12px', 'color': '#8a8a8a', 'font-weight': 'bold', 'margin-left': '20px', 'margin-top': '18px','margin-bottom':'5px' }"
+            :style="{ 'display':'flex','flex-direction':'row','font-size': '12px', 'color': '#8a8a8a', 'font-weight': 'bold', 'margin-left': '20px', 'margin-top': '18px','margin-bottom':'5px' }"
           >
-            原创 <span click="toSource">{{ article.authorName }}</span>
+            {{article.type}}<span style="width:10px;"></span> <span v-if="article.type=='原创'">{{ article.authorName }}</span>
+            <a v-if="article.type=='转载'" href="#" @click="toSource">原文链接</a>
+            <v-spacer></v-spacer>
+            <div style="display: flex;flex-direction: row;">
+              <svg-icon type="mdi" :path="icons.file" color=""></svg-icon>
+            </div>
           </div>
+          <source-bar></source-bar>
         </v-card>
         <div
           v-html="renderedContent"
@@ -130,7 +136,7 @@
     <div :style="{ 'justify-content': 'center', 'display': 'flex' }">
       <v-spacer></v-spacer>
       <div ref="bottomBar" :style="{'width':'1000px','max-width':'1000px','height':'50px','box-shadow':'none','box-radius':'0','border-top':'1px solid #8a8a8a','border-bottom':'1px solid #8a8a8a','position':'fixed','justify-content':'center','bottom':'0'}">
-        <articlue-bottom-bar  @get_comment="getComment"/>
+        <article-bottom-bar  @get_comment="getComment"/>
       </div>
       <v-spacer></v-spacer>
     </div>
@@ -142,11 +148,12 @@
 <script>
   import {marked} from 'marked';
   import {useRoute,useRouter} from 'vue-router';
-  import ArticlueBottomBar from '@/components/ArticlueBottomBar.vue';
+  import ArticleBottomBar from '@/components/ArticleBottomBar.vue';
   import { mdiClock,mdiEyeOutline,mdiStar,mdiMessage } from '@mdi/js';
   import SvgIcon from '@jamescoyle/vue-icon'
 import TagButton from '@/components/TagButton.vue';
 import QuestionAndAnswers from '@/components/QuestionAndAnswers.vue';
+import SourceBar from '@/components/SourceBar.vue';
   export default {
     setup(){
       const articleId='00000000';
@@ -157,10 +164,11 @@ import QuestionAndAnswers from '@/components/QuestionAndAnswers.vue';
       }
     },
     components:{
-      ArticlueBottomBar,
+      ArticleBottomBar,
       SvgIcon,
       TagButton,
       QuestionAndAnswers,
+      SourceBar,
     },
     data() {
       return {
@@ -185,7 +193,10 @@ import QuestionAndAnswers from '@/components/QuestionAndAnswers.vue';
           starCount: '0',
           scanCount: '0',
           replyCount:'0',
-          content: '# 这是内容  \n\n '
+          content: '# 这是内容  \n\n ',
+          type:'转载',
+          originLink:'https://sss',//如果文章类型为转载，反之为'',
+          sourceUrl:'https://sss.zip',//如果文章含有资源，反之为'',
         },
         renderedContent:'',
         ifShowComment:false,
@@ -193,6 +204,7 @@ import QuestionAndAnswers from '@/components/QuestionAndAnswers.vue';
     },
     methods:{
       toSource(){//去文章的源站  
+        window.location.replace(this.article.originLink);
       },
       toAuthorPage(){
         this.router.push({name:'AuthorPage',params:{name:this.article.authorName}})

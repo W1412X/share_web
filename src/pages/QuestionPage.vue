@@ -12,7 +12,7 @@
       "
     >
       <div
-        :style="{'padding':'0px','margin-left': '20px','display':'relative','overflow':'auto'}"
+        :style="{'padding':'0px','margin-left': '20px','display':'relative'}"
       >
         <div>
           <SingleQuestion

@@ -2,7 +2,7 @@
   <v-dialog v-model="ifShowDialog"
     style="width: 100%;height:100%;background-color: rgba(255,255,255,0.5);justify-content: center;">
     <div v-if="ifShowReportCard" style="width: 100%;height:100%;justify-content: center;display: flex">
-      <report-card :report="{type:'问题回答',id:this.article.id}" @close="close()"></report-card>
+      <report-card :report="{type:'文章',id:this.articleId}" @close="close"></report-card>
     </div>
   </v-dialog>
     <v-card
@@ -25,7 +25,7 @@
         <v-col cols="4" class="text-right" :style="{}">
           <svg-icon type="mdi" :path="icons.star" size="25" :style="{'color':'#8a8a8a','margin-left':'5px','margin-right':'8px'}"></svg-icon>
           <svg-icon type="mdi" :path="icons.commentQuestion" @click="this.showComment()" size="25" :style="{'color':'#8a8a8a','margin-left':'8px','margin-right':'8px'}"></svg-icon>
-          <svg-icon type="mdi" :path="icons.alertCircle" size="25" :style="{'color':'#8a8a8a','margin-left':'8px','margin-right':'20px'}"></svg-icon>
+          <svg-icon @click="report" type="mdi" :path="icons.alertCircle" size="25" :style="{'color':'#8a8a8a','margin-left':'8px','margin-right':'20px'}"></svg-icon>
         </v-col>
       </v-row>
     </v-card>
@@ -34,6 +34,7 @@
   <script>
     import {ref,computed} from 'vue';
     import SvgIcon from '@jamescoyle/vue-icon';
+    import ReportCard from './ReportCard.vue';
     import { mdiStar,mdiAlertCircle,mdiCommentQuestion } from '@mdi/js';
     export default {
       props: {
@@ -57,6 +58,7 @@
       },
       components:{
         SvgIcon,
+        ReportCard,
       },
       setup(){
         const ifShowReportCard=ref(false);
@@ -82,9 +84,15 @@
         }
       },
       methods: {
+        report(){
+          this.setRepordCardState(true);
+        },
         showComment(){
           this.$emit('get_comment',null);
         },
+        close(){
+          this.setRepordCardState(false);
+        }
       },
     }
   </script>

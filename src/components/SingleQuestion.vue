@@ -1,4 +1,10 @@
 <template>
+  <v-dialog v-model="ifShowDialog"
+    style="width: 100%;height:100%;background-color: rgba(255,255,255,0.5);justify-content: center;">
+    <div v-if="ifShowReportCard" style="width: 100%;height:100%;justify-content: center;display: flex">
+      <report-card :report="{type:'问题',id:this.question.id}" @close="close()"></report-card>
+    </div>
+  </v-dialog>
   <v-card
     @click="toQuestion"
     :style="{'width':'750px','margin':'3px','border-width':border_width,'border-color':border_color,'background-color':backgound_color}"
@@ -106,6 +112,7 @@
             <svg-icon type="mdi" :path="icons.heart"></svg-icon>
           </v-btn>
           <v-btn
+            @click="report"
             v-if="status=='reader'"
             elevation="0"
             icon
@@ -140,7 +147,8 @@
 import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiAlertCircleOutline,mdiClock,mdiEyeOutline,mdiStar,mdiStarOutline, mdiTrashCanOutline,mdiMessage } from '@mdi/js';
 import { useRouter } from 'vue-router';
-import { computed } from 'vue';
+import { computed,ref } from 'vue';
+import ReportCard from './ReportCard.vue';
   export default {
     name: 'QuestionWithoutImage',
     props: {
@@ -172,13 +180,24 @@ import { computed } from 'vue';
     },
     components:{
       SvgIcon,
+      ReportCard,
     },
     setup(){
-      const router=useRouter();
-      return {
-        router,
-      }
-    },
+        const router = useRouter();
+        const ifShowReportCard=ref(false);
+        const ifShowDialog=computed(()=>{
+          return ifShowReportCard.value;
+        })
+        const setReportCardState=(state)=>{
+          ifShowReportCard.value=state;
+        }
+        return {
+          router,
+          ifShowDialog,
+          ifShowReportCard,
+          setReportCardState,
+        }
+      },
     data(){
       const backgound_color=computed(()=>{
         return  this.isSelected ? '#def2f8' : '';
@@ -210,6 +229,12 @@ import { computed } from 'vue';
       },
       toAuthorPage(){
         this.router.push({name:'AuthorPage',params:{name:this.question.authorName}});
+      },
+      close(){
+        this.setReportCardState(false);
+      },
+      report(){
+        this.setReportCardState(true);
       }
     },
     computed:{

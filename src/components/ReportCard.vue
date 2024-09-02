@@ -54,7 +54,6 @@
   <v-snackbar
     :timeout="3000"
     :color="alertSet.color"
-    variant="outlined"
     v-model="alertSet.state"
   >
     <div class="text-subtitle-1 pb-2">{{ alertSet.title }}</div>

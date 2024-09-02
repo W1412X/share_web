@@ -2,7 +2,7 @@
   <v-dialog v-model="ifShowDialog"
     style="width: 100%;height:100%;background-color: rgba(255,255,255,0.5);justify-content: center;">
     <div v-if="ifShowReportCard" style="width: 100%;height:100%;justify-content: center;display: flex">
-      <report-card :report="{type:'问题回答',id:this.article.id}" @close="close()"></report-card>
+      <report-card :report="{type:'文章',id:this.article.id}" @close="close()"></report-card>
     </div>
   </v-dialog>
   <v-card

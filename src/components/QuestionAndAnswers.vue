@@ -24,7 +24,7 @@
       <div :style="{'min-height':'95%','display':'relative','overflow':'auto'}">
         <QuestionWithOutImage v-for="(question,index) in questionList" :key="index" :question="question"
           :isSelected="question.id==selectedQuestionId" @select_question="selectQuestion"></QuestionWithOutImage>
-        <v-btn variant="outlined">加载更多问题</v-btn>
+        <v-btn variant="outlined" style="width: 750px;">加载更多问题</v-btn>
       </div>
       <v-btn @click="publishQuestion"
         style="height: 4%;min-width: 700px;margin-left: 25px;margin-right: 25px;margin-top:1%;font-weight:bold;"

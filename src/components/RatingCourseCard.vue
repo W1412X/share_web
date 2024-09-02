@@ -4,37 +4,39 @@
     <div v-if="ifShowCourseAnswerEditor" style="width: 100%;height:100%;justify-content: center;display: flex">
       <course-answer-editor @close="close" :courseId="course.id" :courseName="course.name"></course-answer-editor>
     </div>
+    <div v-if="ifShowReportCard" style="width: 100%;height:100%;justify-content: center;display: flex">
+      <report-card :report="{type:'课程',id:this.course.id}" @close="close()"></report-card>
+    </div>
   </v-dialog>
   <v-card :style="{ 'width': '750px', 'max-width': '750px' }">
     <v-row :style="{ 'margin': '0px', 'padding': '0px' }">
       <div :style="{ 'width': '750px' }">
-        <div
-          :style="{ 'font-size': '22px', 'font-weight': '600', 'white-space': 'nowrap', 'text-overflow': 'ellipsis', 'overflow': 'hidden', 'margin-left': '10px', 'margin-top': '10px' }">
-          {{ course.name }}
-        </div>
-        <div style="display: flex; flex-direction: row"></div>
         <div style="display: flex; flex-direction: row">
           <div
-            :style="{ 'font-size': '18px', 'color': '#8a8a8a', 'margin-right': '30px', 'font-weight': 'normal', 'white-space': 'nowrap', 'text-overflow': 'ellipsis', 'overflow': 'hidden', 'margin-left': '15px', 'margin-top': '5px' }">
+            :style="{ 'max-width':'600px','font-size': '22px', 'font-weight': '600', 'white-space': 'nowrap', 'text-overflow': 'ellipsis', 'overflow': 'hidden', 'margin-left': '10px', 'margin-top': '10px' }">
+            {{ course.name }}
+          </div>
+          <v-spacer></v-spacer>
+          <svg-icon @click="report" type="mdi" :path="icons.alert" color="#8a8a8a" style="margin-top:10px;margin-right: 10px"></svg-icon>
+        </div>
+        <div style="display: flex; flex-direction: row">
+          <div
+            :style="{'font-size':'18px','color':'#8a8a8a','margin-right':'30px','font-weight':'normal','white-space':'nowrap','text-overflow':'ellipsis','overflow':'hidden','margin-left':'15px','margin-top':'5px'}">
             课程类型: {{ course.type }}
           </div>
           <div
-            :style="{ 'font-size': '18px', 'margin-right': '30px', 'color': '#8a8a8a', 'white-space': 'nowrap', 'font-weight': 'normal', 'text-overflow': 'ellipsis', 'overflow': 'hidden', 'margin-left': '15px', 'margin-top': '5px' }">
-            上课学期: {{ course.semester }}
+            :style="{'font-size':'18px','color':'#8a8a8a','margin-right':'30px','white-space':'nowrap','font-weight':'normal','text-overflow':'ellipsis','overflow':'hidden','margin-left':'15px','margin-top':'5px'}">
+            授课教师: {{ course.teacher }}
           </div>
         </div>
         <div style="display: flex; flex-direction: row">
           <div
-            :style="{ 'font-size': '18px', 'color': '#8a8a8a', 'margin-right': '30px', 'white-space': 'nowrap', 'font-weight': 'normal', 'text-overflow': 'ellipsis', 'overflow': 'hidden', 'margin-left': '15px', 'margin-top': '5px' }">
-            授课教师: {{ course.teacher }}
+            :style="{'font-size':'18px','color':'#8a8a8a','margin-right':'30px','white-space':'nowrap','font-weight':'normal','text-overflow':'ellipsis','overflow':'hidden','margin-left':'15px','margin-top':'5px'}">
+            开设校区: {{ course.campus }}
           </div>
           <div
-            :style="{ 'font-size': '18px', 'color': '#8a8a8a', 'margin-right': '30px', 'white-space': 'nowrap', 'font-weight': 'normal', 'text-overflow': 'ellipsis', 'overflow': 'hidden', 'margin-left': '15px', 'margin-top': '5px' }">
-            教学方式: {{ course.teachMethod }}
-          </div>
-          <div
-            :style="{ 'font-size': '18px', 'color': '#8a8a8a', 'white-space': 'nowrap', 'font-weight': 'normal', 'text-overflow': 'ellipsis', 'overflow': 'hidden', 'margin-left': '15px', 'margin-top': '5px' }">
-            考核方式: {{ course.examineMethod }}
+            :style="{'font-size':'18px','color':'#8a8a8a','white-space':'nowrap','font-weight':'normal','text-overflow':'ellipsis','overflow':'hidden','margin-left':'15px','margin-top':'5px'}">
+            开设学院: {{ course.college }}
           </div>
         </div>
       </div>
@@ -57,8 +59,8 @@
           </div>
           <v-list style="width: 400px" bg-color="transparent" class="d-flex flex-column-reverse" density="compact">
             <v-list-item v-for="(rating, i) in course.rate.ratePropotion" :key="i">
-              <v-progress-linear :max="100" :model-value="100 * rating / course.rate.rateNum" class="mx-n5" color="#9c0c13"
-                height="10" rounded></v-progress-linear>
+              <v-progress-linear :max="100" :model-value="100 * rating / course.rate.rateNum" class="mx-n5"
+                color="#9c0c13" height="10" rounded></v-progress-linear>
               <template v-slot:prepend>
                 <span>{{ i + 1 }}</span>
                 <v-icon class="mx-3" icon="mdi-star" color="#9c0c13"></v-icon>
@@ -88,6 +90,9 @@
 <script>
 import CourseAnswerEditor from '@/components/CourseAnswerEditor.vue';
 import {ref,computed} from 'vue';
+import SvgIcon from '@jamescoyle/vue-icon';
+import { mdiAlertCircleOutline } from '@mdi/js';
+import ReportCard from './ReportCard.vue';
 export default {
   props: {
     course: {
@@ -98,38 +103,47 @@ export default {
           name: '程序思维设计与实践',
           teacher: '蔡晓军',
           type: '必修课 通识选修',
-          teachMethod: '线上教学',
-          examineMethod: '考试',
+          college:'计算机科学与技术学院',
+          campus:'青岛校区',
           rate: {
             averageRate: 3.5,
             rateNum: 100,
             ratePropotion: [10, 20, 20, 30, 20],
           },
-          semester: '大二 上学期',
         }
       },
     },
   },
   setup(){
     const ifShowCourseAnswerEditor=ref(false);
+    const ifShowReportCard=ref(false);
     const ifShowDialog=computed(()=>{//
-      return ifShowCourseAnswerEditor.value;
+      return ifShowCourseAnswerEditor.value || ifShowReportCard.value;
     })
     const setCourseAnswerEditorState=(state)=>{
       ifShowCourseAnswerEditor.value=state;
     }
+    const setReportCardState=(state)=>{
+      ifShowReportCard.value=state;
+    }
     return {
       ifShowCourseAnswerEditor,
       ifShowDialog,
+      ifShowReportCard,
+      setReportCardState,
       setCourseAnswerEditorState,
     }
   },
   components:{
     CourseAnswerEditor,
+    SvgIcon,
+    ReportCard,
   },
   data() {
     return {
-
+      icons:{
+        alert:mdiAlertCircleOutline,
+      }
     }
   },
   methods:{
@@ -138,6 +152,10 @@ export default {
     },
     close(){
       this.setCourseAnswerEditorState(false);
+      this.setReportCardState(false);
+    },
+    report(){
+      this.setReportCardState(true);
     }
   }
 }
