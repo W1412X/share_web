@@ -14,6 +14,11 @@
           >{{this.followButtonText}}</v-btn
         >
       </div>
+      <div :v-if="ifWithCount==true" style="display: flex;flex-direction: row;padding-top:10px">
+        <span style="font-size: 14px;color:#8a8a8a;font-weight: 600;margin-left: 0px;">关注量: {{ user.followCount }}</span>
+        <span style="font-size: 14px;color:#8a8a8a;font-weight: 600;margin-left: 10px;">总浏览量: {{ user.scanCount }}</span>
+        <span style="font-size: 14px;color:#8a8a8a;font-weight: 600;margin-left: 10px;">总收藏量: {{ user.starCount }}</span>
+      </div>
       <div :v-if="ifWithIntroduce==true" style="display: flex; flex-direction: row;">
         <div style="font-size: 16px;margin-top: 10px;color:#8a8a8a;min-width: 45px;font-weight: 600;">简介:</div>
         <div style="font-size: 16px;margin-top: 10px;color:#8a8a8a;">{{ user.introduce }}</div>
@@ -33,6 +38,9 @@ import { computed } from 'vue';
             userName: 'test',
             followState: false,
             introduce:'这是介绍部分',
+            starCount:'9999',
+            scanCount:'9999',
+            followCount:'9999',
             profileUrl:
               'https://tse1-mm.cn.bing.net/th/id/OIP-C.PO7d9IfnPUy2RO173QYt6wHaHV?w=216&h=213&c=7&r=0&o=5&pid=1.7',
           }
@@ -41,7 +49,11 @@ import { computed } from 'vue';
       ifWithIntroduce:{
         type:Boolean,
         dafault:false,
-      }
+      },
+      ifWithCount:{
+        type:Boolean,
+        dafault:true,
+      },
     },
     data() {
       const followState=this.user.followState;
