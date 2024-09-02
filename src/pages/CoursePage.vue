@@ -13,13 +13,17 @@
 <script>
 import RatingCourseCard from '@/components/RatingCourseCard.vue';
 import CourseAnswer from '@/components/CourseAnswer.vue';
+import {useRoute} from 'vue-router'
 export default{
     components:{
         RatingCourseCard,
         CourseAnswer,
     },
     setup(){
-
+        const courseId='';
+        return {
+            courseId,
+        }
     },
     data(){
         const answerList=[
@@ -48,6 +52,11 @@ export default{
     },
     methods:{
 
+    },
+    onMounted(){
+        const route=useRoute();
+        this.courseId=route.params.id;
+        console.log('load course page',this.courseId);
     }
 }
 </script>

@@ -1,4 +1,10 @@
 <template>
+  <v-dialog v-model="ifShowDialog"
+    style="width: 100%;height:100%;background-color: rgba(255,255,255,0.5);justify-content: center;">
+    <div v-if="ifShowReportCard" style="width: 100%;height:100%;justify-content: center;display: flex">
+      <report-card :report="{type:'问题回答',id:this.article.id}" @close="close()"></report-card>
+    </div>
+  </v-dialog>
     <v-card
       :style="{'width':'1000px','max-width':'1000px','height':'50px','box-shadow':'none','box-radius':'0','border-top':'1px solid #8a8a8a','border-bottom':'1px solid #8a8a8a','position':'fixed','justify-content':'center','bottom':'0'}"
     >
@@ -26,6 +32,7 @@
   </template>
   
   <script>
+    import {ref,computed} from 'vue';
     import SvgIcon from '@jamescoyle/vue-icon';
     import { mdiStar,mdiAlertCircle,mdiCommentQuestion } from '@mdi/js';
     export default {
@@ -50,6 +57,20 @@
       },
       components:{
         SvgIcon,
+      },
+      setup(){
+        const ifShowReportCard=ref(false);
+        const ifShowDialog=computed(()=>{
+          return ifShowReportCard.value;
+        })
+        const setRepordCardState=(state)=>{
+          ifShowReportCard.value=state;
+        }
+        return {
+          ifShowDialog,
+          ifShowReportCard,
+          setRepordCardState
+        }
       },
       data(){
         return{

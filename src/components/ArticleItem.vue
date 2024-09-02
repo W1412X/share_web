@@ -1,4 +1,10 @@
 <template>
+  <v-dialog v-model="ifShowDialog"
+    style="width: 100%;height:100%;background-color: rgba(255,255,255,0.5);justify-content: center;">
+    <div v-if="ifShowReportCard" style="width: 100%;height:100%;justify-content: center;display: flex">
+      <report-card :report="{type:'问题回答',id:this.article.id}" @close="close()"></report-card>
+    </div>
+  </v-dialog>
   <v-card
     elevation="3"
     :style="{ width: '750px', 'margin': '5px', height: '175px',display: 'grid', 'place-items': 'center'}"
@@ -121,6 +127,7 @@
           <v-btn
             v-if="status=='reader'"
             elevation="0"
+            @click="report"
             icon
             :style="{'width':'25px',
             'padding':'0px',
@@ -184,13 +191,15 @@
 </template>
 <script>
   import SvgIcon from '@jamescoyle/vue-icon'
+  import ReportCard from '@/components/ReportCard.vue'
   import { mdiAlertCircleOutline, mdiEye, mdiStarOutline, mdiMessage, mdiPencilCircleOutline, mdiStar, mdiTrashCanOutline } from '@mdi/js'
   import { useRouter } from 'vue-router'
+  import {ref,computed} from 'vue'
   export default {
     props: {
       status: {
         type: String,
-        default: 'writer', //reader,writer,manager
+        default: 'reader', //reader,writer,manager
       },
       article: {
         type: Object,
@@ -216,8 +225,18 @@
     },
     setup() {
       const router = useRouter();
+      const ifShowReportCard=ref(false);
+      const ifShowDialog=computed(()=>{
+        return ifShowReportCard.value;
+      })
+      const setRepordCardState=(state)=>{
+        ifShowReportCard.value=state;
+      }
       return {
-        router
+        router,
+        setRepordCardState,
+        ifShowDialog,
+        ifShowReportCard,
       }
     },
     data() {
@@ -236,10 +255,17 @@
     methods: {
       navigateToArticle(){
         this.router.push({name:'ArticlePage',params:{id:this.article.id}});
+      },
+      report(){
+        this.setRepordCardState(true);
+      },
+      close(){
+        this.setRepordCardState(false);
       }
     },
     components: {
       SvgIcon,
+      ReportCard,
     },
     name: 'ArticleItem',
   }

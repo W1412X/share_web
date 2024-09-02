@@ -19,11 +19,13 @@
     <v-row :style="{'padding-left':'20px','color':'#8a8a8a'}">
         <v-avatar
           size="25"
+          @click="toAuthorPage"
           :style="{'margin-top':'8px','margin-right':'0px','margin-left':'10px','font-size':'14px'}"
         >
           <v-img :src="question.profileUrl"></v-img>
         </v-avatar>
         <span
+          @click="toAuthorPage"
           :style="{'margin-top':'10px','margin-right':'10px','margin-left':'10px','font-size':'14px'}"
           >{{ question.authorName }}</span
         >
@@ -42,7 +44,7 @@
         >
           <v-row :style="{'margin-top':'0px','margin-left':'0px','margin-right':'0px'}">
             <svg-icon type="mdi" :path="icons.starCount" size="18" :style="{'padding-top':'0px','margin-bottom':'0px','margin-left':'5px'}"></svg-icon>
-            <span :style="{'margin-left':'4px','font-size':'14px'}">{{ question.likeCount }}</span>
+            <span :style="{'margin-left':'4px','font-size':'14px'}">{{ question.starCount }}</span>
           </v-row>
         </div>
         <div
@@ -144,7 +146,7 @@ import { computed } from 'vue';
     props: {
       status:{
         type:String,
-        default:'writer',
+        default:'reader',
       },
       question: {
         type: Object,
@@ -174,7 +176,7 @@ import { computed } from 'vue';
     setup(){
       const router=useRouter();
       return {
-        router
+        router,
       }
     },
     data(){
@@ -205,6 +207,9 @@ import { computed } from 'vue';
     methods:{
       toQuestion(){
         this.router.push({name:'QuestionPage',params:{id:'00000000'}});
+      },
+      toAuthorPage(){
+        this.router.push({name:'AuthorPage',params:{name:this.question.authorName}});
       }
     },
     computed:{

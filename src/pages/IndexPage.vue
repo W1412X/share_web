@@ -3,6 +3,7 @@
     style="display: flex;width: 100%;height:100%;background-color: rgba(255,255,255,0.5);justify-content: center;">
     <div style="display: flex;justify-content: center;">
       <QuestionEditor v-if="ifShowQuestionEditor" @close="close"></QuestionEditor>
+      <CourseEditor v-if="ifShowCourseEditor" @close="close"></CourseEditor>
     </div>
   </v-dialog>
   <v-layout style="background-color: #ffffff;display: flex;justify-content: center;">
@@ -16,6 +17,10 @@
           <svg-icon type="mdi" :path="icon.magnify"></svg-icon>
         </v-btn>
         <v-spacer></v-spacer>
+        <v-btn icon @click="writeCourse">
+          <svg-icon type="mdi" :path="icon.course"></svg-icon>
+          <v-tooltip  style="margin-left: 2px;margin-bottom: 8px;" activator="parent" location="top">发布新的课程</v-tooltip>
+        </v-btn>
         <v-btn icon @click="writeQuestion">
           <svg-icon type="mdi" :path="icon.question"></svg-icon>
           <v-tooltip  style="margin-left: 2px;margin-bottom: 8px;" activator="parent" location="top">编辑问题</v-tooltip>
@@ -83,46 +88,50 @@
 <script>
 import SvgIcon from '@jamescoyle/vue-icon'
 import QuestionEditor from '@/components/QuestionEditor.vue';
-import { mdiMagnify,mdiHistory,mdiUpload,mdiAccountOutline, mdiCommentQuestionOutline, mdiFileEditOutline } from '@mdi/js'
+import { mdiMagnify,mdiHistory,mdiUpload,mdiAccountOutline, mdiCommentQuestionOutline, mdiFileEditOutline,mdiBookPlusOutline } from '@mdi/js'
 import {useRouter} from 'vue-router';
 import {computed,ref} from 'vue'
-import { useStore } from 'vuex';
 import ArticleList from '@/components/ArticleList.vue';
 import SingleQuestion from '@/components/SingleQuestion.vue';
 import CourseItem from '@/components/CourseItem.vue';
+import CourseEditor from '@/components/CourseEditor.vue';
 import { getUser } from '@/utils/storage';
 export default {
   setup() {
+    const userName=getUser('userName');
+    //定义路由跳转
     const router = useRouter();
     const navigateToIndex = () => {
       router.push({ name: 'IndexPage' }); // 使用路由名称跳转
     };
     const navigateToSelf = () => {
-      router.push({name: 'SelfPage',params:{id:getUser('id')}});
+      router.push({name: 'SelfPage',params:{name:userName}});
     };
     const navigateToLogin =() =>{
       router.push({name:'LoginPage'})
     }
-    const store=useStore();
-    const user= computed(() => store.getters.getUser);
-
-    //
     const ifShowQuestionEditor=ref(false);
+    const ifShowCourseEditor=ref(false);
     const ifShowDialog=computed(()=>{
-      return ifShowQuestionEditor.value;
+      return ifShowQuestionEditor.value || ifShowCourseEditor.value;
     })
     const setQuestionEditorState=(state)=>{
       ifShowQuestionEditor.value=state;
     }
+    const setCourseEditorState=(state)=>{
+      ifShowCourseEditor.value=state;
+    }
     return {
-      user,
-      router,
+      userName,
       navigateToIndex,
       navigateToSelf,
       navigateToLogin,
       ifShowDialog,
       ifShowQuestionEditor,
       setQuestionEditorState,
+      setCourseEditorState,
+      ifShowCourseEditor,
+      router
     };
   },
   components: {
@@ -131,6 +140,7 @@ export default {
     SingleQuestion,
     CourseItem,
     QuestionEditor,
+    CourseEditor,
   },
   data() {
     return {
@@ -140,7 +150,8 @@ export default {
         account:mdiAccountOutline,
         upload:mdiUpload,
         question:mdiCommentQuestionOutline,
-        article:mdiFileEditOutline
+        article:mdiFileEditOutline,
+        course:mdiBookPlusOutline,
       },
       searchContent: 'RECOMMAND',
       articleItems: [
@@ -153,6 +164,7 @@ export default {
 
       ],
       itemType:'article',
+      inputValue:'',
     }
   },
   methods: {
@@ -176,7 +188,7 @@ export default {
         authorName: '测试用户',
         profileUrl:
           'https://tse1-mm.cn.bing.net/th/id/OIP-C.PO7d9IfnPUy2RO173QYt6wHaHV?w=216&h=213&c=7&r=0&o=5&pid=1.7',
-        likeCount:10000,
+        starCount:10000,
         replyCount:10000,
         scanCount:100000,
       }
@@ -184,8 +196,8 @@ export default {
         name: '程序思维设计与实践',
         teacher: '蔡晓军',
         type: '必修',
-        teachMethod: '线上教学',
-        examineMethod: '考试',
+        college: '计算机科学与技术学院',
+        campus:'青岛校区',
         rate: {
           rate: 3.5,
         },
@@ -197,7 +209,7 @@ export default {
                     content: '这是问题的描述',
                     time: '2022-09-01 00:00',
                     replyCount: '99999',
-                    likeCount: '99999',
+                    starCount: '99999',
                     authorName: 'visitor',
                     authorId: '00000000',
                     scanCount: '99999',
@@ -218,8 +230,12 @@ export default {
     writeQuestion(){
       this.setQuestionEditorState(true);
     },
+    writeCourse(){
+      this.setCourseEditorState(true); 
+    },
     close(){
       this.setQuestionEditorState(false);
+      this.setCourseEditorState(false);
     }
   },
   mounted(){

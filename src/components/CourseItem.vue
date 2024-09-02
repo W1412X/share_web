@@ -15,26 +15,21 @@
             课程类型: {{ course.type }}
           </div>
           <div
-            :style="{'font-size':'18px','margin-right':'30px','color':'#8a8a8a','white-space':'nowrap','font-weight':'normal','text-overflow':'ellipsis','overflow':'hidden','margin-left':'15px','margin-top':'5px'}"
+            :style="{'font-size':'18px','color':'#8a8a8a','margin-right':'30px','white-space':'nowrap','font-weight':'normal','text-overflow':'ellipsis','overflow':'hidden','margin-left':'15px','margin-top':'5px'}"
           >
-            上课学期: {{ course.semester }}
+            授课教师: {{ course.teacher }}
           </div>
         </div>
         <div style="display: flex; flex-direction: row">
           <div
             :style="{'font-size':'18px','color':'#8a8a8a','margin-right':'30px','white-space':'nowrap','font-weight':'normal','text-overflow':'ellipsis','overflow':'hidden','margin-left':'15px','margin-top':'5px'}"
           >
-            授课教师: {{ course.teacher }}
-          </div>
-          <div
-            :style="{'font-size':'18px','color':'#8a8a8a','margin-right':'30px','white-space':'nowrap','font-weight':'normal','text-overflow':'ellipsis','overflow':'hidden','margin-left':'15px','margin-top':'5px'}"
-          >
-            教学方式: {{ course.teachMethod }}
+            开设校区: {{ course.campus }}
           </div>
           <div
             :style="{'font-size':'18px','color':'#8a8a8a','white-space':'nowrap','font-weight':'normal','text-overflow':'ellipsis','overflow':'hidden','margin-left':'15px','margin-top':'5px'}"
           >
-            考核方式: {{ course.examineMethod }}
+            开设学院: {{ course.college }}
           </div>
         </div>
       </div>
@@ -72,8 +67,8 @@ import {useRouter} from 'vue-router';
             name: '程序思维设计与实践',
             teacher: '蔡晓军',
             type: '必修课 通识选修',
-            teachMethod: '线上教学',
-            examineMethod: '考试',
+            college: '计算机科学与技术学院',
+            campus:'青岛校区',
             rate: {
               rate: 3.5,
             },

@@ -10,8 +10,9 @@
       "
     >
       <div style="display: flex; flex-direction: row">
-        <v-avatar size="35" :image="avatarUrl"></v-avatar>
-        <v-text
+        <v-avatar @click="toAuthorPage" size="35" :image="avatarUrl"></v-avatar>
+        <span
+           @click="toAuthorPage"
           style="
             margin-left: 10px;
             display: flex;
@@ -20,7 +21,7 @@
             font-size: 18px;
             font-weight: 600;
           "
-          >{{answer.authorName}}</v-text
+          >{{answer.authorName}}</span
         >
       </div>
       <div style="display: flex; align-items: center">
@@ -67,6 +68,7 @@
   <script>
 import SvgIcon from '@jamescoyle/vue-icon'
 import { mdiHeartOutline,mdiAlertCircleOutline} from '@mdi/js'
+import {useRouter} from 'vue-router'
     export default {
       props: {
         answer:{
@@ -84,7 +86,12 @@ import { mdiHeartOutline,mdiAlertCircleOutline} from '@mdi/js'
       components:{
         SvgIcon,
       },
-      setup() {},
+      setup() {
+        const router = useRouter();
+        return {
+          router,
+        }
+      },
       data() {
         const icons={
             heart:mdiHeartOutline,
@@ -96,7 +103,11 @@ import { mdiHeartOutline,mdiAlertCircleOutline} from '@mdi/js'
           icons,
         }
       },
-      methods: {},
+      methods: {
+        toAuthorPage(){
+          this.router.push({name:'AuthorPage',params:{name:this.answer.authorName}});
+        }
+      },
     }
   </script>
   

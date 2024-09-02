@@ -72,7 +72,7 @@ import { useRouter } from 'vue-router';
             authorName: '测试用户',
             profileUrl:
               'https://tse1-mm.cn.bing.net/th/id/OIP-C.PO7d9IfnPUy2RO173QYt6wHaHV?w=216&h=213&c=7&r=0&o=5&pid=1.7',
-            likeCount:'99999',
+            starCount:'99999',
             scanCount:'99999',
             replyCount:'99999',
         },
@@ -88,7 +88,7 @@ import { useRouter } from 'vue-router';
             authorName: '测试用户',
             profileUrl:
               'https://tse1-mm.cn.bing.net/th/id/OIP-C.PO7d9IfnPUy2RO173QYt6wHaHV?w=216&h=213&c=7&r=0&o=5&pid=1.7',
-            likeCount:'99999',
+            starCount:'99999',
             scanCount:'99999',
             replyCount:'99999',
         }
@@ -100,7 +100,7 @@ import { useRouter } from 'vue-router';
                     content: '这是问题的描述',
                     time: '2022-09-01 00:00',
                     replyCount: '99999',
-                    likeCount: '99999',
+                    starCount: '99999',
                     authorName: 'visitor',
                     authorId: '00000000',
                     scanCount: '99999',
@@ -112,7 +112,7 @@ import { useRouter } from 'vue-router';
                     content: '这是问题的描述',
                     time: '2022-09-01 00:00',
                     replyCount: '99999',
-                    likeCount: '99999',
+                    starCount: '99999',
                     authorName: 'visitor',
                     authorId: '00000000',
                     scanCount: '99999',

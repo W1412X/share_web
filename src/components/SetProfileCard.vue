@@ -65,9 +65,10 @@
   <script>
     export default {
       props: {
-        proileUrl: function(){
-          return '';
-        },
+        userName:{
+          type:String,
+          default:'visitor'
+        }
       },
       data() {
         const nowProfileUrl = ''
@@ -77,7 +78,7 @@
       },
       methods: {
         uploadImage() {//完成选取图片，上传图片的逻辑
-          this.$emit('close_profile');
+          this.$emit('close');
           const message={
             color:'info',
               title:'上传头像成功',
@@ -87,8 +88,7 @@
           this.$emit('alert',message);
         },
         finish(){//关闭此窗口的逻辑
-          console.log('finish SetProfileCard.vue')
-          this.$emit('close_profile');
+          this.$emit('close');
           const message={
             color:'info',
               title:'上传头像成功',

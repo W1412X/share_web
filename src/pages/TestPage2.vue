@@ -7,6 +7,7 @@
   <message-bar></message-bar>
   <course-answer-editor></course-answer-editor>
   <course-answer></course-answer>
+  <course-editor></course-editor>
   <v-btn @click="test()"></v-btn>
 </template>
 <script>
@@ -18,6 +19,7 @@ import QuestionEditor from '@/components/QuestionEditor.vue'
 import MessageBar from '@/components/MessageBar.vue'
 import CourseAnswerEditor from '@/components/CourseAnswerEditor.vue'
 import CourseAnswer from '@/components/CourseAnswer.vue';
+import CourseEditor from '@/components/CourseEditor.vue';
 export default{
   methods:{
     test(){
@@ -33,6 +35,7 @@ export default{
     MessageBar,
     CourseAnswerEditor,
     CourseAnswer,
+    CourseEditor,
   }
 }
 </script>

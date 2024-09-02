@@ -19,11 +19,13 @@
       <v-row :style="{'padding-left':'20px','color':'#8a8a8a'}">
           <v-avatar
             size="25"
+            @click="toAuthorPage"
             :style="{'margin-top':'8px','margin-right':'0px','margin-left':'10px','font-size':'14px'}"
           >
             <v-img :src="question.profileUrl"></v-img>
           </v-avatar>
           <span
+            @click="toAuthorPage"
             :style="{'margin-top':'10px','margin-right':'10px','margin-left':'10px','font-size':'14px'}"
             >{{ question.authorName }}</span
           >
@@ -41,8 +43,8 @@
             :style="{'max-width':'100px','margin-top':'10px','margin-left':'10px','margin-right':'0px','padding-left':'0px','padding-right':'0px'}"
           >
             <v-row :style="{'margin-top':'0px','margin-left':'0px','margin-right':'0px'}">
-              <svg-icon type="mdi" :path="icons.heartCount" size="18" :style="{'padding-top':'0px','margin-bottom':'0px','margin-left':'5px'}"></svg-icon>
-              <span :style="{'margin-left':'4px','font-size':'14px'}">{{ question.likeCount }}</span>
+              <svg-icon type="mdi" :path="icons.starCount" size="18" :style="{'padding-top':'0px','margin-bottom':'0px','margin-left':'5px'}"></svg-icon>
+              <span :style="{'margin-left':'4px','font-size':'14px'}">{{ question.starCount }}</span>
             </v-row>
           </div>
           <div
@@ -136,8 +138,9 @@
   </template>
   <script>
   import SvgIcon from '@jamescoyle/vue-icon';
-  import { mdiAlertCircleOutline,mdiClock,mdiEyeOutline,mdiHeart,mdiHeartOutline, mdiMessage, mdiStar,mdiTrashCanOutline } from '@mdi/js';
+  import { mdiAlertCircleOutline,mdiClock,mdiEyeOutline,mdiHeartOutline, mdiMessage, mdiStar,mdiTrashCanOutline } from '@mdi/js';
 import { computed } from 'vue';
+import {useRouter} from 'vue-router';
     export default {
       name: 'QuestionWithoutImage',
       props: {
@@ -154,7 +157,7 @@ import { computed } from 'vue';
               content: '',
               time:'',
               replyCount: '',
-              likeCount: '',
+              starCount: '',
               authorName: '',
               authorId: '',
               scanCount: '',
@@ -165,6 +168,12 @@ import { computed } from 'vue';
         isSelected:{
           type:Boolean,
           default:false,
+        }
+      },
+      setup(){
+        const router = useRouter();
+        return {
+          router,
         }
       },
       components:{
@@ -188,7 +197,6 @@ import { computed } from 'vue';
             viewCount:mdiEyeOutline,
             starCount:mdiStar,
             replyCount:mdiMessage,
-            heartCount:mdiHeart,
             delete:mdiTrashCanOutline,
           },
           backgound_color,
@@ -199,6 +207,9 @@ import { computed } from 'vue';
       methods:{
         select(){//点击按钮时选中次函数
           this.$emit('select_question',this.question.id);
+        },
+        toAuthorPage(){
+          this.router.push({name:'AuthorPage',params:{name:this.question.authorName}});
         }
       },
       computed:{

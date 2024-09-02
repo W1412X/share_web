@@ -36,7 +36,14 @@ import UserMessageReader from '@/components/UserMessageReader.vue';
 import ArticleItem from '@/components/ArticleItem.vue';
 import CourseItem from '@/components/CourseItem.vue';
 import QuestionWithOutImage from '@/components/QuestionWithOutImage.vue';
+import {useRoute} from 'vue-router';
 export default {
+  setup(){
+    const authorName='visitor';
+    return {
+      authorName,
+    }
+  },
   data() {
     const articleList = [//个人创作文章列表
       {
@@ -139,5 +146,10 @@ export default {
   methods: {
 
   },
+  onMounted(){
+    const route=useRoute();
+    this.authorName=route.params.name;
+    console.log('load author page',this.authorName);
+  }
 }
 </script>

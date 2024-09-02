@@ -1,14 +1,8 @@
+
 <template>
-  <v-dialog v-model="ifShowDialog"
-    style="width: 100%;height:100%;background-color: rgba(255,255,255,0.5);justify-content: center;">
-    <div v-if="ifShowSetProfileCard" style="width: 100%;height:100%;justify-content: center;display: flex">
-      <set-profile-card  @close_profile="closeSetProfileCard" @alert="alert"></set-profile-card>
-    </div>
-  </v-dialog>
   <v-snackbar
     :timeout="3000"
     :color="alertSet.color"
-    variant="outlined"
     v-model="alertSet.state"
   >
     <div class="text-subtitle-1 pb-2">{{ alertSet.title }}</div>
@@ -23,7 +17,7 @@
               title="test"></v-list-item>
           </v-list>
           <v-divider></v-divider>
-          <v-list density="compact" active-color="#9c0c13" nav>
+          <v-list density="compact" color="#9c0c13" nav>
             <v-list-item color="#9c0c13" :prepend-icon="'mdi-pencil'" title="创作" value="create"
               @click="setView('create')"></v-list-item>
             <v-list-item color="#9c0c13" :prepend-icon="'mdi-star'" title="收藏" value="star"
@@ -65,7 +59,7 @@
             style="display: flex;justify-content: center;flex-direction: column;width: 100%;">
             <div style="display: flex;justify-content: center;">
               <div style="display: flex; flex-direction: column;">
-                <user-message-editor @set_profile="showSetProfileCard" @alert="alert"></user-message-editor>
+                <user-message-editor @alert="alert"></user-message-editor>
               </div>
             </div>
           </div>
@@ -81,25 +75,25 @@
   import { mapActions } from 'vuex';
 import UserMessageEditor from '@/components/UserMessageEditor.vue';
 import '@mdi/font/css/materialdesignicons.css';
-import SetProfileCard from '@/components/SetProfileCard.vue';
-import { computed } from 'vue';
 import MessageBar from '@/components/MessageBar.vue';
 import UserMessageReader from '@/components/UserMessageReader.vue';
 import SelfCreate from '@/components/SelfCreate.vue';
 import SelfStar from '@/components/SelfStar.vue';
+import {useRoute} from 'vue-router'
   export default {
     setup(){
       const router=useRouter();
       const navigateToLogin =() =>{
         router.push({name:'LoginPage'})
       };
+      const userName='';
       return {
+        userName,
         navigateToLogin,
       }
     },
     components:{
       UserMessageEditor,
-      SetProfileCard,
       MessageBar,
       UserMessageReader,
       SelfCreate,
@@ -107,10 +101,6 @@ import SelfStar from '@/components/SelfStar.vue';
       SettingCard,
     },
     data() {
-      const ifShowSetProfileCard=false;
-      const ifShowDialog=computed(()=>{
-        return this.ifShowSetProfileCard;
-      });
       const messageList=[//消息列表
         {//一个示例
           content: '这是信息',
@@ -170,8 +160,6 @@ import SelfStar from '@/components/SelfStar.vue';
         messageList,
         followUserList,
         currentView:'setting',
-        ifShowDialog,
-        ifShowSetProfileCard,
         alertSet: {
           color: 'success',
           title: '登陆成功',
@@ -193,18 +181,11 @@ import SelfStar from '@/components/SelfStar.vue';
       setView(view){
         this.currentView=view;
       },
-      showSetProfileCard(userId){
-        console.log(userId);
-        this.ifShowSetProfileCard=true;
-        console.log(this.ifShowDialog);
-        console.log(this.ifShowSetProfileCard);
-      },
-      closeSetProfileCard(){
-        console.log('close SetProfileCard.vue')
-        this.ifShowSetProfileCard=false;
-      }
     },
-    mounted(){ 
+    onMounted(){
+      const route=useRoute();
+      this.userName=route.params.name;
+      console.log('Load self page',this.userName);
     }
   }
   </script>

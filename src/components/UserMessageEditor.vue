@@ -4,9 +4,12 @@
     <div v-if="ifShowEmailExmineCode" style="width: 100%;height:100%;justify-content: center;display: flex">
       <email-exmine-card :email="emailCardMessage.email" :new-passwd="this.editedMessage.passwd" :user-name="this.editedMessage.userName" :type="this.cardType" 
       @alert="alert" 
-      @close="closeExamineCode"
+      @close="close"
       @submit="submitExamineState"
       ></email-exmine-card>
+    </div>
+    <div v-if="ifShowSetProfileCard" style="width: 100%;height:100%;justify-content: center;display: flex">
+      <set-profile-card :user-name="this.editedMessage.userName"  @close="close" @alert="alert"></set-profile-card>
     </div>
   </v-dialog>
   <v-card style="padding: 10px; width: 700px">
@@ -245,6 +248,7 @@
   </v-card>
 </template>
 <script>
+import SetProfileCard from '@/components/SetProfileCard.vue';
 import EmailExmineCard from './EmailExmineCard.vue';
 import { deleteUser, getUser } from '@/utils/storage';
   import { computed, ref } from 'vue';
@@ -266,19 +270,26 @@ import { deleteUser, getUser } from '@/utils/storage';
     },
     components:{
       EmailExmineCard,
+      SetProfileCard,
     },
     setup(){
       const ifShowEmailExmineCode=ref(false);
+      const ifShowSetProfileCard=ref(false);
       const ifShowDialog=computed(()=>{
-        return ifShowEmailExmineCode.value;
+        return ifShowEmailExmineCode.value || ifShowSetProfileCard.value;
       })
       const setEmailExmineCodeCardState=(state)=>{
         ifShowEmailExmineCode.value=state;
       }
+      const setProfileCardState=(state)=>{
+        ifShowSetProfileCard.value=state;
+      }
       return {
         ifShowDialog,
         ifShowEmailExmineCode,
+        ifShowSetProfileCard,
         setEmailExmineCodeCardState,
+        setProfileCardState,
       }
     },
     data() {
@@ -341,8 +352,7 @@ import { deleteUser, getUser } from '@/utils/storage';
     },
     methods: {
       editProfile() {
-        console.log(this.userMessage.profileUrl);
-        this.$emit('set_profile',this.userMessage.userId);
+        this.setProfileCardState(true);
       },
       editUserName() {
         if (this.ifAbleEditUserName) {
@@ -378,9 +388,9 @@ import { deleteUser, getUser } from '@/utils/storage';
           this.ifAbleEditIntroduce = true
         }
       },
-      
-      closeExamineCode(){//关闭邮箱验证码的窗口
-        this.ifShowEmailExmineCode=false;
+      close(){//关闭邮箱验证码的窗口
+        this.setEmailExmineCodeCardState(false);
+        this.setProfileCardState(false);
       },
       submitExamineState(msg){//验证码的验证状态  //验证成功
         if(msg.type=='reset_passwd'&&msg.state=='success'){//如果对应的状态为成功

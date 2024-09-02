@@ -25,7 +25,7 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
-    path: '/self/:id',
+    path: '/self/:name',
     name: 'SelfPage',
     component: SelfPage,
     meta: { requiresAuth: true },
@@ -37,7 +37,7 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
-    path:'/editor/:id',
+    path:'/editor',
     name:'EditorPage',
     component: EditorPage,
     meta: { requiresAuth: true },
@@ -60,7 +60,7 @@ const routes = [
     component: ErrorPage
   },
   {
-    path:'/author/:id',
+    path:'/author/:name',
     name:'AuthorPage',
     component: AuthorPage,
     meta: { requiresAuth: true },
