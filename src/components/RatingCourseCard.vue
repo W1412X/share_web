@@ -102,13 +102,13 @@ export default {
           id:'00000000',
           name: '程序思维设计与实践',
           teacher: '蔡晓军',
-          type: '必修课 通识选修',
+          type: '通识选修,人文社科',
           college:'计算机科学与技术学院',
           campus:'青岛校区',
           rate: {
             averageRate: 3.5,
             rateNum: 100,
-            ratePropotion: [10, 20, 20, 30, 20],
+            ratePropotion: [10, 20, 20, 30, 20],//从1->5
           },
         }
       },

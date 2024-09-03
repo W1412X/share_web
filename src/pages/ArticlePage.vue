@@ -193,7 +193,7 @@ import SourceBar from '@/components/SourceBar.vue';
           starCount: '0',
           scanCount: '0',
           replyCount:'0',
-          content: '# 这是内容  \n\n ',
+          content: '',
           type:'转载',
           originLink:'https://sss',//如果文章类型为转载，反之为'',
           sourceUrl:'https://sss.zip',//如果文章含有资源，反之为'',

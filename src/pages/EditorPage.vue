@@ -4,7 +4,7 @@
       <v-card :style="{ 'max-width': '1000px', 'width': '1000px', 'background-color': '#eef0f4' }">
         <v-row style="margin: 0px; width: 1000px;padding:0px;">
           <div style="margin:10px">
-            <v-textarea style="width: 980px;margin-top:20px" v-model="quoteUrl" label="编辑标题" row-height="10" rows="1"
+            <v-textarea style="width: 980px;margin-top:20px" v-model="title" label="编辑标题" row-height="10" rows="1"
               variant="outlined" auto-grow></v-textarea>
           </div>
           <div style="justify-content: center;width:1000px;margin-left:0px;margin-right:0px;margin-top:0px">
@@ -49,7 +49,9 @@ export default{
         color:'',
         content:''
       };
+      const title='';
       return {
+        title,
         alertSet,
       }
     },
@@ -66,10 +68,12 @@ export default{
         const form=new FormData();
         const editorData=this.$refs.editorRef.$data;
         const barData=this.$refs.editorBarRef.$data;
+        form.append('title',this.title);
         form.append('content',editorData.html);
         form.append('imgUrl',barData.imgUrl);
         form.append('quoteUrl',barData.quoteUrl);
         form.append('type',barData.type);
+        form.append('tags',barData.tags);
         form.append('description',barData.description);
         form.append('fileUrl',barData.fileUrl);
         console.log(form);

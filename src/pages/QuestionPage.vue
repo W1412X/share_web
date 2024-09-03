@@ -45,13 +45,13 @@ import {useRoute} from 'vue-router'
       },
       data(){
         const question = {
+          id:'0000000',
           title: '这是一个测试题?',
           content: '这是问题的描述',
           time: '2022-09-01 00:00',
           replyCount: '99999',
           starCount: '99999',
           authorName: 'visitor',
-          authorId: '00000000',
           scanCount: '99999',
           profileUrl: 'https://pic2.zhimg.com/v2-0dda71bc9ced142bf7bb2d6adbebe4f0_r.jpg?source=1940ef5c'
         }

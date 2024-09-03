@@ -16,9 +16,9 @@
           </div>
           <div>
             <div v-if="ifShowTagInput" style="display: flex;flex-direction: row;margin: 10px;">
-              <v-textarea v-model="inputTag" style="width: 200px" label="输入标签" row-height="1" rows="1"
+              <v-textarea v-model="inputTag" density="compact" style="width: 200px" label="输入标签" row-height="1" rows="1"
                 variant="outlined" auto-grow></v-textarea>
-              <v-btn @click="confirmAddTag()" style="margin-top: 10px;margin-left: 10px;height: 30px;"
+              <v-btn @click="confirmAddTag()" style="margin-top: 5px;margin-left: 10px;height: 30px;"
                 variant="outlined" color="#9c0c13">确认添加</v-btn>
             </div>
             <v-btn color="#9c0c13" @click="ifShowTagInput = true" variant="outlined" style="
@@ -180,6 +180,16 @@ export default {
         const msg={
           state:true,
           title:'标签不可为空',
+          content:'',
+          color:'warning'
+        }
+        this.$emit('alert',msg);
+        return;
+      }
+      if(this.inputTag.includes(',')){//,作为分割符，不可以包含在标签中
+        const msg={
+          state:true,
+          title:'标签不可以包含 , 等特殊符号',
           content:'',
           color:'warning'
         }
