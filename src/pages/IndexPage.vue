@@ -198,10 +198,7 @@ export default {
         type: '必修',
         college: '计算机科学与技术学院',
         campus:'青岛校区',
-        rate: {
-          rate: 3.5,
-        },
-        semester: '大二 上学期',
+        rate:3.5,
       }
       const question_item={
         id: '00000000',

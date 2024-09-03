@@ -36,7 +36,7 @@
       <div style="display: flex; flex-direction: row">
         <v-rating
           style="margin: 0px"
-          :model-value="3"
+          :model-value="course.rate"
           color="rgba(156,12,19,0.8)"
           half-increments
         ></v-rating>
@@ -49,7 +49,7 @@
             color: #8a8a8a;
           "
         >
-          平均评分 {{ course.rate.rate }}
+          平均评分 {{ course.rate }}
         </div>
       </div>
     </v-row>
@@ -69,10 +69,7 @@ import {useRouter} from 'vue-router';
             type: '必修课 通识选修',
             college: '计算机科学与技术学院',
             campus:'青岛校区',
-            rate: {
-              rate: 3.5,
-            },
-            semester: '大二 上学期',
+            rate: 3.5,
           }
         },
       },
