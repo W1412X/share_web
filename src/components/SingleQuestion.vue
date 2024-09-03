@@ -177,7 +177,7 @@ export default {
       authorId: 'xxxx',
       scanCount: 'xxxx',
       profileUrl: 'xxxx',
-      relativeUrl:'',
+      relativeUrl:'xxxx',
     };
     const backgound_color = computed(() => {
       return this.isSelected ? '#def2f8' : '';
