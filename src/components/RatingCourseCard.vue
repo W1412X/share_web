@@ -22,22 +22,36 @@
         </div>
         <div style="display: flex; flex-direction: row">
           <div
-            :style="{'font-size':'18px','color':'#8a8a8a','margin-right':'30px','font-weight':'normal','white-space':'nowrap','text-overflow':'ellipsis','overflow':'hidden','margin-left':'15px','margin-top':'5px'}">
+            :style="{'font-size':'18px','color':'#8a8a8a','margin-right':'30px','font-weight':'normal','white-space':'nowrap','text-overflow':'ellipsis','overflow':'hidden','margin-left':'15px','margin-top':'5px'}"
+          >
             课程类型: {{ course.type }}
           </div>
           <div
-            :style="{'font-size':'18px','color':'#8a8a8a','margin-right':'30px','white-space':'nowrap','font-weight':'normal','text-overflow':'ellipsis','overflow':'hidden','margin-left':'15px','margin-top':'5px'}">
+            :style="{'font-size':'18px','color':'#8a8a8a','margin-right':'30px','white-space':'nowrap','font-weight':'normal','text-overflow':'ellipsis','overflow':'hidden','margin-left':'15px','margin-top':'5px'}"
+          >
             授课教师: {{ course.teacher }}
+          </div>
+          <div
+            :style="{'font-size':'18px','color':'#8a8a8a','margin-right':'30px','white-space':'nowrap','font-weight':'normal','text-overflow':'ellipsis','overflow':'hidden','margin-left':'15px','margin-top':'5px'}"
+          >
+            教学方式: {{ course.teacheMethod }}
           </div>
         </div>
         <div style="display: flex; flex-direction: row">
           <div
-            :style="{'font-size':'18px','color':'#8a8a8a','margin-right':'30px','white-space':'nowrap','font-weight':'normal','text-overflow':'ellipsis','overflow':'hidden','margin-left':'15px','margin-top':'5px'}">
+            :style="{'font-size':'18px','color':'#8a8a8a','margin-right':'30px','white-space':'nowrap','font-weight':'normal','text-overflow':'ellipsis','overflow':'hidden','margin-left':'15px','margin-top':'5px'}"
+          >
             开设校区: {{ course.campus }}
           </div>
           <div
-            :style="{'font-size':'18px','color':'#8a8a8a','white-space':'nowrap','font-weight':'normal','text-overflow':'ellipsis','overflow':'hidden','margin-left':'15px','margin-top':'5px'}">
+            :style="{'font-size':'18px','color':'#8a8a8a','white-space':'nowrap','font-weight':'normal','text-overflow':'ellipsis','overflow':'hidden','margin-left':'15px','margin-right':'15px','margin-top':'5px'}"
+          >
             开设学院: {{ course.college }}
+          </div>
+          <div
+            :style="{'font-size':'18px','color':'#8a8a8a','margin-right':'30px','white-space':'nowrap','font-weight':'normal','text-overflow':'ellipsis','overflow':'hidden','margin-left':'15px','margin-top':'5px'}"
+          >
+            考核方式: {{ course.examineMethod }}
           </div>
         </div>
       </div>
@@ -136,6 +150,8 @@ export default {
       type: '通识选修,人文社科',
       college: '计算机科学与技术学院',
       campus: '青岛校区',
+      examineMethod:'项目展示',
+      teacheMethod:'线上',
       rate: {
         averageRate: 3.5,
         rateNum: 100,

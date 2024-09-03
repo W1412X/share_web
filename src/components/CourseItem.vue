@@ -19,6 +19,11 @@
           >
             授课教师: {{ course.teacher }}
           </div>
+          <div
+            :style="{'font-size':'18px','color':'#8a8a8a','margin-right':'30px','white-space':'nowrap','font-weight':'normal','text-overflow':'ellipsis','overflow':'hidden','margin-left':'15px','margin-top':'5px'}"
+          >
+            教学方式: {{ course.teacheMethod }}
+          </div>
         </div>
         <div style="display: flex; flex-direction: row">
           <div
@@ -27,9 +32,14 @@
             开设校区: {{ course.campus }}
           </div>
           <div
-            :style="{'font-size':'18px','color':'#8a8a8a','white-space':'nowrap','font-weight':'normal','text-overflow':'ellipsis','overflow':'hidden','margin-left':'15px','margin-top':'5px'}"
+            :style="{'font-size':'18px','color':'#8a8a8a','white-space':'nowrap','font-weight':'normal','text-overflow':'ellipsis','overflow':'hidden','margin-left':'15px','margin-right':'15px','margin-top':'5px'}"
           >
             开设学院: {{ course.college }}
+          </div>
+          <div
+            :style="{'font-size':'18px','color':'#8a8a8a','margin-right':'30px','white-space':'nowrap','font-weight':'normal','text-overflow':'ellipsis','overflow':'hidden','margin-left':'15px','margin-top':'5px'}"
+          >
+            考核方式: {{ course.examineMethod }}
           </div>
         </div>
       </div>
@@ -81,6 +91,8 @@ import {useRouter} from 'vue-router';
         type: '必修课 通识选修',
         college: '计算机科学与技术学院',
         campus: '青岛校区',
+        examineMethod:'考试',//考试/论文/项目展示/其他
+        teacheMethod:'线上',//线上/线下/混合
         rate: 3.5,
       }
       return {
