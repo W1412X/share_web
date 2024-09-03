@@ -25,8 +25,8 @@
             问题标题:
           </div>
           <v-textarea
-            style="width: 720px; margin-top: 20px"
-            v-model="nowQuestion.title"
+            style="width: 100%; margin-top: 20px"
+            v-model="question.title"
             label="编辑问题标题"
             row-height="10"
             rows="1"
@@ -39,8 +39,8 @@
             问题详细描述:
           </div>
           <v-textarea
-            style="width: 720px; margin-top: 20px"
-            v-model="nowQuestion.content"
+            style="width: 100%; margin-top: 20px"
+            v-model="question.content"
             label="编辑问题更具体的描述"
             row-height="10"
             rows="4"
@@ -57,8 +57,8 @@
             如果本问题是基于某一个本站内的文章、课程或者其他网站的内容提出的，则你需要添加对应的网页地址
           </div>
           <v-textarea
-            style="width: 720px; margin-top: 20px"
-            v-model="nowQuestion.title"
+            style="width: 100%; margin-top: 20px"
+            v-model="question.title"
             label="添加一个有效地址"
             row-height="10"
             rows="1"
@@ -91,25 +91,19 @@
   <script>
     export default {
       props: {
-        question: {
-          type: Object,
-          default: function () {
-            return {
-              title: '',
-              content: '',
-              relativeItemUrl: '', //与之关联的文章，课程链接
-            }
-          },
-        },
+        id:{
+          type:String,
+          default:'00000000',
+        }
       },
       data() {
-        const nowQuestion = {
-          title: this.question.title,
-          content: this.question.content,
-          relativeItemUrl: this.question.relativeItemUrl,
-        }
+        const question = {
+          title: '',
+          content: '',
+          relativeItemUrl: '', //与之关联的文章，课程链接
+        };
         return {
-          nowQuestion,
+          question,
         }
       },
       methods: {

@@ -2,7 +2,7 @@
   <v-dialog v-model="ifShowDialog"
     style="width: 100%;height:100%;background-color: rgba(255,255,255,0.5);justify-content: center;">
     <div v-if="ifShowReportCard" style="width: 100%;height:100%;justify-content: center;display: flex">
-      <report-card :report="{type:'问题回答',id:this.answer.id}" @close="close()"></report-card>
+      <report-card :report="{type:'问题回答',id:this.id}" @close="close()"></report-card>
     </div>
   </v-dialog>
   <v-card
@@ -80,18 +80,10 @@ import ReportCard from '@/components/ReportCard.vue';
   export default {
     name: 'ResourceItem',
     props: {
-      answer:{
-        type:Object,
-        default:function(){
-          return {
-            id: '00000000',
-            name: 'visitor',
-            time: '2022-09-01 00:00',
-            content: '这是回复内容',
-            profileUrl: 'https://pic2.zhimg.com/v2-0dda71bc9ced142bf7bb2d6adbebe4f0_r.jpg?source=1940ef5c',
-          }
-        }
-      }
+      id:{
+        type:String,
+        default:'00000000',
+      },
     },
     setup(){
       const router=useRouter();
@@ -110,7 +102,15 @@ import ReportCard from '@/components/ReportCard.vue';
       }
     },
     data(){
+      const answer = {
+        id: this.id,
+        name: 'isitor',
+        time: 'xxxx-xx-xx xx:xx',
+        content: 'xxxxx',
+        profileUrl: 'xxxxx',
+      }
       return{
+        answer,
         icons:{
           heart:mdiHeartOutline,
           alert:mdiAlertCircleOutline,

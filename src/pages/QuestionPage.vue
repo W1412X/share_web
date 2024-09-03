@@ -36,6 +36,7 @@ import SingleQuestion from '@/components/SingleQuestion.vue';
 import {useRoute} from 'vue-router'
     export default {
       props:{
+        
       },
       setup(){
         const questionId='0000000';
@@ -45,7 +46,6 @@ import {useRoute} from 'vue-router'
       },
       data(){
         const question = {
-          id:'0000000',
           title: '这是一个测试题?',
           content: '这是问题的描述',
           time: '2022-09-01 00:00',

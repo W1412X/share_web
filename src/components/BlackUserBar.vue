@@ -45,18 +45,9 @@
   import { computed } from 'vue'
   export default {
     props: {
-      user: {
-        type: Object,
-        default: function () {
-          return {
-            userId: '00000000',
-            userName: 'test',
-            state: false,
-            introduce: '这是介绍部分',
-            profileUrl:
-              'https://tse1-mm.cn.bing.net/th/id/OIP-C.PO7d9IfnPUy2RO173QYt6wHaHV?w=216&h=213&c=7&r=0&o=5&pid=1.7',
-          }
-        },
+      id:{
+        type:String,
+        default:'00000000',
       },
       ifWithIntroduce: {
         type: Boolean,
@@ -64,7 +55,15 @@
       },
     },
     data() {
-      const state = this.user.state
+      const user = {
+        userId: '00000000',
+        userName: 'test',
+        state: false,
+        introduce: '这是介绍部分',
+        profileUrl:
+          'https://tse1-mm.cn.bing.net/th/id/OIP-C.PO7d9IfnPUy2RO173QYt6wHaHV?w=216&h=213&c=7&r=0&o=5&pid=1.7',
+      }
+      const state = user.state
       const buttonColor = computed(() => {
         return this.state ? '#000000' : '#8a8a8a'
       })
@@ -75,6 +74,7 @@
         buttonColor,
         buttonText,
         state,
+        user,
       }
     },
     methods: {

@@ -77,6 +77,12 @@
   
   <script>
     export default {
+      props:{
+        id:{
+          type:String,
+          default:'00000000',
+        }
+      },
       data() {
         const colleges = [
           '计算机科学与技术学院',

@@ -21,10 +21,10 @@
       <AnswerList :question_id="this.selectedQuestionId"></AnswerList>
     </div>
     <div :style="{'padding':'0px','height':'100%','background-color':'rgba(255,255,255,1)','min-width':'750px'}">
-      <div :style="{'min-height':'95%','display':'relative','overflow':'auto'}">
-        <QuestionWithOutImage v-for="(question,index) in questionList" :key="index" :question="question"
-          :isSelected="question.id==selectedQuestionId" @select_question="selectQuestion"></QuestionWithOutImage>
-        <v-btn variant="outlined" style="width: 750px;">加载更多问题</v-btn>
+      <div :style="{'height':'95%','display':'flow','overflow':'auto'}">
+        <SingleQuestion v-for="(questionId,index) in questionList" :key="index" :id="questionId" :type="'article'"
+          :isSelected="questionId==selectedQuestionId" @select_question="selectQuestion"></SingleQuestion>
+        <v-btn variant="outlined" style="width: 750px;" color="#0074e8">加载更多问题</v-btn>
       </div>
       <v-btn @click="publishQuestion"
         style="height: 4%;min-width: 700px;margin-left: 25px;margin-right: 25px;margin-top:1%;font-weight:bold;"
@@ -36,11 +36,11 @@
 <script>
 import { getPostList } from '@/axios/post';
 import AnswerList from './AnswerList.vue';
-import QuestionWithOutImage from './QuestionWithOutImage.vue';
 import { computed, ref } from 'vue';
 import QuestionEditor from './QuestionEditor.vue';
 import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiChevronDoubleRight } from '@mdi/js';
+import SingleQuestion from './SingleQuestion.vue';
   export default {
     props:{
       id:{
@@ -51,34 +51,10 @@ import { mdiChevronDoubleRight } from '@mdi/js';
         type:String,
         default:'article',
       },
-      /*questionList:{
-        type:Array,
-        default:function(){
-          return [{
-            id: '00000000',
-            title: '这是一个测试题?',
-            content: '这是问题的描述',
-            time:'2022-09-01 00:00',
-            replyCount: '99999',
-            likeCount: '99999',
-            authorName: 'visitor',
-            authorId: '00000000',
-            scanCount: '99999',
-            profileUrl:'https://pic2.zhimg.com/v2-0dda71bc9ced142bf7bb2d6adbebe4f0_r.jpg?source=1940ef5c',
-          },{
-            id: '00000001',
-            title: '这是一个测试题?',
-            content: '这是问题的描述',
-            time:'2022-09-01 00:00',
-            replyCount: '99999',
-            likeCount: '99999',
-            authorName: 'visitor',
-            authorId: '00000000',
-            scanCount: '99999',
-            profileUrl:'https://pic2.zhimg.com/v2-0dda71bc9ced142bf7bb2d6adbebe4f0_r.jpg?source=1940ef5c',
-          }]
-        }
-      },*/
+      presetedQuestion:{
+        type:String,
+        default:'',
+      }
     },
     setup(){
       const ifShowQuestionEditor=ref(false);
@@ -97,7 +73,14 @@ import { mdiChevronDoubleRight } from '@mdi/js';
     data(){
       const selectedQuestionId=null;
       const questionList=[//问题列表
-
+        '00000001',
+        '00000002',
+        '00000003',
+        '00000004',
+        '00000005',
+        '00000006',
+        '00000007',
+        '00000008',
       ];
       const gotPageNum=1;
       return {
@@ -110,7 +93,7 @@ import { mdiChevronDoubleRight } from '@mdi/js';
       }
     },
     components: {
-      QuestionWithOutImage,
+      SingleQuestion,
       AnswerList,
       QuestionEditor,
       SvgIcon,

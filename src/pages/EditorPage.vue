@@ -37,9 +37,20 @@ import ArticleEditor from '@/components/ArticleEditor.vue';
 import ArticleEditorBar from '@/components/ArticleEditorBar.vue';
 export default{
     props:{
-      id:{
-        type:String,
-        default:'00000000'
+      article:{
+        type:Object,
+        default:function(){
+          return {
+            title:'',
+            content:'',
+            imgUrl:'',
+            quoteUrl:'',
+            type:'',
+            tags:'',
+            description:'',
+            fileUrl:'',
+          }
+        }
       }
     },
     data(){

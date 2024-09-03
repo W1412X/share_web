@@ -17,6 +17,7 @@
             {{ course.name }}
           </div>
           <v-spacer></v-spacer>
+          <star-button :id="id" :type="'course'" style="margin-top:10px;margin-right: 10px"></star-button>
           <svg-icon @click="report" type="mdi" :path="icons.alert" color="#8a8a8a" style="margin-top:10px;margin-right: 10px"></svg-icon>
         </div>
         <div style="display: flex; flex-direction: row">
@@ -93,26 +94,13 @@ import {ref,computed} from 'vue';
 import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiAlertCircleOutline } from '@mdi/js';
 import ReportCard from './ReportCard.vue';
+import StarButton from './StarButton.vue';
 export default {
   props: {
-    course: {
-      type: Object,
-      default: function () {
-        return {
-          id:'00000000',
-          name: '程序思维设计与实践',
-          teacher: '蔡晓军',
-          type: '通识选修,人文社科',
-          college:'计算机科学与技术学院',
-          campus:'青岛校区',
-          rate: {
-            averageRate: 3.5,
-            rateNum: 100,
-            ratePropotion: [10, 20, 20, 30, 20],//从1->5
-          },
-        }
-      },
-    },
+    id:{
+      type:String,
+      default:'00000000',
+    }
   },
   setup(){
     const ifShowCourseAnswerEditor=ref(false);
@@ -138,12 +126,27 @@ export default {
     CourseAnswerEditor,
     SvgIcon,
     ReportCard,
+    StarButton,
   },
   data() {
+    const course = {
+      id: '00000000',
+      name: '程序思维设计与实践',
+      teacher: '蔡晓军',
+      type: '通识选修,人文社科',
+      college: '计算机科学与技术学院',
+      campus: '青岛校区',
+      rate: {
+        averageRate: 3.5,
+        rateNum: 100,
+        ratePropotion: [10, 20, 20, 30, 20],//从1->5
+      },
+    }
     return {
       icons:{
         alert:mdiAlertCircleOutline,
-      }
+      },
+      course,
     }
   },
   methods:{

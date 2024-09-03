@@ -54,11 +54,11 @@
           <div v-if="this.itemType=='article'" style="width: 770px;">
             <article-list :articleList="this.articleItems"></article-list>
           </div>
-          <div v-if="this.itemType=='question'" style="">
-            <SingleQuestion v-for="(obj,index) in this.questionItems" :key="index" :question="obj" style="margin: 5px;"></SingleQuestion>
+          <div v-if="this.itemType=='question'" style="width: 770px;">
+            <SingleQuestion v-for="(questionId,index) in this.questionItems" :key="index" :id="questionId" style="margin: 5px;"></SingleQuestion>
           </div>
-          <div v-if="this.itemType=='course'" style="">
-            <CourseItem v-for="(obj,index) in this.courseItems" :key="index" :course="obj" style="margin: 5px;"></CourseItem>
+          <div v-if="this.itemType=='course'" style="width: 770px;">
+            <CourseItem v-for="(courseId,index) in this.courseItems" :key="index" :id="courseId" style="margin: 5px;"></CourseItem>
           </div>
           <div>
           </div>
@@ -155,13 +155,34 @@ export default {
       },
       searchContent: 'RECOMMAND',
       articleItems: [
-
+      '00000001',
+        '00000002',
+        '00000003',
+        '00000004',
+        '00000005',
+        '00000006',
+        '00000007',
+        '00000008'
       ],//存储展示的文章的信息数组
       courseItems:[
-
+      '00000001',
+        '00000002',
+        '00000003',
+        '00000004',
+        '00000005',
+        '00000006',
+        '00000007',
+        '00000008'
       ], 
       questionItems:[
-
+      '00000001',
+        '00000002',
+        '00000003',
+        '00000004',
+        '00000005',
+        '00000006',
+        '00000007',
+        '00000008'
       ],
       itemType:'article',
       inputValue:'',
@@ -176,50 +197,6 @@ export default {
       alert(iv)
     },
     load_items() {//在向下划时调用
-      const article_item = {
-        id: '00000001',
-        title: '这是文章2标题',
-        tags: ['计算机2', '测试2'],
-        description:
-          '这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介',
-        publishTime: '2022-09-01 00:00',
-        imgUrl:
-          'https://tse2-mm.cn.bing.net/th/id/OIP-C.B6see3otwDOwdcSecD_W8QHaHa?w=173&h=180&c=7&r=0&o=5&pid=1.7',
-        authorName: '测试用户',
-        profileUrl:
-          'https://tse1-mm.cn.bing.net/th/id/OIP-C.PO7d9IfnPUy2RO173QYt6wHaHV?w=216&h=213&c=7&r=0&o=5&pid=1.7',
-        starCount:10000,
-        replyCount:10000,
-        scanCount:100000,
-      }
-      const course_item={
-        name: '程序思维设计与实践',
-        teacher: '蔡晓军',
-        type: '必修',
-        college: '计算机科学与技术学院',
-        campus:'青岛校区',
-        rate:3.5,
-      }
-      const question_item={
-        id: '00000000',
-                    title: '这是一个测试题?',
-                    content: '这是问题的描述',
-                    time: '2022-09-01 00:00',
-                    replyCount: '99999',
-                    starCount: '99999',
-                    authorName: 'visitor',
-                    authorId: '00000000',
-                    scanCount: '99999',
-                    profileUrl: 'https://pic2.zhimg.com/v2-0dda71bc9ced142bf7bb2d6adbebe4f0_r.jpg?source=1940ef5c'
-      }
-      this.articleItems.push(article_item );
-      this.courseItems.push(course_item);
-      this.questionItems.push(question_item);
-    },
-    test(){
-      for(var i=0;i<10;i++){
-        this.load_items();      
-      }
     },
     writeArticle(){
       this.router.push({name:'EditorPage',params:{id:"00000000"}});
@@ -236,7 +213,6 @@ export default {
     }
   },
   mounted(){
-    this.test();
   }
 }
 </script>

@@ -3,7 +3,7 @@
       :style="{'padding':'0px','height':'95%','display':'relative'}"
     >
       <div :style="{'max-height':'100%','padding':'5px','overflow':'auto',}">
-        <Answer v-for="(ans,index) in answerList" :answer="ans" :key="index"
+        <Answer v-for="(answerId,index) in answerList" :id="answerId" :key="index"
         ></Answer>
         <v-btn variant="outlined" style="width:750px;color: #0074e8;" @click="loadMore()">加载更多的回答</v-btn>
       </div>
@@ -34,28 +34,15 @@ export default{
       }
       const editingAnswerContent='';
       const answerList=[
-        {
-          id: '00000000',
-          name: '游客',
-          time: '2022-09-01 00:00',
-          content: '这是00000001回复内容',
-          profileUrl: 'https://pic2.zhimg.com/v2-0dda71bc9ced142bf7bb2d6adbebe4f0_r.jpg?source=1940ef5c',
-        },
-        {
-          id: '00000000',
-          name: '游客',
-          time: '2022-09-01 00:00',
-          content: '这是00000001回复内容',
-          profileUrl: 'https://pic2.zhimg.com/v2-0dda71bc9ced142bf7bb2d6adbebe4f0_r.jpg?source=1940ef5c',
-        },
-        {
-          id: '00000000',
-          name: '游客',
-          time: '2022-09-01 00:00',
-          content: '这是00000001回复内容',
-          profileUrl: 'https://pic2.zhimg.com/v2-0dda71bc9ced142bf7bb2d6adbebe4f0_r.jpg?source=1940ef5c',
-        }
-      ]
+        '00000000',
+        '00000001',
+        '00000002',
+        '00000003',
+        '00000000',
+        '00000001',
+        '00000002',
+        '00000003',
+      ];
       return{
         answerList,
         editingAnswerContent,

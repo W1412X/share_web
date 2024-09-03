@@ -200,6 +200,7 @@ import SourceBar from '@/components/SourceBar.vue';
         },
         renderedContent:'',
         ifShowComment:false,
+        selectedQuestionId:'',
       }
     },
     methods:{
@@ -223,8 +224,11 @@ import SourceBar from '@/components/SourceBar.vue';
       const route=useRoute();
       this.articleId=route.params.id;
       console.log('load article page',this.articleId);
+      //来自消息跳转
+      if('question' in route.params){
+        this.ifShowComment=true;
+      }
       //在这里获取文章的内容
-
       //在组件加载完成后，将Markdown文本解析为HTML并赋值给renderedMarkdown
       this.renderedContent = marked(this.article.content);
     },

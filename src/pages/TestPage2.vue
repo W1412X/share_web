@@ -9,6 +9,7 @@
   <course-answer></course-answer>
   <course-editor></course-editor>
   <source-bar></source-bar>
+  <star-button></star-button>
   <v-btn @click="test()"></v-btn>
 </template>
 <script>
@@ -22,6 +23,7 @@ import CourseAnswerEditor from '@/components/CourseAnswerEditor.vue'
 import CourseAnswer from '@/components/CourseAnswer.vue';
 import CourseEditor from '@/components/CourseEditor.vue';
 import SourceBar from '@/components/SourceBar.vue';
+import StarButton from '@/components/StarButton.vue';
 export default{
   methods:{
     test(){
@@ -38,6 +40,7 @@ export default{
     CourseAnswerEditor,
     CourseAnswer,
     CourseEditor,
+    StarButton,
     SourceBar,
   }
 }

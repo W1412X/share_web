@@ -2,7 +2,7 @@
   <v-dialog v-model="ifShowDialog"
     style="width: 100%;height:100%;background-color: rgba(255,255,255,0.5);justify-content: center;">
     <div v-if="ifShowReportCard" style="width: 100%;height:100%;justify-content: center;display: flex">
-      <report-card :report="{type:'课程评价',id:this.answer.id}" @close="close()"></report-card>
+      <report-card :report="{type:'课程评价',id:this.id}" @close="close()"></report-card>
     </div>
   </v-dialog>
     <div
@@ -16,7 +16,7 @@
       "
     >
       <div style="display: flex; flex-direction: row">
-        <v-avatar @click="toAuthorPage" size="35" :image="avatarUrl"></v-avatar>
+        <v-avatar @click="toAuthorPage" size="35" :image="answer.profileUrl"></v-avatar>
         <span
            @click="toAuthorPage"
           style="
@@ -79,18 +79,10 @@ import {useRouter} from 'vue-router';
 import ReportCard from './ReportCard.vue';
     export default {
       props: {
-        answer:{
-          type:Object,
-          default:function(){
-            return {
-              id:'0000000',
-              authorName:'test',
-              rate:4,
-              content:'这是评论内容',
-              time:'2024-09-01 09:00'
-            }
-          }
-        },
+        id:{
+          type:String,
+          default:'00000000',
+        }
       },
       components:{
         SvgIcon,
@@ -113,14 +105,21 @@ import ReportCard from './ReportCard.vue';
         }
       },
       data() {
+        const answer = {
+          id: this.id,
+          authorName: 'visitor',
+          rate: 4,
+          content: '这是评论内容',
+          time: '2024-09-01 09:00',
+          profileUrl:'https://pic2.zhimg.com/v2-0dda71bc9ced142bf7bb2d6adbebe4f0_r.jpg?source=1940ef5c',
+        }
         const icons={
             heart:mdiHeartOutline,
             alert:mdiAlertCircleOutline,
         }
-        const avatarUrl = 'https://pic2.zhimg.com/v2-0dda71bc9ced142bf7bb2d6adbebe4f0_r.jpg?source=1940ef5c'
         return {
-          avatarUrl,
           icons,
+          answer,
         }
       },
       methods: {

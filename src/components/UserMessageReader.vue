@@ -30,21 +30,9 @@
 import { computed } from 'vue';
   export default {
     props: {
-      user: {
-        type: Object,
-        default: function () {
-          return {
-            userId: '00000000',
-            userName: 'test',
-            followState: false,
-            introduce:'这是介绍部分',
-            starCount:'9999',
-            scanCount:'9999',
-            followCount:'9999',
-            profileUrl:
-              'https://tse1-mm.cn.bing.net/th/id/OIP-C.PO7d9IfnPUy2RO173QYt6wHaHV?w=216&h=213&c=7&r=0&o=5&pid=1.7',
-          }
-        },
+      name:{
+        type:String,
+        default:'visitor',
       },
       ifWithIntroduce:{
         type:Boolean,
@@ -56,7 +44,18 @@ import { computed } from 'vue';
       },
     },
     data() {
-      const followState=this.user.followState;
+      const user = {
+        userId: '00000000',
+        userName: this.name,
+        followState: false,
+        introduce: '这是介绍部分',
+        starCount: '9999',
+        scanCount: '9999',
+        followCount: '9999',
+        profileUrl:
+          'https://tse1-mm.cn.bing.net/th/id/OIP-C.PO7d9IfnPUy2RO173QYt6wHaHV?w=216&h=213&c=7&r=0&o=5&pid=1.7',
+      }
+      const followState=user.followState;
       const followButtonColor=computed(()=>{
           return this.followState ? "#8a8a8a" : "#9c0c13";
       })
@@ -67,6 +66,7 @@ import { computed } from 'vue';
           followButtonColor,
           followButtonText,
           followState,
+          user,
       }
     },
     methods: {

@@ -2,7 +2,7 @@
   <v-dialog v-model="ifShowDialog"
     style="width: 100%;height:100%;background-color: rgba(255,255,255,0.5);justify-content: center;">
     <div v-if="ifShowReportCard" style="width: 100%;height:100%;justify-content: center;display: flex">
-      <report-card :report="{type:'文章',id:this.article.id}" @close="close()"></report-card>
+      <report-card :report="{type:'文章',id:this.id}" @close="close()"></report-card>
     </div>
   </v-dialog>
   <v-card
@@ -139,22 +139,13 @@
           >
             <svg-icon type="mdi" :path="icon.alert"></svg-icon>
           </v-btn>
-          <v-btn
-            v-if="status=='reader'"
-            elevation="0"
-            icon
-            :style="{'max-width':'25px',
-            'padding-left':'0px',
-            'max-height':'25px',
-            'color':'#8a8a8a',            
+          <star-button v-if="status=='reader'"             
+          :style="{
+            'padding-left':'0px',          
             'margin-top':'10px',
             'margin-left':'2px',
-            'border-radius': '100%',
-
-            }"
-          >
-            <svg-icon type="mdi" :path="icon.star"></svg-icon>
-          </v-btn>
+            }">
+          </star-button>
           <v-btn
             v-if="status=='writer'"
             elevation="0"
@@ -192,36 +183,20 @@
 <script>
   import SvgIcon from '@jamescoyle/vue-icon'
   import ReportCard from '@/components/ReportCard.vue'
-  import { mdiAlertCircleOutline, mdiEye, mdiStarOutline, mdiMessage, mdiPencilCircleOutline, mdiStar, mdiTrashCanOutline } from '@mdi/js'
+  import { mdiAlertCircleOutline, mdiEye, mdiMessage, mdiPencilCircleOutline, mdiStar, mdiTrashCanOutline } from '@mdi/js'
   import { useRouter } from 'vue-router'
   import {ref,computed} from 'vue'
+import StarButton from './StarButton.vue'
   export default {
     props: {
       status: {
         type: String,
         default: 'reader', //reader,writer,manager
       },
-      article: {
-        type: Object,
-        default: function () {
-          return {
-            id: '00000000',
-            title: '这是文章标题',
-            tags: ['计算机', '测试'],
-            description:
-              '这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介',
-            publishTime: '2022-09-01 00:00',
-            imgUrl:
-              'https://tse2-mm.cn.bing.net/th/id/OIP-C.B6see3otwDOwdcSecD_W8QHaHa?w=173&h=180&c=7&r=0&o=5&pid=1.7',
-            authorName: '测试用户',
-            profileUrl:
-              'https://tse1-mm.cn.bing.net/th/id/OIP-C.PO7d9IfnPUy2RO173QYt6wHaHV?w=216&h=213&c=7&r=0&o=5&pid=1.7',
-            starCount:'99999',
-            scanCount:'99999',
-            replyCount:'99999',
-          }
-        },
-      },
+      id:{
+        type:String,
+        default:'00000000',
+      }
     },
     setup() {
       const router = useRouter();
@@ -240,21 +215,37 @@
       }
     },
     data() {
+      const article = {
+        id: this.id,
+        title: '这是文章标题',
+        tags: ['计算机', '测试'],
+        description:
+          '这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介',
+        publishTime: '2022-09-01 00:00',
+        imgUrl:
+          'https://tse2-mm.cn.bing.net/th/id/OIP-C.B6see3otwDOwdcSecD_W8QHaHa?w=173&h=180&c=7&r=0&o=5&pid=1.7',
+        authorName: '测试用户',
+        profileUrl:
+          'https://tse1-mm.cn.bing.net/th/id/OIP-C.PO7d9IfnPUy2RO173QYt6wHaHV?w=216&h=213&c=7&r=0&o=5&pid=1.7',
+        starCount: '99999',
+        scanCount: '99999',
+        replyCount: '99999',
+      }
       return {
         icon: {
           alert: mdiAlertCircleOutline,
-          star: mdiStarOutline,
           delete: mdiTrashCanOutline,
           edit:mdiPencilCircleOutline,
           viewCount:mdiEye,
           starCount:mdiStar,
           replyCount:mdiMessage,
         },
+        article,
       }
     },
     methods: {
       navigateToArticle(){
-        this.router.push({name:'ArticlePage',params:{id:this.article.id}});
+        this.router.push({name:'ArticlePage',params:{id:this.id}});
       },
       report(){
         this.setRepordCardState(true);
@@ -264,6 +255,7 @@
       }
     },
     components: {
+      StarButton,
       SvgIcon,
       ReportCard,
     },

@@ -81,6 +81,8 @@
             type: '新增问题',//类型分为新增问题(文章)，新增回答(问题),以及被@
             relativeItemType:'article',//article/question
             relativeItemId:'00000000',
+            relativeQuestionId:'0000000',
+            
           }
         },
       },

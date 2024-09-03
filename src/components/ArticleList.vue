@@ -12,7 +12,15 @@ export default{
         articleList:{
             type:Array,
             default:function(){
-                return []
+                return [
+                    '00000000',
+                    '00000001',
+                    '00000002',
+                    '00000003',
+                    '00000004',
+                    '00000005',
+                    '00000006',
+                ]
             }
         },
     },

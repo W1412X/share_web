@@ -8,6 +8,7 @@
     </div>
     <div
       style="
+        width:100%;
         margin-top: 5px;
         margin-left: 10px;
         font-size: 16px;
@@ -34,20 +35,20 @@
       variant="outlined"
       v-model="reason"
     ></v-textarea>
-    <div style="display: flex; flex-direction: row;padding-bottom:5px;padding-right: 5px;">
-      <v-btn
-        @click="cancel()"
-        variant="outlined"
-        color="#9c0c13"
-        style="font-size: 16px; margin-left: 330px;height: 30px;"
-        >取消</v-btn
-      >
+    <div style="display: flex;flex-direction: row;padding-bottom:5px;padding-right: 5px;flex-direction: row-reverse;">
       <v-btn
         @click="submit()"
         variant="outlined"
         color="#9c0c13"
         style="font-size: 16px; margin-left: 10px;height: 30px;"
         >提交</v-btn
+      >
+      <v-btn
+        @click="cancel()"
+        variant="outlined"
+        color="#9c0c13"
+        style="font-size: 16px;height: 30px;"
+        >取消</v-btn
       >
     </div>
   </v-card>

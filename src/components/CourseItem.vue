@@ -59,20 +59,10 @@
 import {useRouter} from 'vue-router';
   export default {
     props: {
-      course: {
-        type: Object,
-        default: function () {
-          return {
-            id:'00000000',
-            name: '程序思维设计与实践',
-            teacher: '蔡晓军',
-            type: '必修课 通识选修',
-            college: '计算机科学与技术学院',
-            campus:'青岛校区',
-            rate: 3.5,
-          }
-        },
-      },
+      id:{
+        type:String,
+        default:'00000000',
+      }
     },
     setup(){
       const router=useRouter();
@@ -84,8 +74,17 @@ import {useRouter} from 'vue-router';
       }
     },
     data() {
+      const course = {
+        id: this.id,
+        name: '程序思维设计与实践',
+        teacher: '蔡晓军',
+        type: '必修课 通识选修',
+        college: '计算机科学与技术学院',
+        campus: '青岛校区',
+        rate: 3.5,
+      }
       return {
-
+        course,
       }
     },
     methods:{

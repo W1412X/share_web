@@ -1,5 +1,5 @@
 <template>
-    <v-card style="width:750px;padding: 5px; border: #8a8a8a solid 1px">
+    <v-card style="width:600px;padding: 5px; border: #8a8a8a solid 1px">
       <div style="font-size: 18px; font-weight: 600; margin-left: 10px">建议</div>
       <v-textarea
         variant="outlined"
