@@ -5,20 +5,23 @@
       <report-card :report="{ type: '问题', id: this.question.id }" @close="close()"></report-card>
     </div>
   </v-dialog>
-  <v-card @click="click"
+  <v-card
     :style="{ 'width': '750px', 'margin': '3px', 'border-width': border_width, 'border-color': border_color, 'background-color': backgound_color }">
-    <div :style="{
-      'font-size': '20px',
-      'font-weight': 'bold',
-      'width': '600px',
-      'white-space': 'nowrap',
-      'overflow': 'hidden',
-      'margin-left': '10px',
-      'margin-top': '5px',
-      'padding-bottom': '5px',
-      'text-overflow': 'ellipsis'
-    }">
-      {{ question.title }}
+    <div style="display: flex;flex-direction: row;margin-top:5px;margin-left: 10px;padding-bottom: 5px;">
+      <div @click="click" :style="{
+        'font-size': '20px',
+        'font-weight': 'bold',
+        'width': '500px',
+        'white-space': 'nowrap',
+        'overflow': 'hidden',
+        'max-width': '500px',
+        'text-overflow': 'ellipsis'
+      }">
+        {{ question.title }}
+      </div>
+      <div style="width: 200px;height: 100%;margin-right:20px;margin-top:5px;display: flex;justify-content: center;align-items: center;">
+        <relative-bar v-if="question.relativeUrl!=''" :relative-url="question.relativeUrl"></relative-bar>
+      </div>
     </div>
     <v-row :style="{ 'padding-left': '20px', 'color': '#8a8a8a' }">
       <v-avatar size="25" @click="toAuthorPage"
@@ -27,8 +30,8 @@
       </v-avatar>
       <span @click="toAuthorPage"
         :style="{ 'margin-top': '10px', 'margin-right': '10px', 'margin-left': '10px', 'font-size': '14px' }">{{
-          question.authorName }}</span>
-      <v-spacer></v-spacer>
+        question.authorName }}</span>
+      <v-spacer @click="click"></v-spacer>
       <div :no-gutters="true"
         :style="{ 'max-width': '100px', 'margin-top': '10px', 'margin-left': '15px', 'margin-right': '0px', 'padding-left': '0px', 'padding-right': '0px' }">
         <v-row :style="{ 'margin-top': '0px', 'margin-left': '0px', 'margin-right': '0px' }">
@@ -56,7 +59,7 @@
     </v-row>
     <v-row :style="{ 'margin-left': '5px', 'margin-right': '5px', 'margin-bottom': '5px', 'padding-top': '0px' }">
       <v-col cols="12" :style="{ 'margin-top': '0px', 'padding': '0px', 'margin-left': '0px', 'margin-right': '0px' }">
-        <v-col :style="{
+        <v-col @click="click" :style="{
           'padding-left': 'px',
           'padding-right': '5px',
           'margin-left': '0px',
@@ -75,16 +78,16 @@
         <div :style="{ 'display': 'flex', 'flex-direction': 'row' }">
           <div :no-gutters="true"
             :style="{ 'margin-top': '0px', 'margin-left': '15px', 'margin-right': '10px', 'padding-left': '0px', 'padding-right': '0px' }">
-            <v-row :style="{ 'margin-top': '0px' }">
+            <v-row @click="click" :style="{ 'margin-top': '0px' }">
               <svg-icon type="mdi" :path="icons.timeClock" size="18"
                 :style="{ 'padding-top': '0px', 'color': '#8a8a8a', 'margin-bottom': '0px', 'margin-left': '5px' }"></svg-icon>
-              <div :style="{ 'margin-left': '5px', 'font-size': '14px', 'color': '#8a8a8a' }">编辑于 {{ question.time }}</div>
+              <div :style="{ 'margin-left': '5px', 'font-size': '14px', 'color': '#8a8a8a' }">编辑于 {{ question.time }}
+              </div>
             </v-row>
           </div>
-          <v-spacer></v-spacer>
-          <star-button :id="this.id" :type="'question'"
-            :v-if="status == 'reader'" elevation="0" icon :style="{}"
-          ></star-button>
+          <v-spacer @click="click"></v-spacer>
+          <star-button :id="this.id" :type="'question'" v-if="status == 'reader'" elevation="0" icon
+            :style="{}"></star-button>
           <v-btn @click="report" v-if="status == 'reader'" elevation="0" icon :style="{
             'width': '25px',
             'background-color': 'rgb(0,0,0,0)',
@@ -119,6 +122,7 @@ import { useRouter } from 'vue-router';
 import { computed, ref } from 'vue';
 import ReportCard from './ReportCard.vue';
 import StarButton from './StarButton.vue';
+import RelativeBar from './RelativeBar.vue';
 export default {
   name: 'QuestionWithoutImage',
   props: {
@@ -143,6 +147,7 @@ export default {
     SvgIcon,
     ReportCard,
     StarButton,
+    RelativeBar,
   },
   setup() {
     const router = useRouter();
@@ -172,6 +177,7 @@ export default {
       authorId: 'xxxx',
       scanCount: 'xxxx',
       profileUrl: 'xxxx',
+      relativeUrl:'',
     };
     const backgound_color = computed(() => {
       return this.isSelected ? '#def2f8' : '';

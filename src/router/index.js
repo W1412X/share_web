@@ -31,7 +31,7 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
-    path: '/article/:id/:question?/:answer?',
+    path: '/article/:id/:from?',
     name: 'ArticlePage',
     component: ArticlePage,
     meta: { requiresAuth: true },
@@ -49,7 +49,7 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
-    path: '/question/:id/:answer?',
+    path: '/question/:id/:from?',
     name:'QuestionPage',
     component: QuestionPage,
     meta: { requiresAuth: true },

@@ -225,7 +225,7 @@ import SourceBar from '@/components/SourceBar.vue';
       this.articleId=route.params.id;
       console.log('load article page',this.articleId);
       //来自消息跳转
-      if('question' in route.params){
+      if('from' in route.params && route.params.from=='message'){
         this.ifShowComment=true;
       }
       //在这里获取文章的内容

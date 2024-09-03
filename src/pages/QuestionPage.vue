@@ -68,6 +68,9 @@ import {useRoute} from 'vue-router'
       onMounted(){
         const route=useRoute();
         this.courseId=route.params.id;
+        if('from' in route.params && route.params.from=='message'){
+          //逻辑
+        }
         console.log('Load question page',this.courseId);
       }
     }

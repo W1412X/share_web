@@ -66,7 +66,7 @@
       <div style="display:flex;flex-direction: row;margin-top:5px;color:#8a8a8a">
         <span style="font-size: 16px;">{{answer.time}}</span>
         <v-spacer></v-spacer>
-        <svg-icon type="mdi" :path="icons.heart" style="margin-right: 10px;"></svg-icon>
+        <like-button :id="this.id" :type="'courseAnswer'" style="margin-right:10px;"></like-button>
         <svg-icon @click="report" type="mdi" :path="icons.alert"></svg-icon>
       </div>
     </div>
@@ -77,6 +77,7 @@ import { mdiHeartOutline,mdiAlertCircleOutline} from '@mdi/js'
 import { ref,computed } from 'vue';
 import {useRouter} from 'vue-router';
 import ReportCard from './ReportCard.vue';
+import LikeButton from './LikeButton.vue';
     export default {
       props: {
         id:{
@@ -87,6 +88,7 @@ import ReportCard from './ReportCard.vue';
       components:{
         SvgIcon,
         ReportCard,
+        LikeButton,
       },
       setup() {
         const router = useRouter();

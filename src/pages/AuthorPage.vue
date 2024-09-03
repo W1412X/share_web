@@ -7,9 +7,9 @@
           <v-card :style="{ width: '100%', display: 'relative', 'margin-top': '5px' }">
             <v-tabs v-model="type" style="width: 750px;background-color: #8a8a8a;" bg-color="indigo-darken-2"
               fixed-tabs>
-              <v-tab :style="{ background: '#bbbbbb', 'font-size': '18px', 'min-width': '250px' }" value="article"
+              <v-tab :style="{ background: '#bbbbbb', 'font-size': '18px', 'min-width': '375px' }" value="article"
                 text="文章"></v-tab>
-              <v-tab :style="{ background: '#bbbbbb', 'font-size': '18px', 'min-width': '250px' }" value="question"
+              <v-tab :style="{ background: '#bbbbbb', 'font-size': '18px', 'min-width': '375px' }" value="question"
                 text="问答"></v-tab>
               <!--<v-tab :style="{ background: '#bbbbbb', 'font-size': '18px', 'min-width': '250px' }" value="course"
                 text="课程"></v-tab>-->

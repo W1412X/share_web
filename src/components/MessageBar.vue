@@ -67,7 +67,8 @@
   </div>
 </template>
 <script>
-  import { computed } from 'vue'
+  import { computed } from 'vue';
+  import { useRouter } from 'vue-router';
   export default {
     props: {
       message: {
@@ -78,7 +79,7 @@
             userName: 'test',
             time: '2022-09-01 08:00',
             userId: '00000000',
-            type: '新增问题',//类型分为新增问题(文章)，新增回答(问题),以及被@
+            type: '文章新增问题',//类型分为文章新增问题，文章新增
             relativeItemType:'article',//article/question
             relativeItemId:'00000000',
             relativeQuestionId:'0000000',
@@ -86,6 +87,12 @@
           }
         },
       },
+    },
+    setup(){
+      const router=useRouter();
+      return {
+        router,
+      }
     },
     data() {
       const ifNew = true
@@ -100,7 +107,12 @@
     methods: {
       click() {
         this.ifNew = false;
-        //跳转到问题回复界面
+        //跳转
+        if(this.message.type=='文章新增问题'){
+          this.router.push({name:'ArticlePage',params:{id:this.message.relativeItemId,from:'message'}});
+        }else if(this.message.type=='问题新增回答'){
+          this.router.push({name:'QuestionPage',params:{id:this.message.relativeItemId,from:'message'}});
+        }
       },
     },
   }

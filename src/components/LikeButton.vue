@@ -1,22 +1,21 @@
 <template>
     <v-btn @click="click" elevation="0" icon :style="{
-        'max-width': '25px',
-        'max-height': '25px',
+        'width': '25px',
+        'height': '25px',
         'border-radius': '100%',
-
     }">
-        <svg-icon type="mdi" :color="color" :path="star"></svg-icon>
+        <svg-icon type="mdi" :color="color" :path="heart"></svg-icon>
     </v-btn>
 </template>
 <script>
 import SvgIcon from '@jamescoyle/vue-icon';
-import {  mdiStar,mdiStarOutline } from '@mdi/js';
+import {  mdiHeartOutline,mdiHeart } from '@mdi/js';
 import { computed } from 'vue';
 export default{
     props:{
         type:{
             type:String,
-            default:'article',
+            default:'answer',
         },
         id:{
             type:String,
@@ -30,15 +29,15 @@ export default{
     data(){
         const ifClicked=this.state;
         const color=computed(()=>{
-            return this.ifClicked?'#ffac33': '#8a8a8a';
+            return this.ifClicked?'#db261f': '#8a8a8a';
         })
-        const star=computed(()=>{
-           return this.ifClicked? mdiStar:mdiStarOutline;
+        const heart=computed(()=>{
+           return this.ifClicked? mdiHeart:mdiHeartOutline;
         });
         return {
             color,
             ifClicked,
-            star
+            heart
         }
     },
     components:{

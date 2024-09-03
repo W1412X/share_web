@@ -10,6 +10,7 @@
   <course-editor></course-editor>
   <source-bar></source-bar>
   <star-button></star-button>
+  <like-button></like-button>
   <v-btn @click="test()"></v-btn>
 </template>
 <script>
@@ -24,6 +25,7 @@ import CourseAnswer from '@/components/CourseAnswer.vue';
 import CourseEditor from '@/components/CourseEditor.vue';
 import SourceBar from '@/components/SourceBar.vue';
 import StarButton from '@/components/StarButton.vue';
+import LikeButton from '@/components/LikeButton.vue';
 export default{
   methods:{
     test(){
@@ -42,6 +44,7 @@ export default{
     CourseEditor,
     StarButton,
     SourceBar,
+    LikeButton,
   }
 }
 </script>

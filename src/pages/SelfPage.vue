@@ -107,7 +107,7 @@ import {useRoute} from 'vue-router'
             userName: 'test',
             time: '2022-09-01 08:00',
             userId: '00000000',
-            type: '新增问题',//类型分为新增问题(文章)，新增回答(问题),以及被@
+            type: '文章新增问题',//类型分为新增问题(文章)，新增回答(问题),以及被@
             relativeItemType:'article',//article/question
             relativeItemId:'00000000',
         },
@@ -116,7 +116,7 @@ import {useRoute} from 'vue-router'
             userName: 'test',
             time: '2022-09-01 08:00',
             userId: '00000000',
-            type: '新增问题',//类型分为新增问题(文章)，新增回答(问题),以及被@
+            type: '文章新增问题',//类型分为新增问题(文章)，新增回答(问题),以及被@
             relativeItemType:'article',//article/question
             relativeItemId:'00000000',
         },
@@ -125,7 +125,7 @@ import {useRoute} from 'vue-router'
             userName: 'test',
             time: '2022-09-01 08:00',
             userId: '00000000',
-            type: '新增问题',//类型分为新增问题(文章)，新增回答(问题),以及被@
+            type: '文章新增问题',//类型分为新增问题(文章)，新增回答(问题),以及被@
             relativeItemType:'article',//article/question
             relativeItemId:'00000000',
         }

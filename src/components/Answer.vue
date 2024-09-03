@@ -31,20 +31,11 @@
             <v-col cols="8">
               <v-row justify="end">
                 <v-col :style="{'max-width':'25px'}">
-                  <v-btn
-                    elevation="0"
-                    icon="mdi-heart-outline"
-                    :style="{'width':'25px',
-                        'padding':'0px',
-                        'height':'25px',
-                        'color':'#8a8a8a',            
-                        'margin-top':'0px',
-                        'margin-right':'0px',
-                        'margin-left':'0px',
-                        'margin-bottom':'20px'
-                        }">
-                    <svg-icon type="mdi" :path="icons.heart"></svg-icon>    
-                  </v-btn>
+                  <like-button
+                    :id="this.id"
+                    :type="'answer'"
+                    style="margin-bottom: 20px;"
+                  ></like-button>  
                 </v-col>
                 <v-col :style="{'max-width':'25px'}">
                   <v-btn
@@ -77,6 +68,7 @@ import { mdiAlertCircleOutline, mdiHeartOutline } from '@mdi/js';
 import {useRouter} from 'vue-router';
 import { ref,computed } from 'vue';
 import ReportCard from '@/components/ReportCard.vue';
+import LikeButton from './LikeButton.vue';
   export default {
     name: 'ResourceItem',
     props: {
@@ -120,6 +112,7 @@ import ReportCard from '@/components/ReportCard.vue';
     components:{
       SvgIcon,
       ReportCard,
+      LikeButton,
     },
     methods:{
       toAuthorPage(){
