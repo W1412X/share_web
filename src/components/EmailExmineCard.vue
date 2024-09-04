@@ -15,7 +15,7 @@
             :style="{ 'margin-left': '0px', 'font-size': '25px', 'display': 'flex', 'justify-content': 'center', 'font-weight': '600', 'color': '' }">
             验证您的账户
         </v-card-title>
-        <v-card-text :style="{ width: '600px', 'font-size': '20px', 'margin-bottom': '0px', 'padding-bottom': '0px' }">
+        <v-card-text :style="{ width: '100%', 'font-size': '20px', 'margin-bottom': '0px', 'padding-bottom': '0px' }">
             我们已经向您的邮箱
             <span style="color: #0066ff">{{ email }}</span>
             发送验证码,请检查您的邮箱以获取验证码并输入
