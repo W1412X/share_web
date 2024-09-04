@@ -133,6 +133,9 @@
         '实验难度怎么样？',
         '考试给分怎么样？',
         '平时分怎么算的？',
+        '有实验课么？',
+        '实验课难么？',
+        '有大作业么?',
       ]
       const questionState = []
       for (var i = 0; i < questions.length; i++) {

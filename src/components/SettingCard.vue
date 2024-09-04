@@ -60,6 +60,9 @@
             <EmailExmineCard @close="close" :email="this.email" :user-name="this.userName" :type="'delete'">
             </EmailExmineCard>
         </div>
+        <div v-if="ifSHowReportBug" style="display: flex;justify-content: center;">
+            <report-bug-card @close="close"></report-bug-card>
+        </div>
         <div v-if="ifShowSuggestion" style="display: flex;justify-content: center;">
             <SuggestionCard @close="close"></SuggestionCard>
         </div>
@@ -74,6 +77,8 @@
                 prepend-icon="mdiAlert">隐私政策</v-btn>
             <v-btn @click="clickAboutUs" variant="outlined" style="margin: 1px; color: #8a8a8a"
                 prepend-icon="mdiAlert">关于我们</v-btn>
+            <v-btn @click="clickeReportBug" variant="outlined" style="margin: 1px; color: #8a8a8a"
+                prepend-icon="mdiAlert">报告Bug</v-btn>
             <v-btn @click="clickSuggestion" variant="outlined" style="margin: 1px; color: #8a8a8a"
                 prepend-icon="mdiAlert">网站建议</v-btn>
         </div>
@@ -85,11 +90,13 @@ import SuggestionCard from './SuggestionCard.vue';
 import EmailExmineCard from './EmailExmineCard.vue';
 import { computed, ref } from 'vue';
 import { getUser } from '@/utils/storage';
+import ReportBugCard from './ReportBugCard.vue';
 export default {
     components: {
         BlackUserBar,
         SuggestionCard,
         EmailExmineCard,
+        ReportBugCard,
     },
     setup() {
         const ifShowBlackList = ref(false)
@@ -97,14 +104,15 @@ export default {
         const ifShowPrivacyPolicy = ref(false)
         const ifShowAboutUs = ref(false)
         const ifShowSuggestion = ref(false)
-
+        const ifSHowReportBug=ref(false);
         const ifShowDialog = computed(() => {
             return (
                 ifShowAboutUs.value ||
                 ifShowBlackList.value ||
                 ifShowDeleteAccount.value ||
                 ifShowPrivacyPolicy.value ||
-                ifShowSuggestion.value
+                ifShowSuggestion.value ||
+                ifSHowReportBug.value
             )
         })
 
@@ -123,6 +131,9 @@ export default {
         const setSuggestionState = state => {
             ifShowSuggestion.value = state
         }
+        const setReportBugState=state=>{
+            ifSHowReportBug.value=state;
+        }
         return {
             ifShowBlackList,
             ifShowDeleteAccount,
@@ -130,6 +141,8 @@ export default {
             ifShowAboutUs,
             ifShowSuggestion,
             ifShowDialog,
+            ifSHowReportBug,
+            setReportBugState,
             setBlackListState,
             setDeleteAccountState,
             setPrivacyPolicyState,
@@ -290,12 +303,16 @@ export default {
         clickSuggestion() {
             this.setSuggestionState(true);
         },
+        clickeReportBug(){
+            this.setReportBugState(true);
+        },
         close() {
             this.setBlackListState(false);
             this.setDeleteAccountState(false);
             this.setPrivacyPolicyState(false);
             this.setAboutUsState(false);
             this.setSuggestionState(false);
+            this.setReportBugState(false);
         }
     },
 }
