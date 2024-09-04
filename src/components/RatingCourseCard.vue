@@ -4,9 +4,6 @@
     <div v-if="ifShowCourseAnswerEditor" style="width: 100%;height:100%;justify-content: center;display: flex">
       <course-answer-editor @close="close" :courseId="course.id" :courseName="course.name"></course-answer-editor>
     </div>
-    <div v-if="ifShowReportCard" style="width: 100%;height:100%;justify-content: center;display: flex">
-      <report-card :report="{type:'课程',id:this.course.id}" @close="close()"></report-card>
-    </div>
   </v-dialog>
   <v-card :style="{ 'width': '750px', 'max-width': '750px' }">
     <v-row :style="{ 'margin': '0px', 'padding': '0px' }">
@@ -17,8 +14,10 @@
             {{ course.name }}
           </div>
           <v-spacer></v-spacer>
-          <star-button :id="id" :type="'course'" style="margin-top:10px;margin-right: 10px"></star-button>
-          <svg-icon @click="report" type="mdi" :path="icons.alert" color="#8a8a8a" style="margin-top:10px;margin-right: 10px"></svg-icon>
+          <div style="display: flex;flex-direction: row;margin-top: 10px;margin-right: 10px;">
+            <star-button :id="id" :type="'course'" style="margin-right: 5px;"></star-button>
+            <alert-button :id="course.id" :type="'课程'"></alert-button>
+          </div>
         </div>
         <div style="display: flex; flex-direction: row">
           <div
@@ -105,10 +104,8 @@
 <script>
 import CourseAnswerEditor from '@/components/CourseAnswerEditor.vue';
 import {ref,computed} from 'vue';
-import SvgIcon from '@jamescoyle/vue-icon';
-import { mdiAlertCircleOutline } from '@mdi/js';
-import ReportCard from './ReportCard.vue';
 import StarButton from './StarButton.vue';
+import AlertButton from './AlertButton.vue';
 export default {
   props: {
     id:{
@@ -118,29 +115,22 @@ export default {
   },
   setup(){
     const ifShowCourseAnswerEditor=ref(false);
-    const ifShowReportCard=ref(false);
     const ifShowDialog=computed(()=>{//
-      return ifShowCourseAnswerEditor.value || ifShowReportCard.value;
+      return ifShowCourseAnswerEditor.value;
     })
     const setCourseAnswerEditorState=(state)=>{
       ifShowCourseAnswerEditor.value=state;
     }
-    const setReportCardState=(state)=>{
-      ifShowReportCard.value=state;
-    }
     return {
       ifShowCourseAnswerEditor,
       ifShowDialog,
-      ifShowReportCard,
-      setReportCardState,
       setCourseAnswerEditorState,
     }
   },
   components:{
     CourseAnswerEditor,
-    SvgIcon,
-    ReportCard,
     StarButton,
+    AlertButton,
   },
   data() {
     const course = {
@@ -159,9 +149,6 @@ export default {
       },
     }
     return {
-      icons:{
-        alert:mdiAlertCircleOutline,
-      },
       course,
     }
   },
@@ -171,11 +158,7 @@ export default {
     },
     close(){
       this.setCourseAnswerEditorState(false);
-      this.setReportCardState(false);
     },
-    report(){
-      this.setReportCardState(true);
-    }
   }
 }
 </script>

@@ -1,10 +1,4 @@
 <template>
-  <v-dialog v-model="ifShowDialog"
-    style="width: 100%;height:100%;background-color: rgba(255,255,255,0.5);justify-content: center;">
-    <div v-if="ifShowReportCard" style="width: 100%;height:100%;justify-content: center;display: flex">
-      <report-card :report="{type:'课程评价',id:this.id}" @close="close()"></report-card>
-    </div>
-  </v-dialog>
     <div
       style="
         width: 750px;
@@ -16,7 +10,7 @@
       "
     >
       <div style="display: flex; flex-direction: row">
-        <v-avatar @click="toAuthorPage" size="35" :image="answer.profileUrl"></v-avatar>
+        <user-profile :size="'35px'" :url="answer.profileUrl" :name="answer.authorName"></user-profile>
         <span
            @click="toAuthorPage"
           style="
@@ -67,17 +61,14 @@
         <span style="font-size: 16px;">{{answer.time}}</span>
         <v-spacer></v-spacer>
         <like-button :id="this.id" :type="'courseAnswer'" style="margin-right:10px;"></like-button>
-        <svg-icon @click="report" type="mdi" :path="icons.alert"></svg-icon>
+        <alert-button :id="this.id" :type="'课程回答'"></alert-button>
       </div>
     </div>
   </template>
   <script>
-import SvgIcon from '@jamescoyle/vue-icon'
-import { mdiHeartOutline,mdiAlertCircleOutline} from '@mdi/js'
-import { ref,computed } from 'vue';
-import {useRouter} from 'vue-router';
-import ReportCard from './ReportCard.vue';
 import LikeButton from './LikeButton.vue';
+import AlertButton from './AlertButton.vue';
+import UserProfile from './UserProfile.vue';
     export default {
       props: {
         id:{
@@ -86,25 +77,11 @@ import LikeButton from './LikeButton.vue';
         }
       },
       components:{
-        SvgIcon,
-        ReportCard,
         LikeButton,
+        AlertButton,
+        UserProfile,
       },
       setup() {
-        const router = useRouter();
-        const ifShowReportCard=ref(false);
-        const ifShowDialog=computed(()=>{
-          return ifShowReportCard.value;
-        })
-        const setReportCardState=(state)=>{
-          ifShowReportCard.value=state;
-        }
-        return {
-          router,
-          ifShowDialog,
-          ifShowReportCard,
-          setReportCardState,
-        }
       },
       data() {
         const answer = {
@@ -115,25 +92,11 @@ import LikeButton from './LikeButton.vue';
           time: '2024-09-01 09:00',
           profileUrl:'https://pic2.zhimg.com/v2-0dda71bc9ced142bf7bb2d6adbebe4f0_r.jpg?source=1940ef5c',
         }
-        const icons={
-            heart:mdiHeartOutline,
-            alert:mdiAlertCircleOutline,
-        }
         return {
-          icons,
           answer,
         }
       },
       methods: {
-        toAuthorPage(){
-          this.router.push({name:'AuthorPage',params:{name:this.answer.authorName}});
-        },
-        report(){
-          this.setReportCardState(true);
-        },
-        close(){
-          this.setReportCardState(false);
-        }
       },
     }
   </script>

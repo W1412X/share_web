@@ -102,6 +102,7 @@ import EmailExmineCard from './EmailExmineCard.vue';
 import { computed,ref } from 'vue';
 import {loginWithPassword} from '@/axios/identify'
 import { setUser } from '@/utils/storage';
+import { getStatusMessage,unknowError } from '@/statusCodeMessages';
   export default {
     setup(){
       const router=useRouter();
@@ -239,40 +240,22 @@ import { setUser } from '@/utils/storage';
           .then(response => {
           // 处理成功登录后的逻辑
           console.log(response);
-          if(response.status==200){//如果是请求成功
+          const status=response.status;
+          if(status==200){//如果是请求成功
             setUser({
               id:response.id,
               userName:response.user_name
             })
-            response.id
-            const message={
-              color:'success',
-              title:'登陆成功',
-              state:true,
-              content:''
-            }
-            this.$emit('alert',message);
+            this.$emit('alert',getStatusMessage('login',status));
             this.router.push({name:'IndexPage'});
           }else{
-            const message={
-              color:'error',
-              state:true,
-              title:'验证信息错误',
-              content:''
-            }
-            this.$emit('alert',message);
+            this.$emit('alert',getStatusMessage('login',status));
           }
         })
         .catch(error => {
           // 处理登录失败的逻辑
           console.error('Error logging in:', error);
-          const message={
-              color:'error',
-              title:'未知错误',
-              state:true,
-              content:'未知错误，请联系开发者'
-            }
-          this.$emit('alert',message);
+          this.$emit('alert',unknowError);
         });
         //补充获取到结果的逻辑
       },
@@ -331,8 +314,8 @@ import { setUser } from '@/utils/storage';
             const message={
               state:true,
               color:'info',
-              title:'在登陆界面登陆',
-              content:'',
+              title:'重新登陆',
+              content:'现在你可以使用用户名密码或者邮箱在登陆界面进行登陆',
             }
             this.$emit('alert',message)
           }

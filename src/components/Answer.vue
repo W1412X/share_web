@@ -13,9 +13,7 @@
     <v-container :style="{'margin-bottom':'4px'}">
       <v-row>
         <v-col cols="1">
-          <v-avatar @click="toAuthorPage" :style="{width: '35px',height: '35px'}">
-            <img :src="answer.profileUrl" :style="{'max-width':'100%'}" />
-          </v-avatar>
+          <user-profile :name="answer.name" :url="answer.profileUrl" :size="35" :style="{width: '35px',height: '35px'}"></user-profile>
         </v-col>
         <v-col cols="11">
           <span @click="toAuthorPage" :style="{'color':'#8a8a8a','margin-left':'0px','font-size':'18px'}"
@@ -28,31 +26,16 @@
             <v-col cols="4" :style="{'font-size':'14px','color':'#8a8a8a'}">
               {{answer.time}}
             </v-col>
-            <v-col cols="8">
+            <v-col cols="8" style="margin-bottom: 5px;">
               <v-row justify="end">
                 <v-col :style="{'max-width':'25px'}">
                   <like-button
                     :id="this.id"
                     :type="'answer'"
-                    style="margin-bottom: 20px;"
                   ></like-button>  
                 </v-col>
                 <v-col :style="{'max-width':'25px'}">
-                  <v-btn
-                    elevation="0"
-                    icon
-                    @click="report"
-                    :style="{'width':'25px',
-                        'padding':'0px',
-                        'height':'25px',
-                        'color':'#8a8a8a',            
-                        'margin-top':'0px',
-                        'margin-right':'0px',
-                        'margin-left':'5px',
-                        'margin-bottom':'20px'
-                        }">
-                    <svg-icon type="mdi" :path="icons.alert"></svg-icon>    
-                  </v-btn>
+                  <alert-button :id="this.answer.id" :type="'问题回答'" style="margin-left: 10px;"></alert-button>
                 </v-col>
               </v-row>
             </v-col>
@@ -63,12 +46,12 @@
   </v-card>
 </template>
 <script>
-import SvgIcon from '@jamescoyle/vue-icon'
-import { mdiAlertCircleOutline, mdiHeartOutline } from '@mdi/js';
-import {useRouter} from 'vue-router';
-import { ref,computed } from 'vue';
+import UserProfile from './UserProfile.vue';
+//import SvgIcon from '@jamescoyle/vue-icon'
+//import { ref,computed } from 'vue';
 import ReportCard from '@/components/ReportCard.vue';
 import LikeButton from './LikeButton.vue';
+import AlertButton from './AlertButton.vue';
   export default {
     name: 'ResourceItem',
     props: {
@@ -78,46 +61,27 @@ import LikeButton from './LikeButton.vue';
       },
     },
     setup(){
-      const router=useRouter();
-      const ifShowReportCard=ref(false);
-      const ifShowDialog=computed(()=>{
-        return ifShowReportCard.value;
-      })
-      const setAlertCardState=(state)=>{
-        ifShowReportCard.value=state;
-      }
-      return {
-        router,
-        setAlertCardState,
-        ifShowReportCard,
-        ifShowDialog,
-      }
     },
     data(){
       const answer = {
         id: this.id,
         name: 'isitor',
         time: 'xxxx-xx-xx xx:xx',
-        content: 'xxxxx',
-        profileUrl: 'xxxxx',
+        content: 'XXXXXXXX',
+        profileUrl: 'https://tse1-mm.cn.bing.net/th/id/OIP-C.PO7d9IfnPUy2RO173QYt6wHaHV?w=216&h=213&c=7&r=0&o=5&pid=1.7',
       }
       return{
         answer,
-        icons:{
-          heart:mdiHeartOutline,
-          alert:mdiAlertCircleOutline,
-        }
       }
     },
     components:{
-      SvgIcon,
+      //SvgIcon,
       ReportCard,
       LikeButton,
+      UserProfile,
+      AlertButton,
     },
     methods:{
-      toAuthorPage(){
-        this.router.push({name:'AuthorPage',params:{name:this.answer.name}});
-      },
       report(){
         this.setAlertCardState(true);
       },

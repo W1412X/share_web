@@ -1,10 +1,4 @@
 <template>
-  <v-dialog v-model="ifShowDialog"
-    style="width: 100%;height:100%;background-color: rgba(255,255,255,0.5);justify-content: center;">
-    <div v-if="ifShowReportCard" style="width: 100%;height:100%;justify-content: center;display: flex">
-      <report-card :report="{ type: '问题', id: this.question.id }" @close="close()"></report-card>
-    </div>
-  </v-dialog>
   <v-card
     :style="{ 'width': '750px', 'margin': '3px', 'border-width': border_width, 'border-color': border_color, 'background-color': backgound_color }">
     <div style="display: flex;flex-direction: row;margin-top:5px;margin-left: 10px;padding-bottom: 5px;">
@@ -24,10 +18,7 @@
       </div>
     </div>
     <v-row :style="{ 'padding-left': '20px', 'color': '#8a8a8a' }">
-      <v-avatar size="25" @click="toAuthorPage"
-        :style="{ 'margin-top': '8px', 'margin-right': '0px', 'margin-left': '10px', 'font-size': '14px' }">
-        <v-img :src="question.profileUrl"></v-img>
-      </v-avatar>
+      <user-profile :url="this.question.profileUrl" :name="question.authorName" style="margin-top: 8px;margin-left: 10px;"></user-profile>
       <span @click="toAuthorPage"
         :style="{ 'margin-top': '10px', 'margin-right': '10px', 'margin-left': '10px', 'font-size': '14px' }">{{
         question.authorName }}</span>
@@ -88,17 +79,7 @@
           <v-spacer @click="click"></v-spacer>
           <star-button :id="this.id" :type="'question'" v-if="status == 'reader'" elevation="0" icon
             :style="{}"></star-button>
-          <v-btn @click="report" v-if="status == 'reader'" elevation="0" icon :style="{
-            'width': '25px',
-            'background-color': 'rgb(0,0,0,0)',
-            'padding': '0px',
-            'height': '25px',
-            'margin-top': '0px',
-            'color': '#8a8a8a',
-            'margin-left': '10px'
-          }">
-            <svg-icon type="mdi" :path="icons.alert"></svg-icon>
-          </v-btn>
+          <alert-button v-if="status=='reader'" :id="question.id" :type="'问题'" style="margin-left: 10px;"></alert-button>
           <v-btn v-if="status == 'writer'" elevation="0" icon :style="{
             'width': '25px',
             'background-color': 'rgb(0,0,0,0)',
@@ -119,10 +100,11 @@
 import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiAlertCircleOutline, mdiClock, mdiEyeOutline, mdiStar, mdiStarOutline, mdiTrashCanOutline, mdiMessage } from '@mdi/js';
 import { useRouter } from 'vue-router';
-import { computed, ref } from 'vue';
-import ReportCard from './ReportCard.vue';
+import { computed } from 'vue';
 import StarButton from './StarButton.vue';
 import RelativeBar from './RelativeBar.vue';
+import UserProfile from './UserProfile.vue';
+import AlertButton from './AlertButton.vue';
 export default {
   name: 'QuestionWithoutImage',
   props: {
@@ -145,24 +127,15 @@ export default {
   },
   components: {
     SvgIcon,
-    ReportCard,
     StarButton,
     RelativeBar,
+    UserProfile,
+    AlertButton,
   },
   setup() {
     const router = useRouter();
-    const ifShowReportCard = ref(false);
-    const ifShowDialog = computed(() => {
-      return ifShowReportCard.value;
-    })
-    const setReportCardState = (state) => {
-      ifShowReportCard.value = state;
-    }
     return {
       router,
-      ifShowDialog,
-      ifShowReportCard,
-      setReportCardState,
     }
   },
   data() {
@@ -218,18 +191,8 @@ export default {
         this.select();
       }
     },
-    toAuthorPage() {
-      this.router.push({ name: 'AuthorPage', params: { name: this.question.authorName } });
-    },
-    close() {
-      this.setReportCardState(false);
-    },
-    report() {
-      this.setReportCardState(true);
-    }
   },
   computed: {
   }
 }
 </script>
-<style scoped></style>

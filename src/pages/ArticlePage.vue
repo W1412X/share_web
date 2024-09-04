@@ -25,13 +25,7 @@
           <v-row
             :style="{ 'margin-top':'0px','padding-left': '20px', 'color': '#8a8a8a' }"
           >
-            <v-avatar
-              @click="toAuthorPage"
-              size="25"
-              :style="{ 'margin-top': '8px', 'margin-right': '0px', 'margin-left': '10px', 'font-size': '14px' }"
-            >
-              <v-img :src="article.authorProfileUrl"></v-img>
-            </v-avatar>
+            <user-profile :name="article.authorName" :url="article.authorProfileUrl" style="margin-top:8px;margin-left: 10px;"></user-profile>
             <span
               @click="toAuthorPage"
               :style="{ 'margin-top': '10px', 'margin-right': '10px', 'margin-left': '10px', 'font-size': '14px' }"
@@ -154,6 +148,7 @@
 import TagButton from '@/components/TagButton.vue';
 import QuestionAndAnswers from '@/components/QuestionAndAnswers.vue';
 import SourceBar from '@/components/SourceBar.vue';
+import UserProfile from '@/components/UserProfile.vue';
   export default {
     setup(){
       const articleId='00000000';
@@ -169,6 +164,7 @@ import SourceBar from '@/components/SourceBar.vue';
       TagButton,
       QuestionAndAnswers,
       SourceBar,
+      UserProfile,
     },
     data() {
       return {
@@ -206,9 +202,6 @@ import SourceBar from '@/components/SourceBar.vue';
     methods:{
       toSource(){//去文章的源站  
         window.location.replace(this.article.originLink);
-      },
-      toAuthorPage(){
-        this.router.push({name:'AuthorPage',params:{name:this.article.authorName}})
       },
       getComment(){
         this.ifShowComment=true;
