@@ -54,21 +54,37 @@ import LikeButton from './LikeButton.vue';
 import AlertButton from './AlertButton.vue';
   export default {
     name: 'ResourceItem',
-    props: {
-      id:{
-        type:String,
-        default:'00000000',
-      },
+  props: {
+    id: {
+      type: String,
+      default: '',
     },
+    initAnswer: {
+      type: Object,
+      default:
+        function () {
+          return {
+            id: '00000000',
+            name: 'visitor',
+            time: 'xxxx-xx-xx xx:xx',
+            content: 'XXXXXXXX',
+            profileUrl: 'https://tse1-mm.cn.bing.net/th/id/OIP-C.PO7d9IfnPUy2RO173QYt6wHaHV?w=216&h=213&c=7&r=0&o=5&pid=1.7',
+          }
+        }
+    },
+  },
     setup(){
     },
     data(){
-      const answer = {
+      var answer = {
         id: this.id,
-        name: 'isitor',
+        name: 'xxx',
         time: 'xxxx-xx-xx xx:xx',
         content: 'XXXXXXXX',
-        profileUrl: 'https://tse1-mm.cn.bing.net/th/id/OIP-C.PO7d9IfnPUy2RO173QYt6wHaHV?w=216&h=213&c=7&r=0&o=5&pid=1.7',
+        profileUrl: 'xxx',
+      }
+      if(this.id==''){//如果id为空，传入的为answer结构体，无需再次请求
+        answer=this.initAnswer;
       }
       return{
         answer,
@@ -87,6 +103,11 @@ import AlertButton from './AlertButton.vue';
       },
       close(){
         this.setAlertCardState(false);
+      }
+    },
+    mounted(){
+      if(this.id!=''){//传入的id不为空，请求内容
+
       }
     }
   }

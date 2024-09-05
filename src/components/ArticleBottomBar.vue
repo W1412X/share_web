@@ -31,10 +31,6 @@ export default {
       type: String,
       default: '00000000',
     },
-    authorId: {
-      type: String,
-      default: '00000000',
-    },
     profileUrl: {
       type: String,
       default:

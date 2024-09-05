@@ -1,7 +1,6 @@
 <template>
     <div style="border: 1px solid #ccc">
-      <v-btn @click="test()"></v-btn>
-      <Editor style="width:900px;height: 100vh; overflow-y: hidden;" v-model="html" :defaultConfig="editorConfig"
+      <Editor style="width:1000px;height: 100vh; overflow-y: hidden;" v-model="html" :defaultConfig="editorConfig"
         :mode="mode" @onCreated="handleCreated" />
     </div>
   </template>
@@ -11,7 +10,7 @@
   import { Editor } from '@wangeditor/editor-for-vue'
   import { Boot } from '@wangeditor/editor'
   import formulaModule from '@wangeditor/plugin-formula'
-  import { DomEditor } from '@wangeditor/editor'
+  //import { DomEditor } from '@wangeditor/editor'
   export default {
     props: {
       initialHtml: {

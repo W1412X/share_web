@@ -24,7 +24,7 @@
       <div
         :style="{'padding':'0px','margin-left': '20px','height':'100%','display':'relative','overflow':'auto'}"
       >
-        <AnswerList :question_id="question.id"></AnswerList>
+        <AnswerList :question-id="question.id"></AnswerList>
       </div>
     </div>
   </div>
@@ -34,18 +34,17 @@
   import AnswerList from '../components/AnswerList.vue';
 import SingleQuestion from '@/components/SingleQuestion.vue';
 import {useRoute} from 'vue-router'
+import { getQuestionDetail } from '@/axios/detail';
+import { getStatusMessage } from '@/statusCodeMessages';
     export default {
       props:{
         
       },
       setup(){
-        const questionId='0000000';
-        return {
-          questionId,
-        }
       },
       data(){
         const question = {
+          id:'',
           title: '这是一个测试题?',
           content: '这是问题的描述',
           time: '2022-09-01 00:00',
@@ -65,13 +64,34 @@ import {useRoute} from 'vue-router'
       },
       methods:{
       },
-      onMounted(){
+      mounted(){
         const route=useRoute();
-        this.courseId=route.params.id;
+        this.question.id=route.params.id;
+        console.log('Load question page',this.question.id);
+        getQuestionDetail(this.question.id)
+        .then(response=>{
+          const status=response.status;
+          if (status == 200) {
+            this.question.title = response.title;
+            this.question.authorName = response.author_name;
+            this.question.profileUrl = response.author_profile_url;
+            this.question.starCount = response.star_count;
+            this.question.scanCount = response.scan_count;
+            this.question.replyCount = response.reply_count;
+            this.question.content = response.content;
+            this.question.time = response.publish_time;
+          }else{
+            this.$router.push({name:'ErrorPage',params:{reason:getStatusMessage('common',status).content}});
+          }
+        })
+        .catch(error=>{
+          console.error(error);
+          this.$router.push({name:'ErrorPage',params:{reason:'网络错误'}});
+        })
         if('from' in route.params && route.params.from=='message'){
           //逻辑
         }
-        console.log('Load question page',this.courseId);
+        
       }
     }
   </script>

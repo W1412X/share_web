@@ -22,7 +22,9 @@ export const getUser = (key = '') => {
         return parsedUser.userName;
     } else if(key=='email'){
         return parsedUser.email;
-    } 
+    } else if(key=='profileUrl'){
+        return parsedUser.profileUrl;
+    }
     else {
         return parsedUser;
     }

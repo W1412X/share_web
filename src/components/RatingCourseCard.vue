@@ -1,10 +1,4 @@
 <template>
-  <v-dialog v-model="ifShowDialog"
-    style="width: 100%;height:100%;background-color: rgba(255,255,255,0.5);justify-content: center;">
-    <div v-if="ifShowCourseAnswerEditor" style="width: 100%;height:100%;justify-content: center;display: flex">
-      <course-answer-editor @close="close" :courseId="course.id" :courseName="course.name"></course-answer-editor>
-    </div>
-  </v-dialog>
   <v-card :style="{ 'width': '750px', 'max-width': '750px' }">
     <v-row :style="{ 'margin': '0px', 'padding': '0px' }">
       <div :style="{ 'width': '750px' }">
@@ -53,6 +47,12 @@
             考核方式: {{ course.examineMethod }}
           </div>
         </div>
+        <div style="width: 100%;display: flex;flex-direction: row-reverse;margin-top:5px">
+          <span style="font-size:16px;color:#8a8a8a;margin-right: 10px;">{{ course.updateTime }}
+            <v-tooltip  style="margin-left: 2px;margin-bottom: 8px;" activator="parent" location="top">课程信息更新时间</v-tooltip>
+          </span>
+          <svg-icon type="mdi" :path="icons.timeClock" style="margin-right: 5px;max-width: 25px;max-height: 25px;" color="#8a8a8a"></svg-icon>
+        </div>
       </div>
       <div style="width: 100%">
         <div style="
@@ -96,41 +96,57 @@
           padding-right: 10px;
           padding-bottom: 5px;
         ">
-        <v-btn @click="editAnswer" variant="outlined" color="#9c0c13" style="width: 730px; height: 30px">添加课程评价</v-btn>
+        <self-course-answer :id="selfAnswer.id" :course-id="course.id" :course-name="course.name" :init-answer="{id:this.selfAnswer.id,rate:this.selfAnswer.rate,content:this.selfAnswer.comment,time:this.selfAnswer.time}"></self-course-answer>
       </div>
     </v-row>
   </v-card>
 </template>
 <script>
-import CourseAnswerEditor from '@/components/CourseAnswerEditor.vue';
-import {ref,computed} from 'vue';
 import StarButton from './StarButton.vue';
 import AlertButton from './AlertButton.vue';
+  import SvgIcon from '@jamescoyle/vue-icon';
+import { mdiClock } from '@mdi/js';
+import SelfCourseAnswer from './SelfCourseAnswer.vue';
 export default {
   props: {
     id:{
       type:String,
-      default:'00000000',
+      default:'',
+    },
+    ifRated:{
+      type:Boolean,
+      default:false,
+    },
+    initCourse:{
+      type:Object,
+      default:function(){
+        return {
+          id: '00000000',
+          name: '程序思维设计与实践',
+          teacher: '蔡晓军',
+          type: '通识选修,人文社科',
+          college: '计算机科学与技术学院',
+          campus: '青岛校区',
+          examineMethod: '项目展示',
+          teacheMethod: '线上',
+          updateTime:'xxxx-xx-xx xx:xx',
+          rate: {
+            averageRate: 3.5,
+            rateNum: 100,
+            ratePropotion: [10, 20, 20, 30, 20],//从1->5
+          },
+        }
+      }
     }
   },
   setup(){
-    const ifShowCourseAnswerEditor=ref(false);
-    const ifShowDialog=computed(()=>{//
-      return ifShowCourseAnswerEditor.value;
-    })
-    const setCourseAnswerEditorState=(state)=>{
-      ifShowCourseAnswerEditor.value=state;
-    }
-    return {
-      ifShowCourseAnswerEditor,
-      ifShowDialog,
-      setCourseAnswerEditorState,
-    }
+
   },
   components:{
-    CourseAnswerEditor,
     StarButton,
     AlertButton,
+    SvgIcon,
+    SelfCourseAnswer,
   },
   data() {
     const course = {
@@ -142,23 +158,35 @@ export default {
       campus: '青岛校区',
       examineMethod:'项目展示',
       teacheMethod:'线上',
+      updateTime:'xxxx-xx-xx xx:xx',
       rate: {
         averageRate: 3.5,
         rateNum: 100,
         ratePropotion: [10, 20, 20, 30, 20],//从1->5
       },
     }
+    const selfAnswer={//获取自己的回答状态
+      id:'',
+      rate:3,
+      comment:'sssssss',
+      time:'sss',
+    }
     return {
+      icons:{
+        timeClock:mdiClock,
+      },
       course,
+      selfAnswer,
     }
   },
   methods:{
-    editAnswer(){
-      this.setCourseAnswerEditorState(true);
-    },
-    close(){
-      this.setCourseAnswerEditorState(false);
-    },
+  },
+  mounted(){//需要同时加载自己的回答状态到selfAnswer中
+    if(this.id==''){////如果没有id，传入initCourse
+      
+    }else{//否则组件请求
+      console.log(this.id);
+    }
   }
 }
 </script>

@@ -23,7 +23,7 @@ import { mdiSendCircleOutline } from '@mdi/js'
 import Answer from './Answer.vue';
 export default{
     props:{
-        question_id:{
+        questionId:{
             type:String,
             default:null,
         }

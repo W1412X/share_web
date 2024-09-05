@@ -37,7 +37,8 @@ export default{
         return {
             color,
             ifClicked,
-            heart
+            heart,
+            ifClickable:true,
         }
     },
     components:{
@@ -45,9 +46,14 @@ export default{
     },
     methods:{
         click(){
+            if(!this.ifClickable)return;
             this.ifClicked=!this.ifClicked;
+            this.ifClickable=false;
             console.log('type',this.type);
             console.log('id',this.id);
+            setTimeout(()=>{
+                this.ifClickable=true;
+            },2000)
         }
     }
 }

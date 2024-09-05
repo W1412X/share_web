@@ -6,13 +6,17 @@ import ArticlePage from '@/pages/ArticlePage.vue';
 //import { getCookie,/*setCookie*/ } from '@/utils/cookie';
 /*import { login } from '@/utils/api';*/
 import { getUser } from '@/utils/storage';
-import TestPage2 from '@/pages/TestPage2.vue';
+import ComponentsPage from '@/pages/ComponentsPage.vue';
 import EditorPage from '@/pages/EditorPage.vue';
 import QuestionPage from '@/pages/QuestionPage.vue';
 import ErrorPage from '@/pages/ErrorPage.vue';
 import AuthorPage from '@/pages/AuthorPage.vue';
 import CoursePage from '@/pages/CoursePage.vue';
 const routes = [
+  {
+    path:'/',
+    redirect:'/index'
+  },
   {
     path: '/login',
     name: 'LoginPage',
@@ -43,9 +47,9 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
-    path: '/test2',
-    name: 'TestPage2',
-    component: TestPage2,
+    path: '/components',
+    name: 'ComponentsPage',
+    component: ComponentsPage,
     meta: { requiresAuth: true },
   },
   {
@@ -55,7 +59,7 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
-    path:'/error',
+    path:'/error/:reason',
     name:'ErrorPage',
     component: ErrorPage
   },
@@ -70,6 +74,10 @@ const routes = [
     name:'CoursePage',
     component: CoursePage,
     meta:{requiresAuth:true}
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: '/error'
   }
 ];
 
@@ -80,10 +88,6 @@ const router = createRouter({
 
 // 路由守卫，用于检查登录状态
 router.beforeEach((to, from, next) => {
-  if(to.path=='/'){
-    router.push('/index');
-    return;
-  }
   if (to.matched.some(record => record.meta.requiresAuth)) {
     console.log(getUser(''));
     if(getUser()!=''){//如果存储了用户信息则直接尝试登陆
