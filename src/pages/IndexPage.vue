@@ -67,11 +67,6 @@
     </div>
   </v-layout>
 </template>
-
-<style scoped>
-.search_input {}
-</style>
-
 <script>
 import SvgIcon from '@jamescoyle/vue-icon'
 import QuestionEditor from '@/components/QuestionEditor.vue';

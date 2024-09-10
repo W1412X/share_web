@@ -9,7 +9,7 @@
           </div>
           <div style="justify-content: center;width:1000px;margin-left:0px;margin-right:0px;margin-top:0px">
             <v-card style="padding:0px;margin:0px">
-              <ArticleEditor ref="editorRef"></ArticleEditor>
+              <ArticleEditor ref="editorRef" @alert="alert"></ArticleEditor>
             </v-card>
           </div>
           <div style="justify-content: center;width:1000px;margin-left:0px;margin-right:0px;margin-top:50px">
