@@ -70,6 +70,7 @@ import { getStatusMessage } from '@/statusCodeMessages';
         console.log('Load question page',this.question.id);
         getQuestionDetail(this.question.id)
         .then(response=>{
+          console.log(response)
           const status=response.status;
           if (status == 200) {
             this.question.title = response.title;

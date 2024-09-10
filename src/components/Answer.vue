@@ -30,7 +30,7 @@
               <v-row justify="end">
                 <v-col :style="{'max-width':'25px'}">
                   <like-button
-                    :id="this.id"
+                    :id="this.answer.id"
                     :type="'answer'"
                   ></like-button>  
                 </v-col>
@@ -55,10 +55,6 @@ import AlertButton from './AlertButton.vue';
   export default {
     name: 'ResourceItem',
   props: {
-    id: {
-      type: String,
-      default: '',
-    },
     initAnswer: {
       type: Object,
       default:
@@ -76,17 +72,8 @@ import AlertButton from './AlertButton.vue';
     setup(){
     },
     data(){
-      var answer = {
-        id: this.id,
-        name: 'xxx',
-        time: 'xxxx-xx-xx xx:xx',
-        content: 'XXXXXXXX',
-        profileUrl: 'xxx',
-      }
-      if(this.id==''){//如果id为空，传入的为answer结构体，无需再次请求
-        answer=this.initAnswer;
-      }
-      return{
+      var answer = this.initAnswer;
+      return {
         answer,
       }
     },
@@ -105,10 +92,7 @@ import AlertButton from './AlertButton.vue';
         this.setAlertCardState(false);
       }
     },
-    mounted(){
-      if(this.id!=''){//传入的id不为空，请求内容
-
-      }
+    mounted(){//
     }
   }
 </script>

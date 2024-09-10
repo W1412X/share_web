@@ -1,4 +1,5 @@
 <template>
+  <btn @click="test">test</btn>
   <div style="border: 1px solid #ccc">
     <Toolbar style="border-bottom: 1px solid #ccc;width: 1000px;" :editor="editorRef" :defaultConfig="toolbarConfig"
       :mode="mode" />
@@ -89,13 +90,10 @@ import os
       },
     };
     const toolbarConfig = {
-      insertKeys: {
-        index: 0,
-        keys: [
-          'insertFormula',//插入
-          'editFormula'//编辑
-        ],
-      },
+      excludeKeys:[
+        'fullScreen',
+        'uploadVideo'
+      ]
       // 其他配置项
     };
     /*toolbarConfig.excludeKeys=[//取出上传视频的工具
@@ -137,11 +135,12 @@ import os
   },
   methods: {
     test() {
-      console.log(DomEditor.getToolbar(this.editorRef).getConfig().toolbarKeys);
+      const toolbar=DomEditor.getToolbar(this.editorRef)
+      const curToolBarConfig=toolbar.getConfig();
+      console.log(curToolBarConfig);
     }
   },
   created(){//在组件创建时赋值initHtml
-    console.log("创建组件");
   },
   mounted(){
   }

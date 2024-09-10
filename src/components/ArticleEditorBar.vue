@@ -15,12 +15,6 @@
                 :style="{ 'padding-top': '0px', 'margin-bottom': '0px', 'margin-left': '5px' }"></svg-icon>
           </div>
           <div>
-            <div v-if="ifShowTagInput" style="display: flex;flex-direction: row;margin: 10px;">
-              <v-textarea v-model="inputTag" density="compact" style="width: 200px" label="输入标签" row-height="1" rows="1"
-                variant="outlined" auto-grow></v-textarea>
-              <v-btn @click="confirmAddTag()" style="margin-top: 5px;margin-left: 10px;height: 30px;"
-                variant="outlined" color="#9c0c13">确认添加</v-btn>
-            </div>
             <v-btn color="#9c0c13" @click="ifShowTagInput = true" variant="outlined" style="
                     height: 25px;
                     margin-bottom: 5px;
@@ -44,6 +38,14 @@
             </v-btn>
           </div>
         </div>
+        <div v-if="ifShowTagInput" style="display: flex;flex-direction: row;margin: 10px;">
+              <v-textarea v-model="inputTag" density="compact" style="width: 200px" label="输入标签" row-height="1" rows="1"
+                variant="outlined" auto-grow></v-textarea>
+              <v-btn @click="confirmAddTag()" style="margin-top: 5px;margin-left: 10px;height: 30px;"
+                variant="outlined" color="#9c0c13">确认添加</v-btn>
+                <v-btn @click="()=>{this.ifShowTagInput=false;}" style="margin-top: 5px;margin-left: 10px;height: 30px;"
+                variant="outlined" color="#9c0c13">取消</v-btn>
+          </div>
         <div style="width: 960px; margin-top: 10px; display: flex">
           <div style="margin-right: 10px">
             <span style="color: #8a8a8a">文章封面:</span>
@@ -106,12 +108,12 @@
           ">
           <div style="margin-right: 10px; margin-top: 20px">
             <span style="color: #8a8a8a">上传资源:</span>
-              <v-tooltip activator="parent" style="margin-left: 2px;margin-bottom: 8px;" location="top">上传你的文章的绑定资源</v-tooltip>
+              <v-tooltip activator="parent" style="margin-left: 2px;margin-bottom: 8px;" location="top">上传你的文章的绑定资源 <br/>上传的资源不得超过100MB<br/>上传的资源类型仅能为压缩包,PDF,WORD以及PPT</v-tooltip>
               <svg-icon type="mdi" :path="icons.question" color="#8a8a8a" size="18"
                 :style="{ 'padding-top': '0px', 'margin-bottom': '0px', 'margin-left': '5px' }"></svg-icon>
           </div>
           <div style="margin-left: -15px; margin-top: 10px">
-            <v-file-input width="300px" density="compact" label="File input"></v-file-input>
+            <v-file-input v-model="this.file" @change="handleFileChange" width="300px" density="compact" label="File input"></v-file-input>
           </div>
         </div>
       </v-row>
@@ -172,9 +174,40 @@ export default {
       inputTag,
       ifShowTagInput,
       alertSet,
+      file:null,
+      uploadProgress:0,
     }
   },
   methods: {
+    handleFileChange(event){//在此组件中仅提供选择文件的代码，在编辑器页面中发布文章时同时上传资源
+      const selectedFile=event.target.files[0]
+      if(!selectedFile){
+        this.$emit('alert',{state:true,color:'warning',title:'为选择文件',content:'如果需要上传相关资源，请重新上传'})
+        return 
+      }
+      const allowTypes=[
+        'application/zip',
+        'application/pdf',
+        'application/msword',
+        'application/vnd.ms-powerpoint'
+      ]
+      if(!allowTypes.includes(selectedFile.type)){
+        this.$emit('alert',{state:true,color:'warning',title:'不支持此文件类型',content:'目前仅支持上传pdf,word,ppt以及压缩包类型的文件'})
+        this.file=null  
+        return 
+      }
+      const maxSize=100*1024*1024 //设置上传文件的最大大小为100m  
+      if(selectedFile.size>maxSize){
+        this.$emit('alert',{state:true,color:'warning',title:'文件大小超过限制',content:'一次最多可以上传一个不多于100m的文件'})
+        this.file=null  
+        return 
+      }
+      this.file=selectedFile  
+      //这时开始上传资源  
+      const fileForm=new FormData();
+      fileForm.append('file',this.file)
+      this.file=selectedFile
+    },
     confirmAddTag() {
       if(this.inputTag==''){//标签为空，则直接返回
         const msg={
@@ -196,7 +229,27 @@ export default {
         this.$emit('alert',msg);
         return;
       }
-      if(this.tags.length>5){//标签的数量最多为五个
+      if(this.tags.includes(this.inputTag)){//不可以添加重复的标签
+        const msg={
+          state:true,
+          title:'不可以添加重复的标签',
+          content:'',
+          color:'warning'
+        }
+        this.$emit('alert',msg);
+        return;
+      }
+      if(this.tags.includes('测试标签')){//不可以添加重复的标签
+        const msg={
+          state:true,
+          title:'请删除测试标签之后添加标签',
+          content:'',
+          color:'warning'
+        }
+        this.$emit('alert',msg);
+        return;
+      }
+      if(this.tags.length>=5){//标签的数量最多为五个
         const msg={
           state:true,
           title:'最多可添加 5 个标签',

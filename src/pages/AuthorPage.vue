@@ -54,7 +54,7 @@ export default {
     const courseList = [
       '00000001'
     ]
-    const type = 'article'
+    const type = 'course'
     return {
       type,
       questionList,

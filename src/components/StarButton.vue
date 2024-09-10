@@ -3,6 +3,7 @@
         'max-width': '25px',
         'max-height': '25px',
         'border-radius': '100%',
+        'background-color':'rgba(0,0,0,0)'
     }">
         <svg-icon type="mdi" :color="color" :path="star"></svg-icon>
     </v-btn>

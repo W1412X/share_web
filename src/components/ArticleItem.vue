@@ -103,7 +103,7 @@
           }">
             <svg-icon type="mdi" :path="icon.delete"></svg-icon>
           </v-btn>
-          <v-btn v-if="status == 'writer'" elevation="0" icon :style="{
+          <v-btn v-if="status == 'writer'" @click="toEditorPage" elevation="0" icon :style="{
             'max-width': '25px',
             'padding-left': '0px',
             'max-height': '25px',
@@ -175,6 +175,9 @@ export default {
     navigateToArticle() {
       this.router.push({ name: 'ArticlePage', params: { id: this.id } });
     },
+    toEditorPage(){
+      this.router.push({name:'EditorPage',params:{id:this.id}})
+    }
   },
   components: {
     StarButton,

@@ -9,6 +9,7 @@
         'width': size,
         'height': size,
         'color': color,
+        'background-color':'rgba(0,0,0,0)',
     }">
         <svg-icon type="mdi" :path="alertIcon"></svg-icon>
     </v-btn>

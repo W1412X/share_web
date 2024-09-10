@@ -14,7 +14,7 @@
     ">
     <div style="height: 100%;display: flex;justify-content: center;align-items: center;background-color: rgba(255,255,255,0);">
       <v-btn @click="closeComment" icon size="30" style="background-color: rgba(255,255,255,0);">
-        <svg-icon type="mdi" color="#ffffff" :path="icons.closeQuestion"></svg-icon>
+        <svg-icon type="mdi" color="#8a8a8a" :path="icons.closeQuestion"></svg-icon>
       </v-btn>
     </div>
     <div :style="{'padding':'0px','height':'100%','display':'relative','overflow':'auto','background-color':'rgba(255,255,255,1)'}">

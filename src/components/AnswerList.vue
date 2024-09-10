@@ -3,7 +3,7 @@
       :style="{'padding':'0px','height':'95%','display':'relative'}"
     >
       <div :style="{'max-height':'100%','padding':'5px','overflow':'auto',}">
-        <Answer v-for="(answerId,index) in answerList" :id="answerId" :key="index"
+        <Answer v-for="(answer,index) in answerList" :key="index" :init-answer="answer"
         ></Answer>
         <v-btn variant="outlined" style="width:750px;color: #0074e8;" @click="loadMore()">加载更多的回答</v-btn>
       </div>
@@ -33,16 +33,17 @@ export default{
         send:mdiSendCircleOutline,
       }
       const editingAnswerContent='';
-      const answerList=[
-        '00000000',
-        '00000001',
-        '00000002',
-        '00000003',
-        '00000000',
-        '00000001',
-        '00000002',
-        '00000003',
-      ];
+      const answerList=[];
+      for(var i=0;i<20;i++){
+        answerList.push({
+            id: '00000000',
+            name: 'visitor',
+            time: 'xxxx-xx-xx xx:xx',
+            content: 'XXXXXXXX',
+            profileUrl: 'https://tse1-mm.cn.bing.net/th/id/OIP-C.PO7d9IfnPUy2RO173QYt6wHaHV?w=216&h=213&c=7&r=0&o=5&pid=1.7',
+          })
+      }
+      console.log(answerList)
       return{
         answerList,
         editingAnswerContent,
@@ -63,6 +64,9 @@ export default{
       loadMore(){
 
       }
+    },
+    mounted(){//根据question获取问题列表
+      
     }
     
 }

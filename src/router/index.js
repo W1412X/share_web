@@ -41,7 +41,7 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
-    path:'/editor',
+    path:'/editor/:id?',
     name:'EditorPage',
     component: EditorPage,
     meta: { requiresAuth: true },

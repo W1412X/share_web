@@ -25,7 +25,6 @@
   <v-snackbar
     :timeout="3000"
     :color="alertSet.color"
-    variant="outlined"
     v-model="alertSet.state"
   >
     <div class="text-subtitle-1 pb-2">{{ alertSet.title }}</div>
@@ -35,6 +34,7 @@
 <script>
 import ArticleEditor from '@/components/ArticleEditor.vue';
 import ArticleEditorBar from '@/components/ArticleEditorBar.vue';
+import { useRoute } from 'vue-router';
 export default{
     props:{
       article:{
@@ -93,6 +93,17 @@ export default{
     components:{
         ArticleEditor,
         ArticleEditorBar
+    },
+    mounted(){
+      const  route=useRoute()
+      if(route.params.id){
+        console.log(route.params.id);
+        //在这里加载文章的信息
+        this.alert({state:true,color:'success',title:'加载文章信息成功'});
+      }else{
+        console.log(route.params.id);
+        this.alert({state:true,color:'info',title:'新建编辑',content:'新建一个编辑器'});
+      }
     }
 }
 </script>
