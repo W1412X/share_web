@@ -64,7 +64,6 @@ export default {
   },
   created() {
     this.isMobile = /Mobi|Android/i.test(navigator.userAgent);
-    window.alert(this.isMobile)
   },
 }
 </script>
