@@ -134,8 +134,8 @@
         </div>
       </div>
     </div>
-    <div>
-      <v-btn style="margin-left: 500px" variant="outlined" color="#8a8a8a" @click="this.logout()">退出在此设备的登陆</v-btn>
+    <div style="display: flex;flex-direction: row-reverse;">
+      <v-btn style="margin-left: 5px;" variant="outlined" color="#8a8a8a" @click="this.logout()">退出在此设备的登陆</v-btn>
     </div>
   </v-card>
 </template>

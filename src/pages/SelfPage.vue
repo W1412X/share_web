@@ -9,9 +9,23 @@
     <p>{{ alertSet.content }}</p>
   </v-snackbar>
   <v-app style="width: 100%;justify-content: center;">
+      <v-bottom-navigation v-if="isMobile">
+        <v-btn color="#9c0c13" :prepend-icon="'mdi-pencil'" value="create"
+              @click="setView('create')">创作</v-btn>
+            <v-btn color="#9c0c13" :prepend-icon="'mdi-star'" value="star"
+              @click="setView('star')">收藏</v-btn>
+            <v-btn color="#9c0c13" :prepend-icon="'mdi-account-plus'" value="follow"
+              @click="setView('follow')">关注</v-btn>
+            <v-btn color="#9c0c13" :prepend-icon="'mdi-email-alert'" value="message"
+              @click="setView('message')">消息</v-btn>
+            <v-btn color="#9c0c13" :prepend-icon="'mdi-account'" value="account"
+              @click="setView('account')">个人</v-btn>
+            <v-btn color="#9c0c13" :prepend-icon="'mdi-cog'" value="setting"
+              @click="setView('setting')">设置</v-btn>
+      </v-bottom-navigation>
     <v-layout style="width: 100%;justify-content: center;">
       <v-row style="width: 100%;justify-content: center;">
-        <v-navigation-drawer expand-on-hover rail>
+        <v-navigation-drawer v-if="!isMobile"  expand-on-hover rail>
           <v-list>
             <v-list-item prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg" subtitle="test@gmailcom"
               title="test"></v-list-item>
@@ -32,7 +46,7 @@
               @click="setView('setting')"></v-list-item>
           </v-list>
         </v-navigation-drawer>
-        <v-col :style="{'margin-left':'55px','width':'100%','justify-content': 'center'}">
+        <v-col :style="{position:'relative','margin-left':'55px','width':'100%','justify-content': 'center','margin-bottom':'45px'}">
           <div style="width: 100%;display: flex;justify-content: center;">
             <div v-if="this.currentView==='create'" style="display: flex;flex-direction: column;padding: 10px;">
             <self-create></self-create>
@@ -165,7 +179,8 @@ import {useRoute} from 'vue-router'
           title: '登陆成功',
           content: '登陆成功',
           state: false,
-        }
+        },
+        isMobile: false,
       };
     },
     methods:{
@@ -181,6 +196,10 @@ import {useRoute} from 'vue-router'
       setView(view){
         this.currentView=view;
       },
+    },
+    created(){
+      this.isMobile = /Mobi|Android/i.test(navigator.userAgent);
+      window.alert(this.isMobile)
     },
     onMounted(){
       const route=useRoute();

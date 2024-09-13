@@ -5,6 +5,7 @@
       <v-tab :style="{ background: '#bbbbbb', 'font-size': '18px', 'min-width': '250px' }" value="question" text="问答"></v-tab>
       <v-tab :style="{ background: '#bbbbbb', 'font-size': '18px', 'min-width': '250px' }" value="course" text="课程"></v-tab>
     </v-tabs>
+    <div style="height:100%;overflow:scroll;">
     <div v-if="type == 'article'" style="width: 100%;display: flex;flex-direction: column;">
       <article-item v-for="(article, index) in articleList" :key="index" :article="article"
         :status="'reader'"></article-item>
@@ -16,6 +17,7 @@
     <div v-if="type == 'course'" style="width: 100%;display: flex;flex-direction: column;">
       <course-item v-for="(course, index) in courseList" :key="index" :course="course"></course-item>
     </div>
+  </div>
   </v-card>
 </template>
 <script>

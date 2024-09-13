@@ -67,11 +67,12 @@
           'color': '#8a8a8a',
           'display': '-webkit-box',
           '-webkit-line-clamp': '3',
-          'overflow-y': 'hidden',
+          'overflow-y': 'scroll',
+          'font-size':'16px',
           'text-overflow': 'ellipsis',
           '-webkit-box-orient': 'vertical',
           'line-height': '1.4',
-          'height': '4.5em',
+          'height': '3.5em',
           'padding-left': '0px',
           'padding-right': '20px'
         }">

@@ -5,31 +5,26 @@
       <question-editor @close="close"></question-editor>
     </div>
   </v-dialog>
-    <v-card
-      :style="{width:'100%',display:'relative','margin-top':'10px'}"
-    >
-      <v-tabs v-model="type" style="width: 750px;background-color: #8a8a8a;" bg-color="indigo-darken-2" fixed-tabs>
-        <v-tab
-          :style="{background:'#bbbbbb','font-size':'18px','min-width':'375px'}"
-          value="article"
-          text="文章"
-        ></v-tab>
-        <v-tab
-          :style="{background:'#bbbbbb','font-size':'18px','min-width':'375px'}"
-          value="question"
-          text="问答"
-        ></v-tab>
-      </v-tabs>
-      <div v-if="type=='article'" style="width: 100%;display: flex;flex-direction: column;">
-        <v-btn variant="outlined" style="width: 94%;margin-left: 3%;margin-right: 3%;color:#9c0c13" @click="editArticle()">编辑新文章</v-btn>
-        <article-item v-for="(articleId,index) in articleList" :key="index" :id="articleId" :status="'writer'"></article-item>
+  <v-card :style="{width:'100%',display:'relative','margin-top':'10px'}">
+    <v-tabs v-model="type" style="width: 750px;background-color: #8a8a8a;" bg-color="indigo-darken-2" fixed-tabs>
+      <v-tab :style="{background:'#bbbbbb','font-size':'18px','min-width':'375px'}" value="article" text="文章"></v-tab>
+      <v-tab :style="{background:'#bbbbbb','font-size':'18px','min-width':'375px'}" value="question" text="问答"></v-tab>
+    </v-tabs>
+      <div v-if="type == 'article'" style="width: 100%;display: flex;flex-direction: column;">
+        <v-btn variant="outlined" style="width: 94%;margin-left: 3%;margin-right: 3%;margin-top:3%;color:#9c0c13"
+          @click="editArticle()">编辑新文章</v-btn>
+        <article-item v-for="(articleId, index) in articleList" :key="index" :id="articleId"
+          :status="'writer'"></article-item>
       </div>
-      <div  v-if="type=='question'" style="width: 100%;display: flex;flex-direction: column;">
-        <v-btn variant="outlined" style="width: 94%;margin-left: 3%;margin-right: 3%;color:#9c0c13" @click="editQuestion()">发布新问题</v-btn>
-        <single-question v-for="(questionId,index) in questionList" :key="index" :id="questionId" :status="'writer'"></single-question>
+      <div v-if="type == 'question'"
+        style="width: 100%;display: flex;flex-direction: column;">
+        <v-btn variant="outlined" style="width: 94%;margin-left: 3%;margin-right: 3%;margin-top:3%;color:#9c0c13"
+          @click="editQuestion()">发布新问题</v-btn>
+        <single-question v-for="(questionId, index) in questionList" :key="index" :id="questionId"
+          :status="'writer'"></single-question>
       </div>
-    </v-card>
-  </template>
+  </v-card>
+</template>
   <script>
 import { computed,ref } from 'vue';
 import ArticleItem from './ArticleItem.vue';
