@@ -53,13 +53,18 @@ export default {
     return {
       icons: {
         commentQuestion: mdiCommentQuestionOutline,
-      }
+      },
+      isMobile:false,
     }
   },
   methods: {
     showComment() {
-      this.$emit('get_comment', null);
+      this.$emit('get_comment', null); 
     },
+  },
+  created() {
+    this.isMobile = /Mobi|Android/i.test(navigator.userAgent);
+    window.alert(this.isMobile)
   },
 }
 </script>

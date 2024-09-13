@@ -175,6 +175,7 @@ export default {
       border_color,
       border_width,
       question,
+      isMobile:false,
     }
   },
   methods: {
@@ -182,10 +183,10 @@ export default {
       this.router.push({ name: 'QuestionPage', params: { id: '00000000' } });
     },
     select(){//点击按钮时选中次函数
-          this.$emit('select_question',this.question.id);
+      this.$emit('select_question',this.question.id);
     },
     click(){
-      if(this.type=='question'){
+      if(this.type=='question' || this.isMobile){
         this.toQuestion();
       }else{
         this.select();
@@ -193,6 +194,9 @@ export default {
     },
   },
   computed: {
-  }
+  },
+  created(){
+      this.isMobile = /Mobi|Android/i.test(navigator.userAgent);
+  },
 }
 </script>

@@ -17,7 +17,7 @@
         <svg-icon type="mdi" color="#8a8a8a" :path="icons.closeQuestion"></svg-icon>
       </v-btn>
     </div>
-    <div :style="{'padding':'0px','height':'100%','display':'relative','overflow':'auto','background-color':'rgba(255,255,255,1)'}">
+    <div v-if="isMobile" :style="{'padding':'0px','height':'100%','display':'relative','overflow':'auto','background-color':'rgba(255,255,255,1)'}">
       <AnswerList :question_id="this.selectedQuestionId"></AnswerList>
     </div>
     <div :style="{'padding':'0px','height':'100%','background-color':'rgba(255,255,255,1)','min-width':'750px'}">
@@ -90,6 +90,7 @@ import SingleQuestion from './SingleQuestion.vue';
         questionList,
         selectedQuestionId,
         gotPageNum,
+        isMobile:false,
       }
     },
     components: {
@@ -131,6 +132,9 @@ import SingleQuestion from './SingleQuestion.vue';
         }
         this.$emit('alert',alertSet)
       })
+    },
+    created(){
+      this.isMobile = /Mobi|Android/i.test(navigator.userAgent);
     },
     expose(){
       const dialogState=computed(()=>{

@@ -262,9 +262,6 @@ import os
         this.$router.push({name:'ErrorPage',params:{reason:'网络错误'}});*/
       })
       //在组件加载完成后，将Markdown文本解析为HTML并赋值给renderedMarkdown
-      if('from' in route.params && route.params.from=='message'){
-        this.ifShowComment=true;
-      }
       this.renderedContent = marked(this.article.content);
     },
   }

@@ -79,7 +79,7 @@
             userName: 'test',
             time: '2022-09-01 08:00',
             userId: '00000000',
-            type: '文章新增问题',//类型分为文章新增问题，文章新增
+            type: '问题新增回答',//类型分为文章新增问题，文章新增
             relativeItemType:'article',//article/question
             relativeItemId:'00000000',
             relativeQuestionId:'0000000',

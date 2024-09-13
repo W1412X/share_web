@@ -87,7 +87,8 @@ import { getStatusMessage } from '@/statusCodeMessages';
         })
         .catch(error=>{
           console.error(error);
-          this.$router.push({name:'ErrorPage',params:{reason:'网络错误'}});
+          /*
+          this.$router.push({name:'ErrorPage',params:{reason:'网络错误'}});*/
         })
         if('from' in route.params && route.params.from=='message'){
           //逻辑
