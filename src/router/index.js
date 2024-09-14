@@ -13,6 +13,7 @@ import ErrorPage from '@/pages/ErrorPage.vue';
 import AuthorPage from '@/pages/AuthorPage.vue';
 import CoursePage from '@/pages/CoursePage.vue';
 import MdEditorPage from '@/pages/MdEditorPage.vue';
+import ManagePage from '@/pages/ManagePage.vue';
 const routes = [
   {
     path:'/',
@@ -80,6 +81,11 @@ const routes = [
     path:'/mdeditor',
     name:'MdEditorPage',
     component:MdEditorPage
+  },
+  {
+    path:'/manage',
+    name:'ManagePage',
+    component:ManagePage
   },
   {
     path: '/:pathMatch(.*)*',
