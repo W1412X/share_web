@@ -61,7 +61,7 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
-    path:'/error/:reason',
+    path:'/error/:reason?',
     name:'ErrorPage',
     component: ErrorPage
   },
