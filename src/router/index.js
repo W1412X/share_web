@@ -12,6 +12,7 @@ import QuestionPage from '@/pages/QuestionPage.vue';
 import ErrorPage from '@/pages/ErrorPage.vue';
 import AuthorPage from '@/pages/AuthorPage.vue';
 import CoursePage from '@/pages/CoursePage.vue';
+import MdEditorPage from '@/pages/MdEditorPage.vue';
 const routes = [
   {
     path:'/',
@@ -76,9 +77,14 @@ const routes = [
     meta:{requiresAuth:true}
   },
   {
+    path:'/mdeditor',
+    name:'MdEditorPage',
+    component:MdEditorPage
+  },
+  {
     path: '/:pathMatch(.*)*',
     redirect: '/error'
-  }
+  },
 ];
 
 const router = createRouter({

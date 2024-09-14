@@ -3,6 +3,12 @@
     <main :style="{ 'justify-content': 'center', 'width': '100%', 'display': 'flex', 'padding-bottom': '50px' }">
       <v-card :style="{ 'max-width': '1000px', 'width': '1000px', 'background-color': '#eef0f4' }">
         <v-row style="margin: 0px; width: 1000px;padding:0px;">
+          <v-btn
+            variant="tonal"
+            @click="toMdEditor"
+            :style="{ 'max-width': '1000px', 'width': '1000px', 'background-color': 'rgba(0,0,0,0)'}">
+            使用Markdown创作？
+          </v-btn>
           <div style="margin:10px">
             <v-textarea style="width: 980px;margin-top:20px" v-model="title" label="编辑标题" row-height="10" rows="1"
               variant="outlined" auto-grow></v-textarea>
@@ -22,11 +28,7 @@
       </v-card>
     </main>
   </div>
-  <v-snackbar
-    :timeout="3000"
-    :color="alertSet.color"
-    v-model="alertSet.state"
-  >
+  <v-snackbar :timeout="3000" :color="alertSet.color" v-model="alertSet.state">
     <div class="text-subtitle-1 pb-2">{{ alertSet.title }}</div>
     <p>{{ alertSet.content }}</p>
   </v-snackbar>
@@ -88,6 +90,9 @@ export default{
         form.append('description',barData.description);
         form.append('fileUrl',barData.fileUrl);
         console.log(form);
+      },
+      toMdEditor(){
+        this.$router.push({name:'MdEditorPage'})
       }
     },
     components:{
