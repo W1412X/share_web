@@ -16,9 +16,9 @@
                 <div v-if="pageType == 'active'"
                     style="display:flex;flex-direction: column;margin:2px;overflow-y: scroll;">
                     <div style="display: flex;flex-direction: row;justify-items: center;">
-                        <v-combobox variant="outlined"
+                        <v-select variant="outlined"
                             style="margin-left: 0px;padding:0px;max-width: 100px;font-size: 16px;position: relative;margin-top: 10px;margin-bottom: 10%;height: 50px;"
-                            v-model="searchType" :items="['用户', '文章', '问答', '问题回答', '课程评论']" label="搜索类型"></v-combobox>
+                            v-model="searchType" :items="['用户', '文章', '问答', '问题回答', '课程评论']" label="搜索类型"></v-select>
                         <v-autocomplete v-model="inputValue" type="text" ref="searchInput"
                             style="position: relative;margin-top: 10px;margin-left:10px;height: 50px;" label="search" 
                             variant="outlined"></v-autocomplete>

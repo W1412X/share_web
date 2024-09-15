@@ -26,7 +26,7 @@
           v-model="course.teacher"
           style="margin: 2px"
         ></v-textarea>
-        <v-combobox
+        <v-select
           variant="outlined"
           density="compact"
           style="max-width: 300px; margin-left: 20px"
@@ -35,43 +35,43 @@
           label="课程类型"
           multiple
           chips
-        ></v-combobox>
+        ></v-select>
       </div>
       <div style="display: flex; flex-direction: row; margin-top: 0px">
-        <v-combobox
+        <v-select
           variant="outlined"
           density="compact"
           style="max-width: 300px"
           v-model="course.college"
           :items="colleges"
           label="开设学院"
-        ></v-combobox>
-        <v-combobox
+        ></v-select>
+        <v-select
           variant="outlined"
           density="compact"
           style="max-width: 300px; margin-left: 20px"
           v-model="course.campu"
           :items="campus"
           label="开设校区"
-        ></v-combobox>
+        ></v-select>
       </div>
       <div style="display: flex; flex-direction: row; margin-top: 0px">
-        <v-combobox
+        <v-select
           variant="outlined"
           density="compact"
           style="max-width: 300px"
           v-model="course.college"
           :items="examineMethods"
           label="考核方式"
-        ></v-combobox>
-        <v-combobox
+        ></v-select>
+        <v-select
           variant="outlined"
           density="compact"
           style="max-width: 300px; margin-left: 20px"
           v-model="course.teachMethod"
           :items="teachMethods"
           label="上课方式"
-        ></v-combobox>
+        ></v-select>
       </div>
       <div style="display: flex; flex-direction: row-reverse; margin-top: 0px">
         <v-btn

@@ -10,8 +10,8 @@
     <div style="position: relative;height: 100%;">
       <v-app-bar color="#9c0c13" style="margin-bottom:5px">
         <v-app-bar-title>Share ⛰️ SDU</v-app-bar-title>
-        <v-combobox variant="outlined" style="margin-left: 200px;padding:0px;max-width: 100px;font-size: 16px;position: relative;margin-top: 10%;margin-bottom: 10%;height: 80%;" v-model="searchType"
-          :items="['文章', '课程', '问答']" label="搜索类型"></v-combobox>
+        <v-select variant="outlined" style="margin-left: 200px;padding:0px;max-width: 100px;font-size: 16px;position: relative;margin-top: 10%;margin-bottom: 10%;height: 80%;" v-model="searchType"
+          :items="['文章', '课程', '问答']" label="搜索类型"></v-select>
         <v-autocomplete 
           v-model="inputValue" 
           type="text" 
