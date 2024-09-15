@@ -35,7 +35,8 @@
             <div style="display: flex;flex-direction: row;">
               <svg-icon type="mdi" :path="icon.viewCount" size="18" color="#8a8a8a"
                 :style="{ 'padding-top': '0px', 'margin-bottom': '0px', 'margin-left': '5px' }"></svg-icon>
-              <div :style="{ 'margin-left': '5px', 'font-size': '14px', 'color': '#8a8a8a', }">{{ article.scanCount }}</div>
+              <div :style="{ 'margin-left': '5px', 'font-size': '14px', 'color': '#8a8a8a', }">{{ article.scanCount }}
+              </div>
             </div>
           </div>
           <div
@@ -43,7 +44,8 @@
             <div style="display: flex;flex-direction: row;">
               <svg-icon type="mdi" :path="icon.starCount" size="18" color="#8a8a8a"
                 :style="{ 'padding-top': '0px', 'margin-bottom': '0px', 'margin-left': '5px' }"></svg-icon>
-              <div :style="{ 'margin-left': '4px', 'font-size': '14px', 'color': '#8a8a8a' }">{{ article.starCount }}</div>
+              <div :style="{ 'margin-left': '4px', 'font-size': '14px', 'color': '#8a8a8a' }">{{ article.starCount }}
+              </div>
             </div>
           </div>
           <div
@@ -51,7 +53,8 @@
             <div style="display: flex;flex-direction: row;">
               <svg-icon type="mdi" :path="icon.replyCount" size="18" color="#8a8a8a"
                 :style="{ 'padding-top': '0px', 'margin-bottom': '0px', 'margin-left': '5px' }"></svg-icon>
-              <div :style="{ 'margin-left': '4px', 'font-size': '14px', 'color': '#8a8a8a' }"> {{ article.replyCount }} </div>
+              <div :style="{ 'margin-left': '4px', 'font-size': '14px', 'color': '#8a8a8a' }"> {{ article.replyCount }}
+              </div>
             </div>
           </div>
         </div>
@@ -68,7 +71,7 @@
           'display': '-webkit-box',
           '-webkit-line-clamp': '3',
           'overflow-y': 'scroll',
-          'font-size':'16px',
+          'font-size': '16px',
           'text-overflow': 'ellipsis',
           '-webkit-box-orient': 'vertical',
           'line-height': '1.4',
@@ -84,11 +87,13 @@
           {{ article.authorName }}@
         </v-row>
       </v-col>
-      <v-col :style="{ flex: '4', height: '100%', width: '100%', position: 'relative', 'padding': '0px', 'margin-left': '2px' }">
+      <v-col
+        :style="{ flex: '4', height: '100%', width: '100%', position: 'relative', 'padding': '0px', 'margin-left': '2px' }">
         <div :style="{ display: 'flex', flexDirection: 'column-reverse', height: '100%', width: '100%' }">
-          <user-profile :url="this.article.profileUrl" :name="this.article.authorName" style="margin-top:11px;margin-bottom: 6px;"></user-profile>
+          <user-profile :url="this.article.profileUrl" :name="this.article.authorName"
+            style="margin-top:11px;margin-bottom: 6px;"></user-profile>
           <v-spacer></v-spacer>
-          <star-button v-if="status == 'reader'" :style="{
+          <star-button v-if="status == 'reader'" :id="this.article.id" :type="'article'" :style="{
             'padding-left': '0px',
             'margin-top': '10px',
             'margin-left': '2px',
@@ -124,7 +129,6 @@
 <script>
 import SvgIcon from '@jamescoyle/vue-icon'
 import { mdiEye, mdiMessage, mdiPencilCircleOutline, mdiStar, mdiTrashCanOutline } from '@mdi/js'
-import { useRouter } from 'vue-router'
 import StarButton from './StarButton.vue'
 import UserProfile from './UserProfile.vue';
 export default {
@@ -133,34 +137,33 @@ export default {
       type: String,
       default: 'reader', //reader,writer,manager
     },
-    id: {
-      type: String,
-      default: '00000000',
+    article: {
+      type: Object,
+      default: function () {
+        return {
+          id: '00000000',
+          title: '这是文章标题',
+          tags: ['计算机', '测试'],
+          description:
+            '这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介',
+          publishTime: '2022-09-01 00:00',
+          imgUrl:
+            'https://tse2-mm.cn.bing.net/th/id/OIP-C.B6see3otwDOwdcSecD_W8QHaHa?w=173&h=180&c=7&r=0&o=5&pid=1.7',
+          authorName: '测试用户',
+          profileUrl:
+            'https://tse1-mm.cn.bing.net/th/id/OIP-C.PO7d9IfnPUy2RO173QYt6wHaHV?w=216&h=213&c=7&r=0&o=5&pid=1.7',
+          starCount: '99999',
+          scanCount: '99999',
+          replyCount: '99999',
+        }
+      }
+
     }
   },
   setup() {
-    const router = useRouter();
-    return {
-      router,
-    }
+
   },
   data() {
-    const article = {
-      id: this.id,
-      title: '这是文章标题',
-      tags: ['计算机', '测试'],
-      description:
-        '这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介',
-      publishTime: '2022-09-01 00:00',
-      imgUrl:
-        'https://tse2-mm.cn.bing.net/th/id/OIP-C.B6see3otwDOwdcSecD_W8QHaHa?w=173&h=180&c=7&r=0&o=5&pid=1.7',
-      authorName: '测试用户',
-      profileUrl:
-        'https://tse1-mm.cn.bing.net/th/id/OIP-C.PO7d9IfnPUy2RO173QYt6wHaHV?w=216&h=213&c=7&r=0&o=5&pid=1.7',
-      starCount: '99999',
-      scanCount: '99999',
-      replyCount: '99999',
-    }
     return {
       icon: {
         delete: mdiTrashCanOutline,
@@ -169,15 +172,14 @@ export default {
         starCount: mdiStar,
         replyCount: mdiMessage,
       },
-      article,
     }
   },
   methods: {
     navigateToArticle() {
-      this.router.push({ name: 'ArticlePage', params: { id: this.id } });
+      this.$router.push({ name: 'ArticlePage', params: { id: this.article.id } });
     },
-    toEditorPage(){
-      this.router.push({name:'EditorPage',params:{id:this.id}})
+    toEditorPage() {
+      this.$router.push({ name: 'EditorPage', params: { id: this.article.id } })
     }
   },
   components: {

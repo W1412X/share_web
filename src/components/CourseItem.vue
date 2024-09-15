@@ -66,40 +66,37 @@
   </v-card>
 </template>
 <script>
-import {useRouter} from 'vue-router';
   export default {
     props: {
-      id:{
-        type:String,
-        default:'00000000',
+      course:{
+        type:Object,
+        default:function(){
+          return {
+            id: '00000000',
+            name: '程序思维设计与实践',
+            teacher: '蔡晓军',
+            type: '必修课 通识选修',
+            college: '计算机科学与技术学院',
+            campus: '青岛校区',
+            examineMethod: '',//考试/论文/项目展示/其他
+            teacheMethod: '线上',//线上/线下/混合
+            rate: 3.5,
+          }
+        }
       }
     },
     setup(){
-      const router=useRouter();
-      const navigateToCourse=()=>{
-        router.push({name:'CoursePage',params:{id:'00000000'}});
-      }
       return {
-        navigateToCourse,
       }
     },
     data() {
-      const course = {
-        id: this.id,
-        name: '程序思维设计与实践',
-        teacher: '蔡晓军',
-        type: '必修课 通识选修',
-        college: '计算机科学与技术学院',
-        campus: '青岛校区',
-        examineMethod:'考试',//考试/论文/项目展示/其他
-        teacheMethod:'线上',//线上/线下/混合
-        rate: 3.5,
-      }
       return {
-        course,
       }
     },
     methods:{
+      navigateToCourse(){
+        this.$router.push({name:'CoursePage',params:{id:this.course.id}})
+      }
     }
   }
 </script>

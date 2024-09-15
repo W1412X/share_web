@@ -13,15 +13,17 @@
       }">
         {{ question.title }}
       </div>
-      <div style="width: 200px;height: 100%;margin-right:20px;margin-top:5px;display: flex;justify-content: center;align-items: center;">
-        <relative-bar v-if="question.relativeUrl!=''" :relative-url="question.relativeUrl"></relative-bar>
+      <div
+        style="width: 200px;height: 100%;margin-right:20px;margin-top:5px;display: flex;justify-content: center;align-items: center;">
+        <relative-bar v-if="question.relativeUrl != ''" :relative-url="question.relativeUrl"></relative-bar>
       </div>
     </div>
     <v-row :style="{ 'padding-left': '20px', 'color': '#8a8a8a' }">
-      <user-profile :url="this.question.profileUrl" :name="question.authorName" style="margin-top: 8px;margin-left: 10px;"></user-profile>
+      <user-profile :url="this.question.profileUrl" :name="question.authorName"
+        style="margin-top: 8px;margin-left: 10px;"></user-profile>
       <span @click="toAuthorPage"
         :style="{ 'margin-top': '10px', 'margin-right': '10px', 'margin-left': '10px', 'font-size': '14px' }">{{
-        question.authorName }}</span>
+          question.authorName }}</span>
       <v-spacer @click="click"></v-spacer>
       <div :no-gutters="true"
         :style="{ 'max-width': '100px', 'margin-top': '10px', 'margin-left': '15px', 'margin-right': '0px', 'padding-left': '0px', 'padding-right': '0px' }">
@@ -79,7 +81,8 @@
           <v-spacer @click="click"></v-spacer>
           <star-button :id="this.id" :type="'question'" v-if="status == 'reader'" elevation="0" icon
             :style="{}"></star-button>
-          <alert-button v-if="status=='reader'" :id="question.id" :type="'问题'" style="margin-left: 10px;"></alert-button>
+          <alert-button v-if="status == 'reader'" :id="question.id" :type="'question'"
+            style="margin-left: 10px;"></alert-button>
           <v-btn v-if="status == 'writer'" elevation="0" icon :style="{
             'width': '25px',
             'background-color': 'rgb(0,0,0,0)',
@@ -99,7 +102,6 @@
 <script>
 import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiAlertCircleOutline, mdiClock, mdiEyeOutline, mdiStar, mdiStarOutline, mdiTrashCanOutline, mdiMessage } from '@mdi/js';
-import { useRouter } from 'vue-router';
 import { computed } from 'vue';
 import StarButton from './StarButton.vue';
 import RelativeBar from './RelativeBar.vue';
@@ -112,17 +114,31 @@ export default {
       type: String,
       default: 'reader',
     },
-    id: {
-      type: String,
-      default: '',
+    question: {
+      type: Object,
+      default: function () {
+        return {
+          id: '00000000',
+          title: '这是问题',
+          content: '这是内容',
+          time: 'xxxx-xx-xx xx:xx',
+          replyCount: 'xxxxx',
+          starCount: 'xxxx',
+          authorName: 'visitor',
+          authorId: 'xxxx',
+          scanCount: 'xxxx',
+          profileUrl: 'xxxx',
+          relativeUrl: 'xxxx',
+        }
+      }
     },
     isSelected: {
       type: Boolean,
       default: false,
     },
-    type:{
-      type:String,
-      default:'question',
+    type: {
+      type: String,
+      default: 'question',
     }
   },
   components: {
@@ -133,25 +149,8 @@ export default {
     AlertButton,
   },
   setup() {
-    const router = useRouter();
-    return {
-      router,
-    }
   },
   data() {
-    const question = {
-      id: this.id,
-      title: '这是问题',
-      content: '这是内容',
-      time: 'xxxx-xx-xx xx:xx',
-      replyCount: 'xxxxx',
-      starCount: 'xxxx',
-      authorName: 'visitor',
-      authorId: 'xxxx',
-      scanCount: 'xxxx',
-      profileUrl: 'xxxx',
-      relativeUrl:'xxxx',
-    };
     const backgound_color = computed(() => {
       return this.isSelected ? '#def2f8' : '';
     })
@@ -174,29 +173,28 @@ export default {
       backgound_color,
       border_color,
       border_width,
-      question,
-      isMobile:false,
+      isMobile: false,
     }
   },
   methods: {
     toQuestion() {
-      this.router.push({ name: 'QuestionPage', params: { id: '00000000' } });
+      this.$router.push({ name: 'QuestionPage', params: { id: this.question.id } });
     },
-    select(){//点击按钮时选中次函数
-      this.$emit('select_question',this.question.id);
+    select() {//点击按钮时选中次函数
+      this.$emit('select_question', this.question.id);
     },
-    click(){
-      if(this.type=='question' || this.isMobile){
+    click() {
+      if (this.type == 'question' || this.isMobile) {
         this.toQuestion();
-      }else{
+      } else {
         this.select();
       }
     },
   },
   computed: {
   },
-  created(){
-      this.isMobile = /Mobi|Android/i.test(navigator.userAgent);
+  created() {
+    this.isMobile = /Mobi|Android/i.test(navigator.userAgent);
   },
 }
 </script>

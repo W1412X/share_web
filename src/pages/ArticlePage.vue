@@ -187,7 +187,7 @@ import ArticleDisplay from '@/components/ArticleDisplay.vue';
           comment:mdiMessage,
         },
         article: {
-          id:'',
+          id:'00000000',
           title: '标题',
           authorName: '作者名称',
           authorProfileUrl:'https://pic2.zhimg.com/v2-0dda71bc9ced142bf7bb2d6adbebe4f0_r.jpg?source=1940ef5c',

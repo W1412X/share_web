@@ -1,19 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import IndexPage from '../pages/IndexPage.vue';
-import SelfPage from '../pages/SelfPage.vue';
-import LoginPage from '../pages/LoginPage.vue';
-import ArticlePage from '@/pages/ArticlePage.vue';
 //import { getCookie,/*setCookie*/ } from '@/utils/cookie';
 /*import { login } from '@/utils/api';*/
 import { getUser } from '@/utils/storage';
-import ComponentsPage from '@/pages/ComponentsPage.vue';
-import EditorPage from '@/pages/EditorPage.vue';
-import QuestionPage from '@/pages/QuestionPage.vue';
-import ErrorPage from '@/pages/ErrorPage.vue';
-import AuthorPage from '@/pages/AuthorPage.vue';
-import CoursePage from '@/pages/CoursePage.vue';
-import MdEditorPage from '@/pages/MdEditorPage.vue';
-import ManagePage from '@/pages/ManagePage.vue';
+import { defineAsyncComponent } from 'vue';
 const routes = [
   {
     path:'/',
@@ -22,70 +11,70 @@ const routes = [
   {
     path: '/login',
     name: 'LoginPage',
-    component: LoginPage,
+    component: defineAsyncComponent(()=>import('@/pages/ManagePage.vue')),
   },
   {
     path: '/index',
     name: 'IndexPage',
-    component: IndexPage,
+    component: defineAsyncComponent(()=>import('@/pages/IndexPage.vue')),
     meta: { requiresAuth: true },
   },
   {
     path: '/self/:name',
     name: 'SelfPage',
-    component: SelfPage,
+    component: defineAsyncComponent(()=>import('@/pages/SelfPage.vue')),
     meta: { requiresAuth: true },
   },
   {
     path: '/article/:id/:from?',
     name: 'ArticlePage',
-    component: ArticlePage,
+    component: defineAsyncComponent(()=>import('@/pages/ArticlePage.vue')),
     meta: { requiresAuth: true },
   },
   {
     path:'/editor/:id?',
     name:'EditorPage',
-    component: EditorPage,
+    component: defineAsyncComponent(()=>import('@/pages/EditorPage.vue')),
     meta: { requiresAuth: true },
   },
   {
     path: '/components',
     name: 'ComponentsPage',
-    component: ComponentsPage,
+    component: defineAsyncComponent(()=>import('@/pages/ComponentsPage.vue')),
     meta: { requiresAuth: true },
   },
   {
     path: '/question/:id/:from?',
     name:'QuestionPage',
-    component: QuestionPage,
+    component: defineAsyncComponent(()=>import('@/pages/QuestionPage.vue')),
     meta: { requiresAuth: true },
   },
   {
     path:'/error/:reason?',
     name:'ErrorPage',
-    component: ErrorPage
+    component: defineAsyncComponent(()=>import('@/pages/ErrorPage.vue')),
   },
   {
     path:'/author/:name',
     name:'AuthorPage',
-    component: AuthorPage,
+    component: defineAsyncComponent(()=>import('@/pages/AuthorPage.vue')),
     meta: { requiresAuth: true },
   },
   {
     path:'/course/:id',
     name:'CoursePage',
-    component: CoursePage,
+    component: defineAsyncComponent(()=>import('@/pages/CoursePage.vue')),
     meta:{requiresAuth:true}
   },
   {
     path:'/mdeditor',
     name:'MdEditorPage',
-    component:MdEditorPage
+    component:defineAsyncComponent(()=>import('@/pages/AuthorPage.vue')),
   },
   {
     path:'/manage',
     name:'ManagePage',
-    component:ManagePage
+    component:defineAsyncComponent(()=>import('@/pages/ManagePage.vue')),
   },
   {
     path: '/:pathMatch(.*)*',

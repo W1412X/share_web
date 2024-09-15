@@ -35,7 +35,7 @@
                   ></like-button>  
                 </v-col>
                 <v-col :style="{'max-width':'25px'}">
-                  <alert-button :id="this.answer.id" :type="'问题回答'" style="margin-left: 10px;"></alert-button>
+                  <alert-button :id="this.answer.id" :type="'answer'" style="margin-left: 10px;"></alert-button>
                 </v-col>
               </v-row>
             </v-col>
@@ -49,9 +49,9 @@
 import UserProfile from './UserProfile.vue';
 //import SvgIcon from '@jamescoyle/vue-icon'
 //import { ref,computed } from 'vue';
-import ReportCard from '@/components/ReportCard.vue';
 import LikeButton from './LikeButton.vue';
 import AlertButton from './AlertButton.vue';
+import { defineAsyncComponent } from 'vue';
   export default {
     name: 'ResourceItem',
   props: {
@@ -70,6 +70,10 @@ import AlertButton from './AlertButton.vue';
     },
   },
     setup(){
+      const AsyncReportCard=defineAsyncComponent(()=>import('@/components/ReportCard.vue'))
+      return{
+        AsyncReportCard
+      }
     },
     data(){
       var answer = this.initAnswer;
@@ -79,7 +83,6 @@ import AlertButton from './AlertButton.vue';
     },
     components:{
       //SvgIcon,
-      ReportCard,
       LikeButton,
       UserProfile,
       AlertButton,

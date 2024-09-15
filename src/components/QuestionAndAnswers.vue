@@ -22,8 +22,8 @@
     </div>
     <div :style="{'padding':'0px','height':'100%','background-color':'rgba(255,255,255,1)','min-width':'750px'}">
       <div :style="{'height':'95%','display':'flow','overflow':'auto'}">
-        <SingleQuestion v-for="(questionId,index) in questionList" :key="index" :id="questionId" :type="'article'"
-          :isSelected="questionId==selectedQuestionId" @select_question="selectQuestion"></SingleQuestion>
+        <SingleQuestion v-for="(question,index) in questionList" :key="index" :question="question" :type="'article'"
+          :isSelected="question.id==selectedQuestionId" @select_question="selectQuestion"></SingleQuestion>
         <v-btn variant="outlined" style="width: 750px;" color="#0074e8">加载更多问题</v-btn>
       </div>
       <v-btn @click="publishQuestion"
@@ -51,10 +51,6 @@ import SingleQuestion from './SingleQuestion.vue';
         type:String,
         default:'article',
       },
-      presetedQuestion:{
-        type:String,
-        default:'',
-      }
     },
     setup(){
       const ifShowQuestionEditor=ref(false);
@@ -73,14 +69,19 @@ import SingleQuestion from './SingleQuestion.vue';
     data(){
       const selectedQuestionId=null;
       const questionList=[//问题列表
-        '00000001',
-        '00000002',
-        '00000003',
-        '00000004',
-        '00000005',
-        '00000006',
-        '00000007',
-        '00000008',
+      {
+          id: '00000000',
+          title: '这是问题',
+          content: '这是内容',
+          time: 'xxxx-xx-xx xx:xx',
+          replyCount: 'xxxxx',
+          starCount: 'xxxx',
+          authorName: 'visitor',
+          authorId: 'xxxx',
+          scanCount: 'xxxx',
+          profileUrl: 'xxxx',
+          relativeUrl: 'xxxx',
+        }
       ];
       const gotPageNum=1;
       return {

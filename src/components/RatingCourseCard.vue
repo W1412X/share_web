@@ -9,8 +9,8 @@
           </div>
           <v-spacer></v-spacer>
           <div style="display: flex;flex-direction: row;margin-top: 10px;margin-right: 10px;">
-            <star-button :id="id" :type="'course'" style="margin-right: 5px;"></star-button>
-            <alert-button :id="course.id" :type="'课程'"></alert-button>
+            <star-button :id="course.id" :type="'course'" style="margin-right: 5px;"></star-button>
+            <alert-button :id="course.id" :type="'course'"></alert-button>
           </div>
         </div>
         <div style="display: flex; flex-direction: row">
@@ -109,15 +109,11 @@ import { mdiClock } from '@mdi/js';
 import SelfCourseAnswer from './SelfCourseAnswer.vue';
 export default {
   props: {
-    id:{
-      type:String,
-      default:'',
-    },
     ifRated:{
       type:Boolean,
       default:false,
     },
-    initCourse:{
+    course:{
       type:Object,
       default:function(){
         return {
@@ -149,22 +145,6 @@ export default {
     SelfCourseAnswer,
   },
   data() {
-    const course = {
-      id: '00000000',
-      name: '程序思维设计与实践',
-      teacher: '蔡晓军',
-      type: '通识选修,人文社科',
-      college: '计算机科学与技术学院',
-      campus: '青岛校区',
-      examineMethod:'项目展示',
-      teacheMethod:'线上',
-      updateTime:'xxxx-xx-xx xx:xx',
-      rate: {
-        averageRate: 3.5,
-        rateNum: 100,
-        ratePropotion: [10, 20, 20, 30, 20],//从1->5
-      },
-    }
     const selfAnswer={//获取自己的回答状态
       id:'',
       rate:3,
@@ -175,7 +155,6 @@ export default {
       icons:{
         timeClock:mdiClock,
       },
-      course,
       selfAnswer,
     }
   },

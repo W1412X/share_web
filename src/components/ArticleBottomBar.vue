@@ -9,7 +9,7 @@
       </div>
       <v-spacer></v-spacer>
       <div style="display: flex;flex-direction: row-reverse;margin-right: 40px;">
-        <alert-button :id="this.articleId" :type="'文章'" style="margin-left: 8px;margin-right: 20px;"></alert-button>
+        <alert-button :id="this.articleId" :type="'article'" style="margin-left: 8px;margin-right: 20px;"></alert-button>
         <svg-icon type="mdi" :path="icons.commentQuestion" @click="this.showComment()" size="25"
           :style="{ 'color': '#8a8a8a','margin-right': '10px' }"></svg-icon>
         <star-button :id="articleId" :type="'article'"

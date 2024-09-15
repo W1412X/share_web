@@ -54,11 +54,11 @@
           <article-list :articleList="this.articleItems"></article-list>
         </div>
         <div v-if="this.itemType == 'question'" style="width: 770px;">
-          <SingleQuestion v-for="(questionId, index) in this.questionItems" :key="index" :id="questionId"
-            style="margin: 5px;"></SingleQuestion>
+          <component :is="AsyncSingleQuestion" v-for="(question, index) in this.questionItems" :key="index" :question="question"
+            style="margin: 5px;"></component>
         </div>
         <div v-if="this.itemType == 'course'" style="width: 770px;">
-          <CourseItem v-for="(courseId, index) in this.courseItems" :key="index" :id="courseId" style="margin: 5px;">
+          <CourseItem v-for="(course, index) in this.courseItems" :key="index" :course="course" style="margin: 5px;">
           </CourseItem>
         </div>
         <div>
@@ -69,14 +69,14 @@
 </template>
 <script>
 import SvgIcon from '@jamescoyle/vue-icon'
-import QuestionEditor from '@/components/QuestionEditor.vue';
 import { mdiMagnify, mdiHistory, mdiUpload, mdiAccountOutline, mdiCommentQuestionOutline, mdiFileEditOutline, mdiBookPlusOutline } from '@mdi/js'
 import { useRouter } from 'vue-router';
-import { computed, ref } from 'vue'
+import { computed, ref ,defineAsyncComponent } from 'vue'
 import ArticleList from '@/components/ArticleList.vue';
-import SingleQuestion from '@/components/SingleQuestion.vue';
+
 import CourseItem from '@/components/CourseItem.vue';
 import CourseEditor from '@/components/CourseEditor.vue';
+import QuestionEditor from '@/components/QuestionEditor.vue';
 import { getUser } from '@/utils/storage';
 export default {
   setup() {
@@ -103,6 +103,8 @@ export default {
     const setCourseEditorState = (state) => {
       ifShowCourseEditor.value = state;
     }
+    //懒加载部分  
+    const AsyncSingleQuestion=defineAsyncComponent(()=>import('@/components/SingleQuestion.vue'))
     return {
       userName,
       navigateToIndex,
@@ -113,13 +115,13 @@ export default {
       setQuestionEditorState,
       setCourseEditorState,
       ifShowCourseEditor,
-      router
+      router,
+      AsyncSingleQuestion
     };
   },
   components: {
     SvgIcon,
     ArticleList,
-    SingleQuestion,
     CourseItem,
     QuestionEditor,
     CourseEditor,
@@ -138,34 +140,16 @@ export default {
       searchContent: 'RECOMMAND',
       searchType: '文章',
       articleItems: [
-        '00000001',
-        '00000002',
-        '00000003',
-        '00000004',
-        '00000005',
-        '00000006',
-        '00000007',
-        '00000008'
+        {id:'00000000'},
+        {id:'00000001'}
       ],//存储展示的文章的信息数组
       courseItems: [
-        '00000001',
-        '00000002',
-        '00000003',
-        '00000004',
-        '00000005',
-        '00000006',
-        '00000007',
-        '00000008'
+        {id:'00000000'},
+        {id:'00000001'}
       ],
       questionItems: [
-        '00000001',
-        '00000002',
-        '00000003',
-        '00000004',
-        '00000005',
-        '00000006',
-        '00000007',
-        '00000008'
+        {id:'00000000'},
+        {id:'00000001'}
       ],
       itemType: 'article',
       inputValue: '',

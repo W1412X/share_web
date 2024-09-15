@@ -2,7 +2,7 @@
   <v-dialog v-model="ifShowDialog"
     style="width: 100%;height:100%;background-color: rgba(255,255,255,0.5);justify-content: center;">
     <div v-if="ifShowReportCard" style="width: 100%;height:100%;justify-content: center;display: flex">
-      <report-card :report="{type:type,id:id}" @close="close()"></report-card>
+      <component :is="AsyncReportCard" :report="{type:type,id:id}" @close="close()"></component>
     </div>
   </v-dialog>
     <v-btn elevation="0" @click="click" icon :style="{
@@ -15,10 +15,9 @@
     </v-btn>
 </template>
 <script>
-import { computed,ref } from 'vue';
+import { computed,defineAsyncComponent,ref } from 'vue';
 import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiAlertCircleOutline } from '@mdi/js';
-import ReportCard from './ReportCard.vue';
 export default{
     props:{
         id:{
@@ -27,7 +26,7 @@ export default{
         },
         type:{
             type:String,
-            default:'文章',
+            default:'article',
         },
         size:{
             type:String,
@@ -40,7 +39,6 @@ export default{
     },
     components:{
         SvgIcon,
-        ReportCard
     },
     setup(){
         const ifShowReportCard=ref(false);
@@ -51,11 +49,13 @@ export default{
             ifShowReportCard.value=state;
         }
         const alertIcon=mdiAlertCircleOutline;
+        const AsyncReportCard=defineAsyncComponent(()=>import('@/components/ReportCard.vue'))
         return {
             ifShowDialog,
             ifShowReportCard,
             setRepordCardState,
             alertIcon,
+            AsyncReportCard,
         }
     },
     methods:{

@@ -20,22 +20,23 @@ import { computed } from 'vue'
 import UserProfile from './UserProfile.vue';
 export default {
   props: {
-    id: {
-      type: String,
-      default: '00000000',
-    },
+    user: {
+      type: Object,
+      default: function () {
+        return {
+          userName: 'test',
+          state: false,
+          profileUrl:
+            'https://tse1-mm.cn.bing.net/th/id/OIP-C.PO7d9IfnPUy2RO173QYt6wHaHV?w=216&h=213&c=7&r=0&o=5&pid=1.7',
+        }
+      }
+    }
   },
-  components:{
+  components: {
     UserProfile,
   },
   data() {
-    const user = {
-      userName: 'test',
-      state: false,
-      profileUrl:
-        'https://tse1-mm.cn.bing.net/th/id/OIP-C.PO7d9IfnPUy2RO173QYt6wHaHV?w=216&h=213&c=7&r=0&o=5&pid=1.7',
-    }
-    const state = user.state
+    const state = this.user.state
     const buttonColor = computed(() => {
       return this.state ? '#000000' : '#8a8a8a'
     })
@@ -46,7 +47,6 @@ export default {
       buttonColor,
       buttonText,
       state,
-      user,
     }
   },
   methods: {

@@ -46,13 +46,19 @@ export default {
   },
   data() {
     const articleList = [//个人创作文章列表
-      '00000001'
+      {id:'00000000'},
+      {id:'00000000'},
+      {id:'00000000'}
     ];
     const questionList = [//问题列表
-      '00000001'
+      {id:'00000000'},
+      {id:'00000000'},
+      {id:'00000000'}
     ];
     const courseList = [
-      '00000001'
+      {id:'00000000'},
+      {id:'00000000'},
+      {id:'00000000'}
     ]
     const type = 'course'
     return {
