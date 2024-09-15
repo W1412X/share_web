@@ -226,7 +226,7 @@ import os
         this.alertSet=msg;
       },
     },
-    mounted() {//article.id的获取通过路径参数
+    created() {//article.id的获取通过路径参数
       const route=useRoute();
       this.article.id=route.params.id;
       console.log('load article page',this.article.id);

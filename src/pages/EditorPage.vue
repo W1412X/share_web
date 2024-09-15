@@ -99,8 +99,8 @@ export default{
         ArticleEditor,
         ArticleEditorBar
     },
-    mounted(){
-      const  route=useRoute()
+    created(){
+      const route=useRoute()
       if(route.params.id){
         console.log(route.params.id);
         //在这里加载文章的信息

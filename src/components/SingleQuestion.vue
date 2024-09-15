@@ -79,7 +79,7 @@
             </v-row>
           </div>
           <v-spacer @click="click"></v-spacer>
-          <star-button :id="this.id" :type="'question'" v-if="status == 'reader'" elevation="0" icon
+          <star-button :id="question.id" :type="'question'" v-if="status == 'reader'" elevation="0" icon
             :style="{}"></star-button>
           <alert-button v-if="status == 'reader'" :id="question.id" :type="'question'"
             style="margin-left: 10px;"></alert-button>

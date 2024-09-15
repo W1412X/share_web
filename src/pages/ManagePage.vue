@@ -66,7 +66,7 @@ export default {
     methods: {
 
     },
-    mounted() {
+    created() {
         for (var i = 0; i < 20; i++) {
             this.dealList.push(this.dealList[0]);
         }

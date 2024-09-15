@@ -1,5 +1,5 @@
 <template>
-    <v-card style="width: 750px">
+    <v-card style="width: 750px;border: #8a8a8a solid 1px;">
       <div style="display: flex; padding: 10px; flex-direction: column">
         <div style="display: flex; flex-direction: row">
           <user-profile :url="user.profileUrl" :name="user.userName" style="margin-top: 3px;"></user-profile>

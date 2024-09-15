@@ -27,8 +27,8 @@
       <v-row style="width: 100%;justify-content: center;">
         <v-navigation-drawer v-if="!isMobile"  expand-on-hover rail>
           <v-list>
-            <v-list-item prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg" subtitle="test@gmailcom"
-              title="test"></v-list-item>
+            <v-list-item prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
+              :title="userName"></v-list-item>
           </v-list>
           <v-divider></v-divider>
           <v-list density="compact" color="#9c0c13" nav>
@@ -56,7 +56,7 @@
           </div>
           <div v-if="this.currentView==='follow'" style="display: flex;flex-direction: column;padding: 10px;">
             <div style="width:100%;display: flex; flex-direction: column;justify-content: center;">
-              <user-message-reader v-for="(user,index) in this.followUserList" :key="index" :user="user" v-bind:if-with-introduce="false"></user-message-reader>
+              <follow-user-bar v-for="(user,index) in this.followUserList" :key="index" :user="user" v-bind:if-with-introduce="false"></follow-user-bar>
             </div>
           </div>
           <div v-if="this.currentView==='setting'" style="display: flex;flex-direction: column;padding: 10px;">
@@ -90,10 +90,10 @@
 import UserMessageEditor from '@/components/UserMessageEditor.vue';
 import '@mdi/font/css/materialdesignicons.css';
 import MessageBar from '@/components/MessageBar.vue';
-import UserMessageReader from '@/components/UserMessageReader.vue';
 import SelfCreate from '@/components/SelfCreate.vue';
 import SelfStar from '@/components/SelfStar.vue';
 import {useRoute} from 'vue-router'
+import FollowUserBar from '@/components/FollowUserBar.vue';
   export default {
     setup(){
       const router=useRouter();
@@ -109,7 +109,7 @@ import {useRoute} from 'vue-router'
     components:{
       UserMessageEditor,
       MessageBar,
-      UserMessageReader,
+      FollowUserBar,
       SelfCreate,
       SelfStar,
       SettingCard,
@@ -199,11 +199,9 @@ import {useRoute} from 'vue-router'
     },
     created(){
       this.isMobile = /Mobi|Android/i.test(navigator.userAgent);
-    },
-    onMounted(){
       const route=useRoute();
       this.userName=route.params.name;
       console.log('Load self page',this.userName);
-    }
+    },
   }
   </script>

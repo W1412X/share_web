@@ -36,7 +36,7 @@ import { computed } from 'vue';
       },
       ifWithIntroduce:{
         type:Boolean,
-        dafault:false,
+        dafault:true,
       },
       ifWithCount:{
         type:Boolean,

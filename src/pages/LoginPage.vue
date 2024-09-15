@@ -73,7 +73,7 @@ export default {
       this.alertSet=message;
     },
   },
-  mounted(){
+  created(){
   },
 };
 </script>

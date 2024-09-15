@@ -2,7 +2,7 @@
   <v-app>
     <div style="display: flex;justify-content: center;">
       <div style="display: flex;flex-direction: column;">
-        <user-message-reader></user-message-reader>
+        <user-message-reader :name="authorName"></user-message-reader>
         <div style="display: flex;width: 100%;justify-content: center;">
           <v-card :style="{ width: '100%', display: 'relative', 'margin-top': '5px' }">
             <v-tabs v-model="type" style="width: 750px;background-color: #8a8a8a;" bg-color="indigo-darken-2"
@@ -77,7 +77,7 @@ export default {
   methods: {
 
   },
-  onMounted(){
+  created(){
     const route=useRoute();
     this.authorName=route.params.name;
     console.log('load author page',this.authorName);

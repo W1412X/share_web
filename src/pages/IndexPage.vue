@@ -9,7 +9,7 @@
   <v-layout style="background-color: #ffffff;display: flex;justify-content: center;">
     <div style="position: relative;height: 100%;">
       <v-app-bar color="#9c0c13" style="margin-bottom:5px">
-        <v-app-bar-title>☯SDU</v-app-bar-title>
+        <v-app-bar-title>Share ⛰️ SDU</v-app-bar-title>
         <v-combobox variant="outlined" style="margin-left: 200px;padding:0px;max-width: 100px;font-size: 16px;position: relative;margin-top: 10%;margin-bottom: 10%;height: 80%;" v-model="searchType"
           :items="['文章', '课程', '问答']" label="搜索类型"></v-combobox>
         <v-autocomplete 
@@ -73,7 +73,6 @@ import { mdiMagnify, mdiHistory, mdiUpload, mdiAccountOutline, mdiCommentQuestio
 import { useRouter } from 'vue-router';
 import { computed, ref ,defineAsyncComponent } from 'vue'
 import ArticleList from '@/components/ArticleList.vue';
-
 import CourseItem from '@/components/CourseItem.vue';
 import CourseEditor from '@/components/CourseEditor.vue';
 import QuestionEditor from '@/components/QuestionEditor.vue';
@@ -179,7 +178,7 @@ export default {
       this.setCourseEditorState(false);
     }
   },
-  mounted() {
+  created() {
   }
 }
 </script>
