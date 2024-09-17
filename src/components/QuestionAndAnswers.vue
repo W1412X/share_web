@@ -18,7 +18,7 @@
       </v-btn>
     </div>
     <div v-if="!isMobile" :style="{'padding':'0px','height':'100%','display':'relative','overflow':'auto','background-color':'rgba(255,255,255,1)'}">
-      <AnswerList :question_id="this.selectedQuestionId"></AnswerList>
+      <AnswerList @alert="alert" :question_id="this.selectedQuestionId"></AnswerList>
     </div>
     <div :style="{'padding':'0px','height':'100%','background-color':'rgba(255,255,255,1)','min-width':'750px'}">
       <div :style="{'height':'95%','display':'flow','overflow':'auto'}">
@@ -116,6 +116,9 @@ import SingleQuestion from './SingleQuestion.vue';
       },
       close(){
         this.setQuestionEditorState(false);
+      },
+      alert(msg){
+        this.$emit('alert',msg);
       }
     },
     mounted(){

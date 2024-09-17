@@ -4,8 +4,8 @@
       <v-card :style="{ 'max-width': '1000px', 'width': '1000px', 'background-color': '#eef0f4' }">
         <v-row style="margin: 0px; width: 1000px;padding:10px;">
           <div style="margin:10px">
-            <v-textarea style="width: 960px;margin-top:20px" v-model="title" label="编辑标题" row-height="10" rows="1"
-              variant="outlined" auto-grow></v-textarea>
+            <sensitive-text-area style="width: 960px;margin-top:20px" v-model="title" label="编辑标题" row-height="10" rows="1"
+              variant="outlined" auto-grow></sensitive-text-area>
           </div>
           <div style="width:100%;display: flex;justify-content: center;">
             <markdown-upload-card @alert="alert"></markdown-upload-card>
@@ -26,10 +26,12 @@
 <script>
 import ArticleEditorBar from '@/components/ArticleEditorBar.vue';
 import MarkdownUploadCard from '@/components/MarkdownUploadCard.vue';
+import SensitiveTextArea from '@/components/SensitiveTextArea.vue';
 export default {
   components: {
     MarkdownUploadCard,
     ArticleEditorBar,
+    SensitiveTextArea,
   },
   data() {
     return {

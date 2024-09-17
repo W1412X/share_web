@@ -60,4 +60,12 @@
 
 ## 进一步优化  
 - 所有组件改为动态导入，以减少服务器压力  
-- 组件懒加载
+- 组件懒加载  
+
+## 安全性  
+- 所有输入接口添加了敏感词监测，利用前缀树实现  [链接](https://github.com/W1412X/JS-Sentsitive-Detect)  
+  - 下载 
+    ```bash  
+    npm install wx-sensitive-detect
+    ```
+- 图片进行违规图片审核(待实现)

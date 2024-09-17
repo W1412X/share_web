@@ -19,6 +19,8 @@
     <black-user-bar></black-user-bar>
     <follow-user-bar></follow-user-bar>
     <rating-course-card></rating-course-card>
+    <SensitiveTextArea></SensitiveTextArea>
+    <LoginItem></LoginItem>
   </div>
 </template>
 <script>
@@ -41,6 +43,8 @@ import ArticleItem from '@/components/ArticleItem.vue';
 import BlackUserBar from '@/components/BlackUserBar.vue';
 import FollowUserBar from '@/components/FollowUserBar.vue';
 import RatingCourseCard from '@/components/RatingCourseCard.vue';
+import SensitiveTextArea from '@/components/SensitiveTextArea.vue'
+import LoginItem from '@/components/LoginItem.vue';
 export default {
   methods: {
     test() {
@@ -67,6 +71,8 @@ export default {
     BlackUserBar,
     FollowUserBar,
     RatingCourseCard,
+    SensitiveTextArea,
+    LoginItem,
   }
 }
 </script>

@@ -147,9 +147,9 @@ export default {
   data() {
     const selfAnswer={//获取自己的回答状态
       id:'',
-      rate:3,
-      comment:'sssssss',
-      time:'sss',
+      rate:null,
+      comment:'',
+      time:'',
     }
     return {
       icons:{

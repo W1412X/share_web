@@ -39,8 +39,8 @@
           </div>
         </div>
         <div v-if="ifShowTagInput" style="display: flex;flex-direction: row;margin: 10px;">
-              <v-textarea v-model="inputTag" density="compact" style="width: 200px" label="输入标签" row-height="1" rows="1"
-                variant="outlined" auto-grow></v-textarea>
+              <sensitive-text-area v-model="inputTag" density="compact" style="width: 200px" label="输入标签" row-height="1" rows="1"
+                variant="outlined" auto-grow></sensitive-text-area>
               <v-btn @click="confirmAddTag()" style="margin-top: 5px;margin-left: 10px;height: 30px;"
                 variant="outlined" color="#9c0c13">确认添加</v-btn>
                 <v-btn @click="()=>{this.ifShowTagInput=false;}" style="margin-top: 5px;margin-left: 10px;height: 30px;"
@@ -65,7 +65,7 @@
                 :style="{ 'padding-top': '0px', 'margin-bottom': '0px', 'margin-left': '5px' }"></svg-icon>
           </div>
           <div>
-            <v-textarea style="width: 750px" label="添加不多于200字的简介" variant="outlined" v-model="description"></v-textarea>
+            <sensitive-text-area style="width: 750px" label="添加不多于200字的简介" variant="outlined" v-model="description"></sensitive-text-area>
           </div>
         </div>
         <div style="width: 960px; margin-top: 10px; display: flex">
@@ -96,8 +96,8 @@
 
               </div>
             </div>
-            <v-textarea density="compact" v-if="type == '转载'" v-model="quoteUrl" label="转载文章url" row-height="10" rows="1"
-              variant="outlined" auto-grow></v-textarea>
+            <sensitive-text-area density="compact" v-if="type == '转载'" v-model="quoteUrl" label="转载文章url" row-height="10" rows="1"
+              variant="outlined" auto-grow></sensitive-text-area>
           </div>
         </div>
         <div style="
@@ -123,6 +123,7 @@
 <script>
 import { mdiHelpCircleOutline } from '@mdi/js';
 import SvgIcon from '@jamescoyle/vue-icon'
+import SensitiveTextArea from './SensitiveTextArea.vue';
 export default {
   name: 'ArticleEditorBar',
   props: {
@@ -143,6 +144,7 @@ export default {
   setup() { },
   components: {
     SvgIcon,
+    SensitiveTextArea
   },
   data() {
     const icons = {

@@ -40,8 +40,8 @@
             ">
             用户名:
           </div>
-          <v-textarea v-model="this.userMessage.userName" :disabled="!ifAbleEditUserName" density="compact"
-            row-height="15" rows="1" label="用户名" variant="outlined" auto-grow style="margin-right: 20px"></v-textarea>
+          <sensitive-text-area v-model="this.userMessage.userName" :disabled="!ifAbleEditUserName" density="compact"
+            row-height="15" rows="1" label="用户名" variant="outlined" auto-grow style="margin-right: 20px"></sensitive-text-area>
         </div>
         <div style="display: flex; flex-direction: row; margin: 10px">
           <div style="
@@ -53,8 +53,8 @@
             ">
             邮箱:
           </div>
-          <v-textarea v-model="this.userMessage.email" :disabled="!ifAbleEditEmail" label="邮箱" density="compact"
-            row-height="15" rows="1" variant="outlined" auto-grow style="margin-right: 20px"></v-textarea>
+          <sensitive-text-area v-model="this.userMessage.email" :disabled="!ifAbleEditEmail" label="邮箱" density="compact"
+            row-height="15" rows="1" variant="outlined" auto-grow style="margin-right: 20px"></sensitive-text-area>
         </div>
         <div style="display: flex; flex-direction: row; margin: 10px">
           <div style="
@@ -66,8 +66,8 @@
             ">
             密码:
           </div>
-          <v-textarea v-model="this.userMessage.passwd" :disabled="!ifAbleEditPasswd" label="密码" density="compact"
-            row-height="15" rows="1" variant="outlined" auto-grow style="margin-right: 20px"></v-textarea>
+          <sensitive-text-area v-model="this.userMessage.passwd" :disabled="!ifAbleEditPasswd" label="密码" density="compact"
+            row-height="15" rows="1" variant="outlined" auto-grow style="margin-right: 20px"></sensitive-text-area>
         </div>
         <div style="display: flex; flex-direction: row; margin: 10px">
           <div style="
@@ -79,9 +79,9 @@
             ">
             简介:
           </div>
-          <v-textarea v-model="this.userMessage.introduce" :disabled="!ifAbleEditIntroduce" label="简介"
+          <sensitive-text-area v-model="this.userMessage.introduce" :disabled="!ifAbleEditIntroduce" label="简介"
             density="compact" row-height="15" rows="3" variant="outlined" auto-grow
-            style="margin-right: 20px"></v-textarea>
+            style="margin-right: 20px"></sensitive-text-area>
         </div>
       </div>
       <div style="display: flex; flex-direction: column">
@@ -144,6 +144,7 @@ import SetProfileCard from '@/components/SetProfileCard.vue';
 import EmailExmineCard from './EmailExmineCard.vue';
 import { deleteUser, getUser } from '@/utils/storage';
 import { computed, ref } from 'vue';
+import SensitiveTextArea from './SensitiveTextArea.vue';
 export default {
   props: {
     name: {
@@ -154,6 +155,7 @@ export default {
   components: {
     EmailExmineCard,
     SetProfileCard,
+    SensitiveTextArea,
   },
   setup() {
     const ifShowEmailExmineCode = ref(false);

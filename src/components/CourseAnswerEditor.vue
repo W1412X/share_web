@@ -86,13 +86,13 @@
             >这是您的评论的内容</v-tooltip
           >
         </span>
-        <v-textarea
+        <sensitive-text-area
           variant="outlined"
           label="写下您对此课程的评价"
           v-model="answerForm.comment"
           @input="checkComment"
         >
-        </v-textarea>
+        </sensitive-text-area>
       </div>
       <div style="display: flex; flex-direction: row-reverse; width: 100%">
         <v-btn
@@ -111,6 +111,8 @@
   </v-card>
 </template>
 <script>
+import SensitiveTextArea from './SensitiveTextArea.vue';
+
   export default {
     props: {
       courseName: {
@@ -156,6 +158,9 @@
         questions,
         answerForm,
       }
+    },
+    components:{
+      SensitiveTextArea
     },
     methods: {
       checkComment() {

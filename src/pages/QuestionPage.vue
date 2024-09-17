@@ -15,10 +15,14 @@
         </div>
       </div>
       <div :style="{ 'padding': '0px', 'margin-left': '20px', 'height': '100%', 'display': 'relative', 'overflow': 'auto' }">
-        <AnswerList :question-id="question.id"></AnswerList>
+        <AnswerList @alert="alert" :question-id="question.id"></AnswerList>
       </div>
     </div>
   </div>
+  <v-snackbar :timeout="3000" :color="alertSet.color" v-model="alertSet.state">
+    <div class="text-subtitle-1 pb-2">{{ alertSet.title }}</div>
+    <p>{{ alertSet.content }}</p>
+  </v-snackbar>
 </template>
 
 <script>
@@ -47,6 +51,12 @@ export default {
     }
     return {
       question,
+      alertSet:{
+        state:false,
+        color:'success',
+        title:'',
+        content:''
+      }
     }
   },
   components: {
@@ -54,6 +64,9 @@ export default {
     AnswerList,
   },
   methods: {
+    alert(msg){
+      this.alertSet=msg;
+    }
   },
   created() {
     const route = useRoute();

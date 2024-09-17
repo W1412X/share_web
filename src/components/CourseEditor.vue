@@ -5,7 +5,7 @@
         <span style="font-size: 18px; font-weight: 600"> 编辑新课程 </span>
       </div>
       <div style="display: flex; flex-direction: row; margin-top: 10px">
-        <v-textarea
+        <sensitive-text-area
           label="课程名称"
           variant="outlined"
           density="compact"
@@ -13,10 +13,10 @@
           max-rows="1"
           style="margin: 2px"
           v-model="course.name"
-        ></v-textarea>
+        ></sensitive-text-area>
       </div>
       <div style="display: flex; flex-direction: row; margin-top: 0px">
-        <v-textarea
+        <sensitive-text-area
           label="授课教师"
           variant="outlined"
           density="compact"
@@ -25,7 +25,7 @@
           max-width="300px"
           v-model="course.teacher"
           style="margin: 2px"
-        ></v-textarea>
+        ></sensitive-text-area>
         <v-select
           variant="outlined"
           density="compact"
@@ -94,6 +94,8 @@
 </template>
 
 <script>
+import SensitiveTextArea from './SensitiveTextArea.vue';
+
   export default {
     props: {
       id: {
@@ -161,5 +163,8 @@
         console.log(this.course)
       },
     },
+    components:{
+      SensitiveTextArea,
+    }
   }
 </script>

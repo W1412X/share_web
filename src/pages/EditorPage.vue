@@ -10,8 +10,8 @@
             使用Markdown创作？
           </v-btn>
           <div style="margin:10px">
-            <v-textarea style="width: 980px;margin-top:20px" v-model="title" label="编辑标题" row-height="10" rows="1"
-              variant="outlined" auto-grow></v-textarea>
+            <SensitiveTextArea style="width: 980px;margin-top:20px" v-model="title" label="编辑标题" row-height="10" rows="1"
+              variant="outlined" auto-grow></SensitiveTextArea>
           </div>
           <div style="justify-content: center;width:1000px;margin-left:0px;margin-right:0px;margin-top:0px">
             <v-card style="padding:0px;margin:0px">
@@ -36,6 +36,7 @@
 <script>
 import ArticleEditor from '@/components/ArticleEditor.vue';
 import ArticleEditorBar from '@/components/ArticleEditorBar.vue';
+import SensitiveTextArea from '@/components/SensitiveTextArea.vue';
 import { useRoute } from 'vue-router';
 export default{
     props:{
@@ -97,7 +98,8 @@ export default{
     },
     components:{
         ArticleEditor,
-        ArticleEditorBar
+        ArticleEditorBar,
+        SensitiveTextArea,
     },
     created(){
       const route=useRoute()

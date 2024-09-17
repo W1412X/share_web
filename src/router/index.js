@@ -11,7 +11,7 @@ const routes = [
   {
     path: '/login',
     name: 'LoginPage',
-    component: (()=>import('@/pages/ManagePage.vue')),
+    component: (()=>import('@/pages/LoginPage.vue')),
   },
   {
     path: '/index',
@@ -69,7 +69,7 @@ const routes = [
   {
     path:'/mdeditor',
     name:'MdEditorPage',
-    component:(()=>import('@/pages/AuthorPage.vue')),
+    component:(()=>import('@/pages/MdEditorPage.vue')),
   },
   {
     path:'/manage',

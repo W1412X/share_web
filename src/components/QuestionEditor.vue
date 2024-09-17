@@ -24,7 +24,7 @@
           <div style="font-size: 16px; color: #8a8a8a; font-weight: 600">
             问题标题:
           </div>
-          <v-textarea
+          <sensitive-text-area
             style="width: 100%; margin-top: 20px"
             v-model="question.title"
             label="编辑问题标题"
@@ -32,13 +32,13 @@
             rows="1"
             variant="outlined"
             auto-grow
-          ></v-textarea>
+          ></sensitive-text-area>
         </div>
         <div style="display: flex; flex-direction: column">
           <div style="font-size: 16px; color: #8a8a8a; font-weight: 600">
             问题详细描述:
           </div>
-          <v-textarea
+          <sensitive-text-area
             style="width: 100%; margin-top: 20px"
             v-model="question.content"
             label="编辑问题更具体的描述"
@@ -46,7 +46,7 @@
             rows="4"
             variant="outlined"
             auto-grow
-          ></v-textarea>
+          ></sensitive-text-area>
         </div>
         <div style="display: flex; flex-direction: column">
           <div style="font-size: 16px; color: #8a8a8a; font-weight: 600">
@@ -56,7 +56,7 @@
             -
             如果本问题是基于某一个本站内的文章、课程或者其他网站的内容提出的，则你需要添加对应的网页地址
           </div>
-          <v-textarea
+          <sensitive-text-area
             style="width: 100%; margin-top: 20px"
             v-model="question.title"
             label="添加一个有效地址"
@@ -64,7 +64,7 @@
             rows="1"
             variant="outlined"
             auto-grow
-          ></v-textarea>
+          ></sensitive-text-area>
         </div>
         <div
           style="
@@ -89,12 +89,17 @@
     </v-card>
   </template>
   <script>
+import SensitiveTextArea from './SensitiveTextArea.vue';
+
     export default {
       props: {
         id:{
           type:String,
           default:'00000000',
         }
+      },
+      components:{
+        SensitiveTextArea,
       },
       data() {
         const question = {

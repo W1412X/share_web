@@ -36,10 +36,10 @@
       <!-- 用户名登录 -->
       <v-tabs-window-item v-if="loginMethod === 'username'" value="login">
         <v-card-text :style="{ 'margin-bottom': '0px', 'padding-bottom': '0px' }">
-          <v-text-field label="用户名" v-model="loginByUsernameForm.username"
-            :rules="[rules.usernameRules]"></v-text-field>
-          <v-text-field label="密码" type="passwd" v-model="loginByUsernameForm.passwd"
-            :rules="[rules.passwdRules]"></v-text-field>
+          <sensitive-text-field label="用户名" v-model="loginByUsernameForm.username"
+            :rules="[rules.usernameRules]"></sensitive-text-field>
+          <sensitive-text-field label="密码" type="passwd" v-model="loginByUsernameForm.passwd"
+            :rules="[rules.passwdRules]"></sensitive-text-field>
         </v-card-text>
         <v-card-actions>
           <v-btn variant="outlined" @click="loginByUsername" :disabled="!canLoginByUsername"
@@ -53,7 +53,7 @@
       <!-- 邮箱登录 -->
       <v-tabs-window-item v-if="loginMethod === 'email'" value="login">
         <v-card-text :style="{ 'margin-bottom': '0px', 'padding-bottom': '0px' }">
-          <v-text-field label="邮箱" v-model="loginByEmailForm.email" :rules="[rules.emailRules]"></v-text-field>
+          <sensitive-text-field label="邮箱" v-model="loginByEmailForm.email" :rules="[rules.emailRules]"></sensitive-text-field>
         </v-card-text>
         <v-card-actions>
           <v-btn variant="outlined" @click="loginByEmail"
@@ -71,11 +71,11 @@
       <v-tabs-window-item v-if="registerStep === 0" value="register">
         <v-card-text :style="{ 'margin-bottom': '0px', 'padding-bottom': '0px' }">
           <!-- 注册表单内容 -->
-          <v-text-field label="起一个名字" v-model="registerForm.username" :rules="[rules.usernameRules]"></v-text-field>
-          <v-text-field label="密码" type="passwd" v-model="registerForm.passwd"
-            :rules="[rules.passwdRules]"></v-text-field>
-          <v-text-field label="确认密码" type="passwd" v-model="registerForm.confirmpasswd"
-            :rules="[rules.passwdRules]"></v-text-field>
+          <sensitive-text-field label="起一个名字" v-model="registerForm.username" :rules="[rules.usernameRules]"></sensitive-text-field>
+          <sensitive-text-field label="密码" type="passwd" v-model="registerForm.passwd"
+            :rules="[rules.passwdRules]"></sensitive-text-field>
+          <sensitive-text-field label="确认密码" type="passwd" v-model="registerForm.confirmpasswd"
+            :rules="[rules.passwdRules]"></sensitive-text-field>
         </v-card-text>
         <v-card-actions>
           <!-- 下一步按钮 -->
@@ -89,7 +89,7 @@
       <v-tabs-window-item v-if="registerStep === 1" value="register">
         <v-card-text :style="{ 'margin-bottom': '0px', 'padding-bottom': '0px' }">
           <!-- 注册表单内容 -->
-          <v-text-field label="输入您的邮箱地址" v-model="registerForm.email" :rules="[rules.emailRules]"></v-text-field>
+          <sensitive-text-field label="输入您的邮箱地址" v-model="registerForm.email" :rules="[rules.emailRules]"></sensitive-text-field>
         </v-card-text>
         <div style="display: flex;flex-direction: row-reverse;">
           <v-radio-group v-model="agreementStatus">
@@ -132,6 +132,7 @@ import { computed, ref } from 'vue';
 import { loginWithPassword } from '@/axios/identify'
 import { setUser } from '@/utils/storage';
 import { getStatusMessage, unknowError } from '@/statusCodeMessages';
+import SensitiveTextField from './SensitiveTextField.vue';
 export default {
   setup() {
     const router = useRouter();
@@ -211,6 +212,7 @@ export default {
   },
   components: {
     EmailExmineCard,
+    SensitiveTextField
   },
   computed: {
     canLoginByUsername() {
