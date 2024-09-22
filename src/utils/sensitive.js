@@ -41129,7 +41129,7 @@ var nodeNow = root
 var return_word = ''
 var count=0
 export const detect = (text) => {//
-    console.log(text)
+    console.log('||'+text)
     nodeNow = root
     for (let ind = 0; ind < text.length; ind++) {
         const char = text[ind]
