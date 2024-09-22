@@ -30,6 +30,8 @@
 - `SettingCard` 个人页面的设置组件  
 - `SimplyItem` 简化组件(**未使用**)
 - `SingleQuestion` 问题项
+- `SensitiveTextArea` 文本输入框，实现中英文双语实时检测
+- `SensitiveTextField` 文本输入框，实现中英文双语实时检测
 - `SourceBae` 资源条，点击下载资源  
 - `StarButton` 收藏按钮
 - `SuggestionCard` 建议卡片
