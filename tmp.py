@@ -1,7 +1,7 @@
+import re
 
-const wordList = [
-    "屄",
-    "肏",
+# 示例字符串列表
+strings = [
     "自由门*",
     "雞巴",
     "hdjfskh.net",
@@ -41098,89 +41098,7 @@ const wordList = [
     "祭坛",
     "www.516u.com"
   ]
-class TrieNode {
-    constructor() {
-        this.children = {}
-        this.isEnd = false // 标记是否为敏感词的结束
-    }
-}
-class Trie {
-    constructor(wordList) {
-        this.root = new TrieNode()
-        for (const word of wordList) {
-            // 遍历单词列表
-            let node = this.root
-            for (const char of word) {
-                // 遍历单词字符
-                if (!node.children[char]) {
-                    // 如果当前的字符不在树中，则直接添加
-                    node.children[char] = new TrieNode()
-                }
-                node = node.children[char]
-            }
-            // 遍历到敏感词的末尾，设置 isEnd 为 true
-            node.isEnd = true
-        }
-    }
-}
-var trie = new Trie(wordList)
-const root = trie.root
-var nodeNow = root
-var return_word = ''
-var count=0
-export const detect = (text) => {//
-    console.log(text)
-    nodeNow = root
-    for (let ind = 0; ind < text.length; ind++) {
-        const char = text[ind]
-        if (!nodeNow.children[char]) {
-            // 如果当前的字符不在树中，继续
-            ind-=(count-1)  
-            count=0
-            nodeNow = root
-            return_word = ''
-        } else {
-            // 如果在，更新 node
-            nodeNow = nodeNow.children[char]
-            count++
-            return_word += char
-            if (nodeNow.isEnd) {
-                // 如果已经出现了敏感词
-                console.log(return_word)
-                const re=return_word;
-                return_word=''
-                return re
-            }
-        }
-    }
-    return ''
-}
-export const replaceAll = (text) => {
-    var nodeNow = root
-    var return_word = ''
-    var count = 0;
-    var word_set=[];
-    for (let ind = 0; ind < text.length; ind++) {
-        const char = text[ind]
-        if (!nodeNow.children[char]) {
-            // 如果当前的字符不在树中，继续
-            if(count!=0){
-                ind-=(count);
-                count=0;
-            }  
-            count=0
-            nodeNow = root
-            return_word = ''
-        } else {
-            // 如果在，更新 node
-            nodeNow = nodeNow.children[char]
-            count++
-            return_word += char
-            if (nodeNow.isEnd) {
-                // 如果已经出现了敏感词
-                word_set.push(return_word)
-            }
-        }
-    }
-    return word_set;
-}
+# 将结果写入TXT文件
+with open('words.txt', 'w', encoding='utf-8') as f:
+    for string in strings:
+        f.write(string + '\n')
