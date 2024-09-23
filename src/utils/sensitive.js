@@ -41165,13 +41165,13 @@ export const replaceAll = (text) => {
         const char = text[ind]
         if (!nodeNow.children[char]) {
             // 如果当前的字符不在树中，继续
+            nodeNow=root;
+            return_word=''
             if(count!=0){
-                ind-=(count-1);
+                ind-=(count);
                 count=0;
             }  
             count=0
-            nodeNow = root
-            return_word = ''
         } else {
             // 如果在，更新 node
             nodeNow = nodeNow.children[char]
@@ -41180,6 +41180,8 @@ export const replaceAll = (text) => {
             if (nodeNow.isEnd) {
                 // 如果已经出现了敏感词
                 word_set.push(return_word)
+                nodeNow = root
+                return_word = ''
             }
         }
     }
