@@ -45,7 +45,6 @@ export default defineComponent({
   },
   methods: {
     handleCompositionStart() {
-      console.log('start type')
       this.ifTyping = true
     },
     handleCompositionEnd() {
@@ -53,7 +52,6 @@ export default defineComponent({
     },
     handleInput() {
       if (this.ifTyping) {//如果正在打字，则不做处理
-        console.log('tying')
       } else {//没有打字，检测
         setTimeout(() => {
           const result = replaceAll(this.internalValue);

@@ -15,7 +15,6 @@ import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
 import { Boot } from '@wangeditor/editor'
 import formulaModule from '@wangeditor/plugin-formula'
 import { DomEditor } from '@wangeditor/editor'
-
 export default defineComponent({
   name: 'ArticleEditor',
   props: {
@@ -104,7 +103,7 @@ export default defineComponent({
       const toolbar = DomEditor.getToolbar(this.editorRef);
       const curToolBarConfig = toolbar.getConfig();
       console.log(curToolBarConfig);
-    }
+    },
   },
   created() {
     // 在组件创建时赋值initHtml
