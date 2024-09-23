@@ -46,8 +46,10 @@
             :style="{ 'font-size': '18px', width: '350px', height: '40px', 'margin-left': '110px', 'color': '#9c0c13' }">帐号登陆
           </v-btn>
         </v-card-actions>
-        <v-btn variant="plain" :style="{ 'margin-top': '40px', 'margin-left': '345px' }" @click="changeLoginMethod">
-          忘记用户名?使用邮箱验证码登陆</v-btn>
+        <div style="width: 100%;display: flex;flex-direction: row-reverse;">
+          <v-btn variant="plain" :style="{ 'margin-top': '40px','margin-right':'5px'}" @click="changeLoginMethod">
+            忘记用户名?使用邮箱验证码登陆</v-btn>
+        </div>
       </v-tabs-window-item>
 
       <!-- 邮箱登录 -->
@@ -61,9 +63,10 @@
             :disabled="!canLoginByEmail">邮箱登陆
           </v-btn>
         </v-card-actions>
-        <v-btn variant="plain" @click="changeLoginMethod" :style="{ 'margin-top': '40px', 'margin-left': '345px' }">
-          忘记邮箱？使用用户名密码登录
-        </v-btn>
+        <div style="width: 100%;display: flex;flex-direction: row-reverse;">
+          <v-btn variant="plain" :style="{ 'margin-top': '40px','margin-right':'5px'}" @click="changeLoginMethod">
+            忘记用户名?使用邮箱验证码登陆</v-btn>
+        </div>
       </v-tabs-window-item>
       <!-- 注册部分 -->
 

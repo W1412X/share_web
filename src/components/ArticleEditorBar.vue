@@ -73,8 +73,7 @@
             <span style="color: #8a8a8a">文章类型:</span>
               <v-tooltip  style="margin-left: 2px;margin-bottom: 8px;" activator="parent" location="top">创作类型声明，会展示在文章头部等明显位置<br />•
                 原创：平台鼓励和保护原创内容<br />•
-                转载：转载请确认原文允许转载，或者您已经获得原文作者授权。<br />•
-                翻译：翻译请注明来源，或者您已经获得原文作者授权翻译。</v-tooltip>
+                转载：转载请确认原文允许转载，或者您已经获得原文作者授权</v-tooltip>
               <svg-icon type="mdi" :path="icons.question" color="#8a8a8a" size="18"
                 :style="{ 'padding-top': '0px', 'margin-bottom': '0px', 'margin-left': '5px' }"></svg-icon>
           </div>
@@ -84,12 +83,12 @@
               <div style="margin-bottom: 10px;">
 
                 <v-btn variant="outlined" :color="type == '原创' ? '#9c0c13' : '#8a8a8a'"
-                  :style="{ 'margin': '5px', 'width': '20px', 'height': '20px', 'font-size': '10px' }"
+                  :style="{ 'margin': '5px', 'width': '20px', 'height': '25px'}"
                   @click="type = '原创'">
                   原创
                 </v-btn>
                 <v-btn variant="outlined" :color="type == '转载' ? '#9c0c13' : '#8a8a8a'"
-                  :style="{ 'margin': '5px', 'width': '20px', 'height': '20px', 'font-size': '10px' }"
+                  :style="{ 'margin': '5px', 'width': '20px', 'height': '25px'}"
                   @click="type = '转载'">
                   转载
                 </v-btn>

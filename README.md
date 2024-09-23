@@ -60,11 +60,6 @@
 - `identify.js` 有关身份认证
 - ... ...
 
-## 进一步优化方向    
-- 所有组件改为动态导入  
-- 代码风格转换为Vue3的组合式API
-- 弹窗(`v-dialog`)实现逻辑    
-- ... ...
 ## 安全性  
 - [前端敏感词检测](https://github.com/W1412X/JS-Sentsitive-Detect)  
   - 下载 
@@ -76,3 +71,12 @@
     ```bash
     pip install SensitiveImgDetect
     ```
+
+## 待改进
+### 进一步优化方向    
+- 所有组件改为动态导入  
+- 代码风格转换为Vue3的组合式API
+- 弹窗(`v-dialog`)实现逻辑优化  
+- 敏感词检测的嵌套情况解决
+- 整合所有内联样式到一个CSS文件中  
+- ... ...

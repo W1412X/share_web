@@ -1,5 +1,4 @@
 <template>
-  <btn @click="test">test</btn>
   <div style="border: 1px solid #ccc">
     <Toolbar style="border-bottom: 1px solid #ccc;width: 1000px;" :editor="editorRef" :defaultConfig="toolbarConfig"
       :mode="mode" />
