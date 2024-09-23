@@ -3,6 +3,7 @@
       v-bind="textareaProps"
       v-model="internalValue"
       @compositionend="handleCompositionEnd"
+    @compositionstart="handleCompositionStart" @input="handleInput"
     />
   </template>
   
