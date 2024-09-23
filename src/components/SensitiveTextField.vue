@@ -25,7 +25,7 @@ export default defineComponent({
     // 计算属性
     const textareaProps = computed(() => {
       const { modelValue, style, ...restProps } = props;
-      console.log(modelValue, style)
+      modelValue,style
       return restProps;
     });
 
@@ -51,6 +51,7 @@ export default defineComponent({
       this.ifTyping = false
     },
     handleInput() {
+      this.$emit('update:modelValue', this.internalValue);
       if (this.ifTyping) {//如果正在打字，则不做处理
       } else {//没有打字，检测
         setTimeout(() => {

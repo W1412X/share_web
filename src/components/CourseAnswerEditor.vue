@@ -90,7 +90,6 @@
           variant="outlined"
           label="写下您对此课程的评价"
           v-model="answerForm.comment"
-          @input="checkComment"
         >
         </sensitive-text-area>
       </div>
@@ -162,16 +161,18 @@ import SensitiveTextArea from './SensitiveTextArea.vue';
     components:{
       SensitiveTextArea
     },
-    methods: {
-      checkComment() {
+    watch: {
+      'answerForm.comment'(newValue) {
         for (var i = 0; i < this.questions.length; i++) {
-          if (this.answerForm.comment.includes(this.questions[i])) {
+          if (newValue.includes(this.questions[i])) {
             continue
           } else {
             this.questionState[i] = false
           }
         }
-      },
+      }
+    },
+    methods: {
       intRate(value) {
         this.answerForm.rate = Math.round(value)
       },

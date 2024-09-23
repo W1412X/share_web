@@ -1,6 +1,6 @@
 <template>
     <v-dialog v-model="ifShowDialog"
-        style="width: 100%;height:100%;background-color: rgba(255,255,255,0.5);justify-content: center;">
+        style="width: 100%;height:100%;justify-content: center;">
         <div v-if="ifShowCourseAnswerEditor" style="width: 100%;height:100%;justify-content: center;display: flex">
             <course-answer-editor @close="close"
                 :init-answer="{ courseId: courseId, rate: answer.rate, comment: answer.content }"

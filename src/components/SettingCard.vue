@@ -3,7 +3,6 @@
         width: 100%;
         height: 100%;
         display:flex;
-        background-color: rgba(255, 255, 255, 0.5);
         justify-content: center;
       ">
         <div v-if="ifShowBlackList" style="display: flex;justify-content: center;">

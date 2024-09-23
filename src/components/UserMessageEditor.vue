@@ -1,6 +1,6 @@
 <template>
   <v-dialog v-model="ifShowDialog"
-    style="width: 100%;height:100%;background-color: rgba(255,255,255,0.5);justify-content: center;z-index:10000;">
+    style="width: 100%;height:100%;justify-content: center;z-index:10000;">
     <div v-if="ifShowEmailExmineCode" style="width: 100%;height:100%;justify-content: center;display: flex">
       <email-exmine-card :email="emailCardMessage.email" :new-passwd="this.userMessage.passwd"
         :user-name="this.userMessage.userName" :type="this.cardType" @alert="alert" @close="close"
