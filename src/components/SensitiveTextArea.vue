@@ -48,7 +48,6 @@ export default defineComponent({
       this.ifTyping = false
     },
     handleInput() {
-      this.$emit('update:modelValue', this.internalValue);
       if (this.ifTyping) {//如果正在打字，则不做处理
       } else {//没有打字，检测
         setTimeout(() => {
@@ -57,6 +56,7 @@ export default defineComponent({
             let replaceStr = '*'.repeat(word.length);
             this.internalValue = this.internalValue.replace(word, replaceStr);
           }
+          this.$emit('update:modelValue', this.internalValue);
         }, 100)
       }
     }
