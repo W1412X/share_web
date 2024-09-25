@@ -6,14 +6,19 @@ function resolve(dir) {
 }
 
 const { defineConfig } = require('@vue/cli-service');
-
 module.exports = defineConfig({
   transpileDependencies: true,
-  chainWebpack: (config) => {
-    // 如果有其他链式配置需求，可以在这里添加
+  publicPath:process.env.NODE_ENV='production'?'./':'./',
+  chainWebpack: config => {
+    config.plugin('html').tap(args => {
+      args[0].title = '充实的大学生活';
+      return args;
+    });
+
   },
   devServer: {
     proxy: {
     }
-  }
+  },
+  publicPath: './'
 });

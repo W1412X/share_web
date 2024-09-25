@@ -1,12 +1,13 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHashHistory } from 'vue-router';
 //import { getCookie,/*setCookie*/ } from '@/utils/cookie';
 /*import { login } from '@/utils/api';*/
 import { getUser } from '@/utils/storage';
-import {  } from 'vue';
 const routes = [
   {
     path:'/',
-    redirect:'/index'
+    //redirect:'/index',
+    name:'WelcomePage',
+    component:(()=>import('@/pages/WelcomePage.vue'))
   },
   {
     path: '/login',
@@ -83,7 +84,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(process.env.BASE_URL),
   routes,
 });
 
@@ -93,7 +94,7 @@ router.beforeEach((to, from, next) => {
     console.log(getUser(''));
     if(getUser()!=''){//如果存储了用户信息则直接尝试登陆
       console.log(to.path);
-      if(to.path=="/" || to.path=="/login"){
+      if(to.path=="/login"){
         router.push('/index');
         return;
       }
