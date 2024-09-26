@@ -9,13 +9,16 @@
     <div v-if="type == 'article'" style="width: 100%;display: flex;flex-direction: column;">
       <article-item v-for="(article, index) in articleList" :key="index" :article="article"
         :status="'reader'"></article-item>
+        <v-pagination v-model="articlePage" :length="articlePageNum" :total-visible="5" :size="30"></v-pagination>
     </div>
     <div v-if="type == 'question'" style="width: 100%;display: flex;flex-direction: column;">
       <single-question v-for="(question, index) in questionList" :key="index" :question="question"
         :status="'reader'"></single-question>
+        <v-pagination v-model="questionPage" :length="questionPageNum" :total-visible="5" :size="30"></v-pagination>
     </div>
     <div v-if="type == 'course'" style="width: 100%;display: flex;flex-direction: column;">
       <course-item v-for="(course, index) in courseList" :key="index" :course="course"></course-item>
+      <v-pagination v-model="coursePage" :length="coursePageNum" :total-visible="5" :size="30"></v-pagination>
     </div>
   </div>
   </v-card>
@@ -67,7 +70,13 @@ export default {
       type,
       questionList,
       articleList,
-      courseList
+      courseList,
+      questionPage:1,
+      questionPageNum:10,
+      articlePage:1,
+      articlePageNum:10,
+      coursePage:1,
+      coursePageNum:10,
     }
   },
 }

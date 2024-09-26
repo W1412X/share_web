@@ -1,15 +1,19 @@
 <template>
-  <v-app>
-    <v-container fluid class="d-flex align-center justify-center" style="height: 100vh;">
+    <main fluid class="d-flex align-center justify-center" style="height: 100vh;">
       <v-card class="text-center pa-5" outlined elevation="12" :style="{ backgroundColor: backgroundColor }">
         <div class="mb-4">
           <h1 class="display-1 font-weight-bold">这是一个大学学习助手</h1>
           <h3 class="font-weight-light">旨在分享大学生活中的学习资源，以及提供一些常见问题的解答，课程选择的建议</h3>
         </div>
-        <v-btn @click="enter" color="primary" class="mb-4" large>进入网站</v-btn>
+        <div style="margin: 20px;">
+          <v-btn prepend-icon="mdi-file-document" @click="toIntro" color="primary" class="mx-2">网站介绍</v-btn>
+        </div>
+        <div style="margin: 20px;">
+          <v-btn prepend-icon="mdi-github" @click="toAuthorPage(project)" color="primary" class="mx-2">项目仓库</v-btn>
+        </div>
         <div>
-          <v-btn @click="toAuthorPage(wx)" color="secondary" class="mx-2">@W1412X</v-btn>
-          <v-btn @click="toAuthorPage(wh)" color="secondary" class="mx-2">@zzysssigm</v-btn>
+          <v-btn prepend-icon="mdi-github" @click="toAuthorPage(wx)" color="secondary" class="mx-2">W1412X</v-btn>
+          <v-btn prepend-icon="mdi-github" @click="toAuthorPage(wh)" color="secondary" class="mx-2">zzysssigm</v-btn>
         </div>
       </v-card>
 
@@ -22,8 +26,10 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-    </v-container>
-  </v-app>
+    </main>
+  <div style="width: 100%;display: flex;justify-content: center;margin-top: 10px;">
+      <div style="display: flex;flex-direction: row;font-size: 13px;font-weight: 600;"><a href="https://beian.miit.gov.cn/" style="color: #8a8a8a;" target="_blank">鲁ICP备2024118409</a></div>
+    </div>
 </template>
 
 <script>
@@ -32,6 +38,7 @@ export default {
     return {
       wx: 'https://github.com/W1412X',
       wh: 'https://github.com/zzysssigm',
+      project:'https://github.com/ShareSdu',
       backgroundColor: '#f9f9f9',
       dialog: false, // 控制对话框显示的变量
     };
@@ -39,6 +46,9 @@ export default {
   methods: {
     toAuthorPage(url) {
       window.open(url, '_blank');
+    },
+    toIntro(){
+      this.$router.push({name:'IntroducePage'})
     },
     enter() {
       this.dialog = true; // 打开对话框

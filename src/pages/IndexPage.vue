@@ -9,13 +9,17 @@
       </div>
     </div>
   </v-dialog>
-  <v-layout style="background-color: #ffffff;display: flex;justify-content: center;">
-    <div style="display: flex;flex-direction: column;width: 100%;">
-      <div style="display: flex;justify-content: center;">
-        <v-btn @click="showNotice" style="width: 100%;margin: 3px;height: 30px;background-color: #eaeaea;" color="#9c0c13" variant="tonal">📢 本站公告</v-btn>
+  <main style="background-color: #ffffff;display: flex;justify-content: center;">
+    <div style="display: flex;flex-direction: column;width: 100%;background-color: #ffffff">
+      <div style="height: 35px;width: 100%;;display: flex;justify-content: center;background-color: #ffffff;z-index: 1000;position: fixed">
+        <v-btn @click="showNotice" style="width: 100%;margin: 3px;height: 30px;background-color: #eaeaea;" color="#9c0c13" variant="tonal">
+          <span style="font-weight: bold;">📢  本站公告  ↥ </span>
+          <span style="width: 10px;"></span>
+          <span style="font-weight: bold;">当前为测试阶段 遇到BUG或者其他问题请联系网站管理员</span>
+        </v-btn>
       </div>
       <div style="display: flex;width: 100%;justify-content: center;">
-        <v-app-bar color="#9c0c13" style="margin-bottom:10px;padding-bottom: 5px;margin-top: 35px;">
+        <v-app-bar color="#9c0c13" style="margin-bottom:10px;padding-bottom: 5px;margin-top: 35px;position: fixed;">
           <v-app-bar-title>Share ⛰️ SDU</v-app-bar-title>
           <v-select variant="outlined"
             style="margin-left: 200px;padding:0px;max-width: 100px;font-size: 16px;position: relative;margin-top: 10%;margin-bottom: 10%;height: 90%;"
@@ -43,7 +47,7 @@
             <svg-icon type="mdi" :path="icon.account"></svg-icon>
           </v-btn>
         </v-app-bar>
-        <div style="padding-top: 64px;display: flex;flex-direction: column;">
+        <div style="padding-top: 100px;display: flex;flex-direction: column;">
           <v-tabs v-model="itemType" bg-color="indigo-darken-2" fixed-tabs style="width: 750px;">
             <v-tab
               :style="{ background: 'rgba(255,255,255,1)', 'font-size': '18px', 'color': this.itemType == 'article' ? '#000000' : '#8a8a8a' }"
@@ -57,21 +61,39 @@
           </v-tabs>
           <div v-if="this.itemType == 'article'" style="width: 770px;">
             <article-list :articleList="this.articleItems"></article-list>
+            <v-pagination
+              v-model="articlePage"
+              :length="articlePageNum"
+              :size="30"
+              :total-visible="5"
+            ></v-pagination>
           </div>
           <div v-if="this.itemType == 'question'" style="width: 770px;">
             <component :is="AsyncSingleQuestion" v-for="(question, index) in this.questionItems" :key="index"
               :question="question" style="margin: 5px;"></component>
+            <v-pagination
+              v-model="questionPage"
+              :length="questionPageNum"
+              :total-visible="5"
+              :size="30"
+            ></v-pagination>
           </div>
           <div v-if="this.itemType == 'course'" style="width: 770px;">
             <CourseItem v-for="(course, index) in this.courseItems" :key="index" :course="course" style="margin: 5px;">
             </CourseItem>
+            <v-pagination
+              v-model="coursePage"
+              :length="coursePageNum"
+              :total-visible="5"
+              :size="30"
+            ></v-pagination>
           </div>
           <div>
           </div>
         </div>
       </div>
     </div>
-  </v-layout>
+  </main>
 </template>
 <script>
 import SvgIcon from '@jamescoyle/vue-icon'
@@ -153,19 +175,59 @@ export default {
       searchContent: 'RECOMMAND',
       searchType: '文章',
       articleItems: [
-        { id: '00000000' },
-        { id: '00000001' }
+      {
+          id: '00000000',
+          title: '这是文章标题',
+          tags: ['计算机', '测试'],
+          description:
+            '这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介',
+          publishTime: '2022-09-01 00:00',
+          imgUrl:
+            'https://tse2-mm.cn.bing.net/th/id/OIP-C.B6see3otwDOwdcSecD_W8QHaHa?w=173&h=180&c=7&r=0&o=5&pid=1.7',
+          authorName: '测试用户',
+          profileUrl:
+            'https://tse1-mm.cn.bing.net/th/id/OIP-C.PO7d9IfnPUy2RO173QYt6wHaHV?w=216&h=213&c=7&r=0&o=5&pid=1.7',
+          starCount: '99999',
+          scanCount: '99999',
+          replyCount: '99999',
+        }
       ],//存储展示的文章的信息数组
       courseItems: [
-        { id: '00000000' },
-        { id: '00000001' }
+      {
+            id: '00000000',
+            name: '程序思维设计与实践',
+            teacher: '蔡晓军',
+            type: '必修课 通识选修',
+            college: '计算机科学与技术学院',
+            campus: '青岛校区',
+            examineMethod: '',//考试/论文/项目展示/其他
+            teacheMethod: '线上',//线上/线下/混合
+            rate: 3.5,
+          }
       ],
       questionItems: [
-        { id: '00000000' },
-        { id: '00000001' }
+      {
+          id: '00000000',
+          title: '这是问题',
+          content: '这是内容',
+          time: 'xxxx-xx-xx xx:xx',
+          replyCount: 'xxxxx',
+          starCount: 'xxxx',
+          authorName: 'visitor',
+          authorId: 'xxxx',
+          scanCount: 'xxxx',
+          profileUrl: 'xxxx',
+          relativeUrl: 'xxxx',
+        }
       ],
       itemType: 'article',
       inputValue: '',
+      articlePage:1,
+      questionPage:1,
+      coursePage:1,
+      articlePageNum:10,
+      questionPageNum:10,
+      coursePageNum:10,
     }
   },
   methods: {
@@ -197,6 +259,11 @@ export default {
     }
   },
   created() {
+    for(var i=0;i<10;i++){
+      this.articleItems.push(this.articleItems[0])
+      this.questionItems.push(this.questionItems[0])
+      this.courseItems.push(this.courseItems[0])
+    }
   }
 }
 </script>

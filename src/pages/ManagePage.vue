@@ -1,5 +1,5 @@
 <template>
-    <v-app>
+    <main>
         <div style="width: 100%;display: flex;justify-content: center;">
             <div style="display: flex;flex-direction: column;">
                 <v-tabs v-model="pageType" style="width: 750px; background-color: #8a8a8a" bg-color="indigo-darken-2"
@@ -39,7 +39,7 @@
                 </div>
             </div>
         </div>
-    </v-app>
+    </main>
 </template>
 <script>
 import ManagerDealCard from '@/components/ManagerDealCard.vue';

@@ -1,6 +1,6 @@
 <template>
-  <v-app>
-    <!-- 使用 v-app 根元素以确保填充整个视口 -->
+  <main>
+    <!-- 使用 main 根元素以确保填充整个视口 -->
     <v-main>
       <!-- v-main 用于适应内容到视口的大小 -->
       <v-container fluid fill-height>
@@ -16,7 +16,7 @@
         </v-layout>
       </v-container>
     </v-main>
-  </v-app>
+  </main>
   <v-snackbar
     :timeout="3000"
     :color="alertSet.color"

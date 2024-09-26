@@ -10,6 +10,11 @@ const routes = [
     component:(()=>import('@/pages/WelcomePage.vue'))
   },
   {
+    path:'/intro',
+    name:'IntroducePage',
+    component:(()=>import('@/pages/IntroducePage.vue'))
+  },
+  {
     path: '/login',
     name: 'LoginPage',
     component: (()=>import('@/pages/LoginPage.vue')),

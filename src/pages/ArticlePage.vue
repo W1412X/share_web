@@ -7,7 +7,6 @@
     <div class="text-subtitle-1 pb-2">{{ alertSet.title }}</div>
     <p>{{ alertSet.content }}</p>
   </v-snackbar>
-  <div>
     <main
       :style="{ 'justify-content': 'center', 'width': '100%', 'display': 'flex', 'padding-bottom': '50px' }"
     >
@@ -135,7 +134,6 @@
       </div>
       <v-spacer></v-spacer>
     </div>
-  </div>
   <div ref="questionAndAnswerRef" v-if="ifShowComment"  style="right: 0;position: fixed;top: 0;background-color: rgba(255,255,255,0);">
     <question-and-answers :id="article.id" :type="'article'" @close_comment="closeComment" @alert="alert"></question-and-answers>
   </div>

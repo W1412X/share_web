@@ -1,5 +1,4 @@
 <template>
-  <div>
     <main :style="{ 'justify-content': 'center', 'width': '100%', 'display': 'flex', 'padding-bottom': '50px' }">
       <v-card :style="{ 'max-width': '1000px', 'width': '1000px', 'background-color': '#eef0f4' }">
         <v-row style="margin: 0px; width: 1000px;padding:10px;">
@@ -17,7 +16,6 @@
         </v-row>
       </v-card>
     </main>
-  </div>
   <v-snackbar :timeout="3000" :color="alertSet.color" v-model="alertSet.state">
     <div class="text-subtitle-1 pb-2">{{ alertSet.title }}</div>
     <p>{{ alertSet.content }}</p>

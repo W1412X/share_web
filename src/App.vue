@@ -1,8 +1,8 @@
 <!-- src/App.vue -->
 <template>
-    <div id="app">
+    <v-app>
       <router-view />
-    </div>
+    </v-app>
   </template>
   <script>
   export default {

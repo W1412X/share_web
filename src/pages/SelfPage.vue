@@ -8,7 +8,7 @@
     <div class="text-subtitle-1 pb-2">{{ alertSet.title }}</div>
     <p>{{ alertSet.content }}</p>
   </v-snackbar>
-  <v-app style="width: 100%;justify-content: center;">
+  <main style="width: 100%;justify-content: center;">
       <v-bottom-navigation v-if="isMobile">
         <v-btn color="#9c0c13" :prepend-icon="'mdi-pencil'" value="create"
               @click="setView('create')">创作</v-btn>
@@ -23,7 +23,6 @@
             <v-btn color="#9c0c13" :prepend-icon="'mdi-cog'" value="setting"
               @click="setView('setting')">设置</v-btn>
       </v-bottom-navigation>
-    <v-layout style="width: 100%;justify-content: center;">
       <v-row style="width: 100%;justify-content: center;">
         <v-navigation-drawer v-if="!isMobile"  expand-on-hover rail>
           <v-list>
@@ -80,8 +79,7 @@
           </div>
         </v-col>
       </v-row>
-    </v-layout>
-  </v-app>
+  </main>
 </template>
   <script>
   import SettingCard from '@/components/SettingCard.vue';
