@@ -1,4 +1,5 @@
 <template>
+  <LoadingView v-model="progressMsg"></LoadingView>
   <main>
     <v-row style="height: 100%;">
       <!-- 侧边栏 -->
@@ -11,37 +12,37 @@
             <v-divider></v-divider>
             <v-list density="compact" color="#9c0c13">
               <v-list-item variant="plain" text @click.prevent="scrollTo('#project-name')">
-                  1. 项目名称
+                1. 项目名称
               </v-list-item>
               <v-list-item variant="plain" text @click.prevent="scrollTo('#project-intro')">
-                  2. 项目简介
+                2. 项目简介
               </v-list-item>
               <v-list-item variant="plain" text @click.prevent="scrollTo('#background')">
-                  3. 项目背景
+                3. 项目背景
               </v-list-item>
               <v-list-item variant="plain" text @click.prevent="scrollTo('#advantages')">
-                  4. 特点优势
+                4. 特点优势
               </v-list-item>
               <v-list-item variant="plain" text @click.prevent="scrollTo('#audience')">
-                  5. 目标受众
+                5. 目标受众
               </v-list-item>
               <v-list-item variant="plain" text @click.prevent="scrollTo('#features')">
-                  6. 主要功能
+                6. 主要功能
               </v-list-item>
               <v-list-item variant="plain" text @click.prevent="scrollTo('#tech-stack')">
-                  7. 技术栈
+                7. 技术栈
               </v-list-item>
               <v-list-item variant="plain" text @click.prevent="scrollTo('#feedback')">
-                  8. 用户反馈
+                8. 用户反馈
               </v-list-item>
               <v-list-item variant="plain" text @click.prevent="scrollTo('#future')">
-                  9. 未来发展
+                9. 未来发展
               </v-list-item>
               <v-list-item variant="plain" text @click.prevent="scrollTo('#contribute')">
-                  10. 参与贡献
+                10. 参与贡献
               </v-list-item>
               <v-list-item variant="plain" text @click.prevent="scrollTo('#contact')">
-                  11. 联系信息
+                11. 联系信息
               </v-list-item>
             </v-list>
           </v-navigation-drawer>
@@ -129,16 +130,18 @@
           <h2 id="feedback">8. 用户反馈</h2>
           <ul style="margin-left:20px">
             <li style="font-size: 20px"><strong style="font-size: 20px">举报：</strong>可以针对某一个文章，问题，课程，评论提出举报或者反馈。</li>
-            <li style="font-size: 20px"><strong style="font-size: 20px">建议：</strong>可以在网站中提交建议或者发送邮件到 <a href="mailto:admin@sharesdu.com"
-                style="color:#0074e8;font-weight:bold;">admin@sharesdu.com</a>。</li>
+            <li style="font-size: 20px"><strong style="font-size: 20px">建议：</strong>可以在网站中提交建议或者发送邮件到 <a
+                href="mailto:admin@sharesdu.com" style="color:#0074e8;font-weight:bold;">admin@sharesdu.com</a>。</li>
             <li style="font-size: 20px"><strong style="font-size: 20px">数据：</strong>提供网站的相关数据如某一个文章浏览量，收藏量等。</li>
           </ul>
 
           <h2 id="future">9. 未来发展</h2>
           <ul style="margin-left:20px">
             <li style="font-size: 20px"><strong style="font-size: 20px">推广到更多高校，由各自高校的人员负责运营</strong></li>
-            <li style="font-size: 20px"><strong style="font-size: 20px">其他添加功能如二手物品交易平台(本站仅提供平台服务，不从中获利也不参与交易过程)，帖子广场等</strong></li>
-            <li style="font-size: 20px"><strong style="font-size: 20px">移动端原生APP开发，包括android，ios，harmony os</strong></li>
+            <li style="font-size: 20px"><strong
+                style="font-size: 20px">其他添加功能如二手物品交易平台(本站仅提供平台服务，不从中获利也不参与交易过程)，帖子广场等</strong></li>
+            <li style="font-size: 20px"><strong style="font-size: 20px">移动端原生APP开发，包括android，ios，harmony os</strong>
+            </li>
           </ul>
           <h2 id="contribute">10. 如何参与或贡献</h2>
           <h2>参与</h2>
@@ -147,7 +150,8 @@
               开发： <a href="mailto:admin@sharesdu.com" style="color:#0074e8;font-weight:bold;">管理员邮箱</a>，项目
               <span style="color:#0074e8;font-weight: bold;" @click="openGithub">GITHUB</span>，网站QQ群 246680702
             </li>
-            <li style="font-size: 20px">内容管理： <a href="mailto:admin@sharesdu.com" style="color:#0074e8;font-weight:bold;">管理员邮箱</a>，网站QQ群
+            <li style="font-size: 20px">内容管理： <a href="mailto:admin@sharesdu.com"
+                style="color:#0074e8;font-weight:bold;">管理员邮箱</a>，网站QQ群
               246680702</li>
           </ul>
           <h2>贡献</h2>
@@ -160,7 +164,8 @@
           </ul>
 
           <h2 id="contact">11. 联系信息</h2>
-          <p style="font-size: 18px">管理员邮箱<a href="mailto:admin@sharesdu.com" style="color:#0074e8;font-weight:bold;">admin@sharesdu.com</a>
+          <p style="font-size: 18px">管理员邮箱<a href="mailto:admin@sharesdu.com"
+              style="color:#0074e8;font-weight:bold;">admin@sharesdu.com</a>
           </p>
           <p style="font-size: 18px">QQ群 246680702</p>
         </v-card>
@@ -200,6 +205,11 @@ export default {
         { src: '/intro_imgs/self/self_self.png', alt: '用户信息编辑' },
         { src: '/intro_imgs/self/self_settings.png', alt: '用户设置' },
       ],
+      progressMsg: {
+        state: false,
+        text: '正在加载',
+        progress: -1,
+      }
     }
   },
   methods: {

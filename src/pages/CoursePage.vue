@@ -1,4 +1,5 @@
 <template>
+    <LoadingView v-model="progressMsg"></LoadingView>
     <main style="width: 100%;height: 100vh;display: flex;justify-content: center;">
         <div style="display: flex;flex-direction: column;">
             <div>
@@ -63,8 +64,13 @@ export default {
         return {
             answerList,
             course,
-            answerPage:1,
-            answerPageNum:10,
+            answerPage: 1,
+            answerPageNum: 10,
+            progressMsg: {
+                state: false,
+                text: '正在加载',
+                progress: -1,
+            }
         }
     },
     methods: {

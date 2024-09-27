@@ -39,6 +39,7 @@ import 'codemirror/lib/codemirror.css';
 // highlightjs
 import hljs from 'highlight.js';
 import createKatexPlugin from '@kangc/v-md-editor/lib/plugins/katex/cdn';
+import LoadingView from './components/LoadingView.vue';
 VMdEditor.Codemirror = Codemirror;
 VMdEditor.use(githubTheme, {
   Hljs: hljs,
@@ -51,6 +52,7 @@ const vuetify = createVuetify({
   directives,
 })
 const app=createApp(App);
+app.component('LoadingView',LoadingView);
 app.provide(store);
 app.use(router)
   .use(vuetify)

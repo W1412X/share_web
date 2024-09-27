@@ -1,9 +1,10 @@
 <template>
+  <LoadingView v-model="progressMsg"></LoadingView>
   <main :style="{ 'justify-content': 'center', 'width': '100%', 'display': 'flex', 'padding-bottom': '50px' }">
     <v-card :style="{ 'max-width': '1000px', 'width': '1000px', 'background-color': '#eef0f4' }">
       <v-row style="margin: 0px; width: 1000px;padding:10px;">
-        <v-btn variant="tonal" color="#9c0c13" style="width: 100%;height: 30px;"
-          @click="changeCreateMethod">{{ createMethod=='edit'? '直接上传压缩包？':'使用在线编辑器' }}</v-btn>
+        <v-btn variant="tonal" color="#9c0c13" style="width: 100%;height: 30px;" @click="changeCreateMethod">{{
+          createMethod == 'edit' ? '直接上传压缩包？' :'使用在线编辑器' }}</v-btn>
         <div style="margin:10px;margin-bottom: 5px;">
           <sensitive-text-area style="width: 960px;margin-top:20px" v-model="title" label="编辑标题" row-height="10"
             rows="1" variant="outlined" auto-grow></sensitive-text-area>
@@ -60,6 +61,11 @@ export default {
         sourceName: '这是资源',
       },
       createMethod: 'edit',
+      progressMsg: {
+        state: false,
+        text: '正在加载',
+        progress: -1,
+      }
     }
   },
   methods: {

@@ -1,6 +1,6 @@
 <template>
-  <v-dialog v-model="ifShowDialog"
-    style="display: flex;width: 100%;height:100%;justify-content: center;">
+  <LoadingView v-model="progressMsg"></LoadingView>
+  <v-dialog v-model="ifShowDialog" style="display: flex;width: 100%;height:100%;justify-content: center;">
     <div style="display: flex;justify-content: center;">
       <QuestionEditor v-if="ifShowQuestionEditor" @close="close"></QuestionEditor>
       <CourseEditor v-if="ifShowCourseEditor" @close="close"></CourseEditor>
@@ -11,9 +11,11 @@
   </v-dialog>
   <main style="background-color: #ffffff;display: flex;justify-content: center;">
     <div style="display: flex;flex-direction: column;width: 100%;background-color: #ffffff">
-      <div style="height: 35px;width: 100%;;display: flex;justify-content: center;background-color: #ffffff;z-index: 1000;position: fixed">
-        <v-btn @click="showNotice" style="width: 100%;margin: 3px;height: 30px;background-color: #eaeaea;" color="#9c0c13" variant="tonal">
-          <span style="font-weight: bold;">📢  本站公告  ↥ </span>
+      <div
+        style="height: 35px;width: 100%;;display: flex;justify-content: center;background-color: #ffffff;z-index: 1000;position: fixed">
+        <v-btn @click="showNotice" style="width: 100%;margin: 3px;height: 30px;background-color: #eaeaea;"
+          color="#9c0c13" variant="tonal">
+          <span style="font-weight: bold;">📢 本站公告 ↥ </span>
           <span style="width: 10px;"></span>
           <span style="font-weight: bold;">当前为测试阶段 遇到BUG或者其他问题请联系网站管理员</span>
         </v-btn>
@@ -61,32 +63,17 @@
           </v-tabs>
           <div v-if="this.itemType == 'article'" style="width: 770px;">
             <article-list :articleList="this.articleItems"></article-list>
-            <v-pagination
-              v-model="articlePage"
-              :length="articlePageNum"
-              :size="30"
-              :total-visible="5"
-            ></v-pagination>
+            <v-pagination v-model="articlePage" :length="articlePageNum" :size="30" :total-visible="5"></v-pagination>
           </div>
           <div v-if="this.itemType == 'question'" style="width: 770px;">
             <component :is="AsyncSingleQuestion" v-for="(question, index) in this.questionItems" :key="index"
               :question="question" style="margin: 5px;"></component>
-            <v-pagination
-              v-model="questionPage"
-              :length="questionPageNum"
-              :total-visible="5"
-              :size="30"
-            ></v-pagination>
+            <v-pagination v-model="questionPage" :length="questionPageNum" :total-visible="5" :size="30"></v-pagination>
           </div>
           <div v-if="this.itemType == 'course'" style="width: 770px;">
             <CourseItem v-for="(course, index) in this.courseItems" :key="index" :course="course" style="margin: 5px;">
             </CourseItem>
-            <v-pagination
-              v-model="coursePage"
-              :length="coursePageNum"
-              :total-visible="5"
-              :size="30"
-            ></v-pagination>
+            <v-pagination v-model="coursePage" :length="coursePageNum" :total-visible="5" :size="30"></v-pagination>
           </div>
           <div>
           </div>
@@ -122,7 +109,7 @@ export default {
     }
     const ifShowQuestionEditor = ref(false);
     const ifShowCourseEditor = ref(false);
-    const ifShowNotice=ref(false);
+    const ifShowNotice = ref(false);
     const ifShowDialog = computed(() => {
       return ifShowQuestionEditor.value || ifShowCourseEditor.value || ifShowNotice.value;
     })
@@ -132,8 +119,8 @@ export default {
     const setCourseEditorState = (state) => {
       ifShowCourseEditor.value = state;
     }
-    const setNoticeState=(state)=>{
-      ifShowNotice.value=state;
+    const setNoticeState = (state) => {
+      ifShowNotice.value = state;
     }
     //懒加载部分  
     const AsyncSingleQuestion = defineAsyncComponent(() => import('@/components/SingleQuestion.vue'))
@@ -175,7 +162,7 @@ export default {
       searchContent: 'RECOMMAND',
       searchType: '文章',
       articleItems: [
-      {
+        {
           id: '00000000',
           title: '这是文章标题',
           tags: ['计算机', '测试'],
@@ -193,20 +180,20 @@ export default {
         }
       ],//存储展示的文章的信息数组
       courseItems: [
-      {
-            id: '00000000',
-            name: '程序思维设计与实践',
-            teacher: '蔡晓军',
-            type: '必修课 通识选修',
-            college: '计算机科学与技术学院',
-            campus: '青岛校区',
-            examineMethod: '',//考试/论文/项目展示/其他
-            teacheMethod: '线上',//线上/线下/混合
-            rate: 3.5,
-          }
+        {
+          id: '00000000',
+          name: '程序思维设计与实践',
+          teacher: '蔡晓军',
+          type: '必修课 通识选修',
+          college: '计算机科学与技术学院',
+          campus: '青岛校区',
+          examineMethod: '',//考试/论文/项目展示/其他
+          teacheMethod: '线上',//线上/线下/混合
+          rate: 3.5,
+        }
       ],
       questionItems: [
-      {
+        {
           id: '00000000',
           title: '这是问题',
           content: '这是内容',
@@ -222,16 +209,21 @@ export default {
       ],
       itemType: 'article',
       inputValue: '',
-      articlePage:1,
-      questionPage:1,
-      coursePage:1,
-      articlePageNum:10,
-      questionPageNum:10,
-      coursePageNum:10,
+      articlePage: 1,
+      questionPage: 1,
+      coursePage: 1,
+      articlePageNum: 10,
+      questionPageNum: 10,
+      coursePageNum: 10,
+      progressMsg: {
+        state: false,
+        text: '正在加载',
+        progress: -1,
+      }
     }
   },
   methods: {
-    showNotice(){
+    showNotice() {
       this.setNoticeState(true);
     },
     showAlert() {
@@ -259,7 +251,7 @@ export default {
     }
   },
   created() {
-    for(var i=0;i<10;i++){
+    for (var i = 0; i < 10; i++) {
       this.articleItems.push(this.articleItems[0])
       this.questionItems.push(this.questionItems[0])
       this.courseItems.push(this.courseItems[0])

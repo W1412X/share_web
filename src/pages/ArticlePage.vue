@@ -1,4 +1,5 @@
 <template>
+  <LoadingView v-model="progressMsg"></LoadingView>
   <v-snackbar
     :timeout="3000"
     :color="alertSet.color"
@@ -208,6 +209,11 @@ import os
         selectedQuestionId:'',
         userName,
         profileUrl,
+        progressMsg:{
+          state:false,
+          text:'正在加载',
+          progress:-1,
+        }
       }
     },
     methods:{

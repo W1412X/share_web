@@ -1,4 +1,5 @@
 <template>
+  <LoadingView v-model="progressMsg"></LoadingView>
   <div style="display: flex;justify-content: center;">
     <div style="
         justify-content: center;
@@ -27,24 +28,27 @@
                 :style="{ 'max-width': '100px', 'margin-top': '10px', 'margin-left': '15px', 'margin-right': '0px', 'padding-left': '0px', 'padding-right': '0px' }">
                 <v-row :style="{ 'margin-top': '0px', 'margin-left': '0px', 'margin-right': '0px' }">
                   <svg-icon type="mdi" :path="icons.viewCount" size="18"
-                    :style="{ 'padding-top': '0px', 'margin-bottom': '0px', 'margin-left': '5px','color':'#8a8a8a' }"></svg-icon>
-                  <span :style="{ 'margin-left': '5px', 'font-size': '14px','color':'#8a8a8a' }">{{ question.scanCount }}</span>
+                    :style="{ 'padding-top': '0px', 'margin-bottom': '0px', 'margin-left': '5px', 'color': '#8a8a8a' }"></svg-icon>
+                  <span :style="{ 'margin-left': '5px', 'font-size': '14px', 'color': '#8a8a8a' }">{{ question.scanCount
+                    }}</span>
                 </v-row>
               </div>
               <div
                 :style="{ 'max-width': '100px', 'margin-top': '10px', 'margin-left': '10px', 'margin-right': '0px', 'padding-left': '0px', 'padding-right': '0px' }">
                 <v-row :style="{ 'margin-top': '0px', 'margin-left': '0px', 'margin-right': '0px' }">
                   <svg-icon type="mdi" :path="icons.starCount" size="18"
-                    :style="{ 'padding-top': '0px', 'margin-bottom': '0px', 'margin-left': '5px' ,'color':'#8a8a8a'}"></svg-icon>
-                  <span :style="{ 'margin-left': '4px', 'font-size': '14px' ,'color':'#8a8a8a'}">{{ question.starCount }}</span>
+                    :style="{ 'padding-top': '0px', 'margin-bottom': '0px', 'margin-left': '5px', 'color': '#8a8a8a' }"></svg-icon>
+                  <span :style="{ 'margin-left': '4px', 'font-size': '14px', 'color': '#8a8a8a' }">{{ question.starCount
+                    }}</span>
                 </v-row>
               </div>
               <div
                 :style="{ 'max-width': '100px', 'margin-top': '10px', 'margin-left': '10px', 'margin-right': '50px', 'padding-left': '0px', 'padding-right': '0px' }">
                 <v-row :style="{ 'margin-top': '0px', 'margin-left': '0px', 'margin-right': '0px' }">
                   <svg-icon type="mdi" :path="icons.replyCount" size="18"
-                    :style="{ 'padding-top': '0px', 'margin-bottom': '0px', 'margin-left': '5px','color':'#8a8a8a' }"></svg-icon>
-                  <span :style="{ 'margin-left': '4px', 'font-size': '14px' ,'color':'#8a8a8a'}"> {{ question.replyCount }} </span>
+                    :style="{ 'padding-top': '0px', 'margin-bottom': '0px', 'margin-left': '5px', 'color': '#8a8a8a' }"></svg-icon>
+                  <span :style="{ 'margin-left': '4px', 'font-size': '14px', 'color': '#8a8a8a' }"> {{ question.replyCount
+                    }} </span>
                 </v-row>
               </div>
             </div>
@@ -69,20 +73,28 @@
           color="#9c0c13">关联链接</v-btn>
       </div>
       <div
-        :style="{ 'padding': '0px', 'margin-left': '20px', 'height': '100%', 'display': 'relative', 'overflow': 'auto'}">
-        <Answer v-for="(answer,index) in answerList" :key="index" :init-answer="answer" @alert="alert"></Answer>
+        :style="{ 'padding': '0px', 'margin-left': '20px', 'height': '100%', 'display': 'relative', 'overflow': 'auto' }">
+        <Answer v-for="(answer, index) in answerList" :key="index" :init-answer="answer" @alert="alert"></Answer>
         <v-pagination v-model="answerPage" :length="answerPageNum" :total-visible="5" :size="30"></v-pagination>
       </div>
-      <div :style="{'width':'750px','max-width':'750px','height':'60px','display':'flex','flex-direction':'row','margin-left':'20px','border':'solid 1px #8a8a8a'}">
-        <div v-if="ifEditAnswer" style="width: 100%;margin-top: 10px;display: flex;flex-direction: row;margin-right: 10px;">
-          <SensitiveTextArea variant="outlined" rows="1" density="compact" :model-value="editingAnswer" style="margin-left: 5px;width: 80%;padding: 0px;"></SensitiveTextArea>
-          <v-btn variant="outlined" color="#9c0c13" style="height: 35px;width: 50px;;margin-top: 5px;margin-left: 10px;">发表</v-btn>
-          <v-btn @click="()=>{this.ifEditAnswer=false;}" variant="outlined" color="#9c0c13" style="height: 35px;width:50px;margin-top: 5px;margin-left: 10px;">取消</v-btn>
+      <div
+        :style="{ 'width': '750px', 'max-width': '750px', 'height': '60px', 'display': 'flex', 'flex-direction': 'row', 'margin-left': '20px', 'border': 'solid 1px #8a8a8a' }">
+        <div v-if="ifEditAnswer"
+          style="width: 100%;margin-top: 10px;display: flex;flex-direction: row;margin-right: 10px;">
+          <SensitiveTextArea variant="outlined" rows="1" density="compact" :model-value="editingAnswer"
+            style="margin-left: 5px;width: 80%;padding: 0px;"></SensitiveTextArea>
+          <v-btn variant="outlined" color="#9c0c13"
+            style="height: 35px;width: 50px;;margin-top: 5px;margin-left: 10px;">发表</v-btn>
+          <v-btn @click="() => { this.ifEditAnswer = false; }" variant="outlined" color="#9c0c13"
+            style="height: 35px;width:50px;margin-top: 5px;margin-left: 10px;">取消</v-btn>
         </div>
-        <div v-if="!ifEditAnswer" style="width: 100%;margin-top: 10px;display: flex;flex-direction: row-reverse;margin-right: 10px;">
+        <div v-if="!ifEditAnswer"
+          style="width: 100%;margin-top: 10px;display: flex;flex-direction: row-reverse;margin-right: 10px;">
           <AlertButton :type="'question'" :id="question.id" style="margin-right: 20px;"></AlertButton>
-          <StarButton :state="question.starState" :type="'question'" :id="question.id" style="margin-right: 10px;"></StarButton>
-          <svg-icon @click="()=>{this.ifEditAnswer=true;}" type="mdi" :path="icons.replyCount" size="22" style="margin-right: 10px;margin-top: 5px;color: #8a8a8a;"></svg-icon>
+          <StarButton :state="question.starState" :type="'question'" :id="question.id" style="margin-right: 10px;">
+          </StarButton>
+          <svg-icon @click="() => { this.ifEditAnswer = true; }" type="mdi" :path="icons.replyCount" size="22"
+            style="margin-right: 10px;margin-top: 5px;color: #8a8a8a;"></svg-icon>
         </div>
       </div>
     </div>
@@ -123,7 +135,7 @@ export default {
       profileUrl: 'https://pic2.zhimg.com/v2-0dda71bc9ced142bf7bb2d6adbebe4f0_r.jpg?source=1940ef5c',
       starState: false,
     }
-    var answerList=[
+    var answerList = [
       {
         id: '00000000',
         name: 'visitor',
@@ -151,8 +163,13 @@ export default {
         starCount: mdiStar,
         replyCount: mdiMessage,
       },
-      ifEditAnswer:false,
-      editingAnswer:'',
+      ifEditAnswer: false,
+      editingAnswer: '',
+      progressMsg: {
+        state: false,
+        text: '正在加载',
+        progress: -1,
+      }
     }
   },
   components: {
@@ -170,7 +187,7 @@ export default {
   },
   created() {
     //
-    for(var i =0;i<10;i++){
+    for (var i = 0; i < 10; i++) {
       this.answerList.push(this.answerList[0]);
     }
     //

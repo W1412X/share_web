@@ -1,4 +1,5 @@
 <template>
+  <LoadingView v-model="progressMsg"></LoadingView>
   <main>
     <div style="display: flex;justify-content: center;">
       <div style="display: flex;flex-direction: column;">
@@ -72,6 +73,11 @@ export default {
       articlePageNum:10,
       questionPage:1,
       questionPageNum:10,
+      progressMsg:{
+          state:false,
+          text:'正在加载',
+          progress:-1,
+        }
     }
   },
   components: {

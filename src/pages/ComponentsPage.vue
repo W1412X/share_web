@@ -1,4 +1,5 @@
 <template>
+  <LoadingView v-model="progressMsg"></LoadingView>
   <div style="display: flex;flex-direction: column-reverse;">
     <report-card></report-card>
     <user-message-editor></user-message-editor>
