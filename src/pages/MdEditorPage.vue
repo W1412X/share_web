@@ -10,7 +10,7 @@
         </div>
         <div style="width:100%;display: flex;justify-content: center;">
           <v-md-editor v-if="createMethod == 'edit'" :disabled-menus="[]" @upload-image="handleUploadImage"
-            v-model="article.content" height="500px"></v-md-editor>
+            v-model="article.content" height="600px"></v-md-editor>
           <markdown-upload-card v-if="createMethod == 'upload'"></markdown-upload-card>
         </div>
         <div style="width:100%;display: flex;justify-content: center;">

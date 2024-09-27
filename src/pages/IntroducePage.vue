@@ -176,9 +176,10 @@ export default {
       articleImages: [
         { src: '/intro_imgs/article/article1.png', alt: '文章主页' },
         { src: '/intro_imgs/article/article2.png', alt: '文章页面' },
-        { src: '/intro_imgs/article/article_editor.png', alt: '文章富文本编辑器' },
+        { src: '/intro_imgs/article/article_editor.png', alt: '使用富文本编辑器发布文章，支持上传图片，添加视频以及Latex' },
         { src: '/intro_imgs/article/article_editorbar.png', alt: '文章编辑栏' },
-        { src: '/intro_imgs/article/article_markdown.png', alt: '文章Markdown编辑器' }
+        { src: '/intro_imgs/article/article_mdupload.png', alt: '上传Markdown压缩包直接发布文章，支持Latex以及图片' },
+        { src: '/intro_imgs/article/article_mdedit.png', alt: '在线使用Markdown编辑器发布文章，支持Latex以及图片' }
       ],
       questionImages: [
         { src: '/intro_imgs/question/question1.png', alt: '问题主页' },
