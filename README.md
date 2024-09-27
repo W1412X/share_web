@@ -89,8 +89,8 @@
 - 处理用户  
 - 发布公告  
 
-## 寄  
-### 邮箱服务器  
+## 邮箱配置 
+> 目前可以发送的邮箱有 @126.com, @163.com, @mail.sdu.edu.cn.com   
 - ~~本来是想搞这个的，但是发现最后发现，貌似是什么某一个证书错误什么的(应该是颁发证书机构的问题？)，去阿里云买SSL证书就不值了，最后决定直接用邮件推送~~  
 - 利用Postfix+Doecot实现  
 ### 遇到的一些BUG
@@ -107,3 +107,6 @@ Sep 25 16:27:08 XXXXXXXXXXXXXXXXXXX postfix/smtp[103314]: connect to 126mx03.mxm
 Sep 25 16:50:16 XXXXXXXXXXXXXXXXXXXXXXX postfix/smtps/smtpd[104768]: warning: TLS library problem: error:14191044:SSL routines:tls1_enc:internal error:../ssl/record/ssl3_record.c:1065:
   ```
   - 但是能跑  
+
+## Docker部署  
+- 克隆此项目后直接将你的SSL证书文件放在根目录的certs文件夹中，然后构建项目即可  
