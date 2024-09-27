@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@jamescoyle/vue-icon": "^0.1.2",
+    "@kangc/v-md-editor": "^2.3.18",
     "@mdi/font": "^7.4.47",
     "@mdi/js": "^7.4.47",
     "@mdi/light-js": "^0.2.63",
