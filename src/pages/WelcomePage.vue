@@ -63,10 +63,6 @@
       </v-card>
     </div>
   </main>
-  <div style="width: 100%;display: flex;justify-content: center;margin-top: 10px;background-color: #8a8a8a;">
-    <div style="display: flex;flex-direction: row;font-size: 13px;font-weight: 600;"><a
-        href="https://beian.miit.gov.cn/" style="color: #ffffff;" target="_blank">鲁ICP备2024118409</a></div>
-  </div>
 </template>
 
 <script>

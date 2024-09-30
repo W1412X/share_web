@@ -14,6 +14,7 @@ const routes = [
     name:'IntroducePage',
     component:(()=>import('@/pages/IntroducePage.vue'))
   },
+  /*
   {
     path: '/login',
     name: 'LoginPage',
@@ -56,11 +57,6 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
-    path:'/error/:reason?',
-    name:'ErrorPage',
-    component: (()=>import('@/pages/ErrorPage.vue')),
-  },
-  {
     path:'/author/:name',
     name:'AuthorPage',
     component: (()=>import('@/pages/AuthorPage.vue')),
@@ -81,6 +77,11 @@ const routes = [
     path:'/manage',
     name:'ManagePage',
     component:(()=>import('@/pages/ManagePage.vue')),
+  },*/
+  {
+    path:'/error/:reason?',
+    name:'ErrorPage',
+    component: (()=>import('@/pages/ErrorPage.vue')),
   },
   {
     path: '/:pathMatch(.*)*',

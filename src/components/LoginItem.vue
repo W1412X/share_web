@@ -1,13 +1,12 @@
 <template>
-  <v-dialog v-model="ifShowDialog"
-    style="width: 100%;height:100%;justify-content: center;">
+  <v-dialog v-model="ifShowDialog" style="width: 100%;height:100%;justify-content: center;">
     <div v-if="ifShowEmailExmineCode" style="width: 100%;height:100%;justify-content: center;display: flex">
       <email-exmine-card :email="emailCardMessage.email" :passwd="emailCardMessage.passwd"
         :user-name="emailCardMessage.userName" :type="this.cardType" @alert="alert" @close="closeExamineCode"
         @submit="submitExamineState"></email-exmine-card>
     </div>
     <div v-if="ifShowPrivacyPolicy" style="display: flex;justify-content: center;">
-      <v-card v-if="ifShowPrivacyPolicy" style="padding:5px;width:750px;max-width:750px;">
+      <v-card style="padding:5px;width:750px;max-width:750px;">
         <div style="width: 100%;display: flex;flex-direction: row-reverse;">
           <div>
             <v-btn size="20" variant="outlined" style="
@@ -20,7 +19,27 @@
           </div>
           <div
             style="padding:5px;margin-top: 20px;margin-left: 10px;margin-right: 10px;max-height: 800px;overflow:scroll;">
-            <div v-html="agreeContent"></div>
+            <div v-html="privacyContent"></div>
+          </div>
+        </div>
+        <div style="overflow: auto;max-height:800px;">{{ this.privacyPolicy }}</div>
+      </v-card>
+    </div>
+    <div v-if="ifShowToKnow" style="display: flex;justify-content: center;">
+      <v-card style="padding:5px;width:750px;max-width:750px;">
+        <div style="width: 100%;display: flex;flex-direction: row-reverse;">
+          <div>
+            <v-btn size="20" variant="outlined" style="
+                    border-radius: 50px;
+                    height: 20px;
+                    margin: 5px;
+                    color: #8a8a8a;
+                    font-weight: 600;
+                " @click="this.setToKnowState(false)">✕</v-btn>
+          </div>
+          <div
+            style="padding:5px;margin-top: 20px;margin-left: 10px;margin-right: 10px;max-height: 800px;overflow:scroll;">
+            <div v-html="toKnowContent"></div>
           </div>
         </div>
         <div style="overflow: auto;max-height:800px;">{{ this.privacyPolicy }}</div>
@@ -47,7 +66,7 @@
           </v-btn>
         </v-card-actions>
         <div style="width: 100%;display: flex;flex-direction: row-reverse;">
-          <v-btn variant="plain" :style="{ 'margin-top': '40px','margin-right':'5px'}" @click="changeLoginMethod">
+          <v-btn variant="plain" :style="{ 'margin-top': '40px', 'margin-right': '5px' }" @click="changeLoginMethod">
             忘记用户名?使用邮箱验证码登陆</v-btn>
         </div>
       </v-tabs-window-item>
@@ -55,7 +74,8 @@
       <!-- 邮箱登录 -->
       <v-tabs-window-item v-if="loginMethod === 'email'" value="login">
         <v-card-text :style="{ 'margin-bottom': '0px', 'padding-bottom': '0px' }">
-          <sensitive-text-field label="邮箱" v-model="loginByEmailForm.email" :rules="[rules.emailRules]"></sensitive-text-field>
+          <sensitive-text-field label="邮箱" v-model="loginByEmailForm.email"
+            :rules="[rules.emailRules]"></sensitive-text-field>
         </v-card-text>
         <v-card-actions>
           <v-btn variant="outlined" @click="loginByEmail"
@@ -64,7 +84,7 @@
           </v-btn>
         </v-card-actions>
         <div style="width: 100%;display: flex;flex-direction: row-reverse;">
-          <v-btn variant="plain" :style="{ 'margin-top': '40px','margin-right':'5px'}" @click="changeLoginMethod">
+          <v-btn variant="plain" :style="{ 'margin-top': '40px', 'margin-right': '5px' }" @click="changeLoginMethod">
             忘记用户名?使用邮箱验证码登陆</v-btn>
         </div>
       </v-tabs-window-item>
@@ -74,7 +94,8 @@
       <v-tabs-window-item v-if="registerStep === 0" value="register">
         <v-card-text :style="{ 'margin-bottom': '0px', 'padding-bottom': '0px' }">
           <!-- 注册表单内容 -->
-          <sensitive-text-field label="起一个名字" v-model="registerForm.username" :rules="[rules.usernameRules]"></sensitive-text-field>
+          <sensitive-text-field label="起一个名字" v-model="registerForm.username"
+            :rules="[rules.usernameRules]"></sensitive-text-field>
           <sensitive-text-field label="密码" type="passwd" v-model="registerForm.passwd"
             :rules="[rules.passwdRules]"></sensitive-text-field>
           <sensitive-text-field label="确认密码" type="passwd" v-model="registerForm.confirmpasswd"
@@ -87,19 +108,31 @@
           </v-btn>
         </v-card-actions>
       </v-tabs-window-item>
-
       <!-- 注册第二部分 -->
       <v-tabs-window-item v-if="registerStep === 1" value="register">
         <v-card-text :style="{ 'margin-bottom': '0px', 'padding-bottom': '0px' }">
+          <div style="margin-bottom: 10px;">
+            <span style="font-weight: bold;">注:</span>
+            校区，学院，专业信息均为选填(填写有助于您的贡献被他人精确查找)
+          </div>
+          <div style="display: flex;flex-direction: row;">
+            <v-select style="max-width: 125px;margin-right: 15px;" variant="outlined" density="compact" v-model="registerForm.campu" :items="campu_list" label="您的校区"
+            ></v-select>
+            <v-select style="max-width: 250px;" variant="outlined" density="compact" v-model="registerForm.college" :items="college_list" label="您的学院"
+            ></v-select>
+            <sensitive-text-field variant="outlined" label="您的专业" density="compact" v-model="registerForm.major" style="max-width: 125px;margin-left: 15px;margin-bottom: 5px;padding-bottom: 0px;"></sensitive-text-field>
+          </div>
           <!-- 注册表单内容 -->
-          <sensitive-text-field label="输入您的邮箱地址" v-model="registerForm.email" :rules="[rules.emailRules]"></sensitive-text-field>
+          <sensitive-text-field variant="outlined" label="您的校园邮箱地址(@mail.sdu.edu.cn)" v-model="registerForm.email"
+            :rules="[rules.emailRules]"></sensitive-text-field>
         </v-card-text>
         <div style="display: flex;flex-direction: row-reverse;">
           <v-radio-group v-model="agreementStatus">
             <v-radio color="#8a8a8a" style="margin-left: 10px" density="compact" value="agree">
               <template v-slot:label>
                 <div>
-                  我已阅读并同意<strong style="color: #0074e8;text-decoration: underline;" @click="showToKnow">入站须知</strong>
+                  我已阅读并同意<strong style="color: #0074e8;text-decoration: underline;" @click="showToKnow">入站须知</strong>与
+                  <strong style="color: #0074e8;text-decoration: underline;" @click="showPrivacy">隐私政策</strong>
                 </div>
               </template>
             </v-radio>
@@ -136,6 +169,7 @@ import { loginWithPassword } from '@/axios/identify'
 import { setUser } from '@/utils/storage';
 import { getStatusMessage, unknowError } from '@/statusCodeMessages';
 import SensitiveTextField from './SensitiveTextField.vue';
+import { getCurrentInstance } from 'vue';
 export default {
   setup() {
     const router = useRouter();
@@ -145,12 +179,16 @@ export default {
     const store = useStore();
     //控制对话框显示状态
     const ifShowEmailExmineCode = ref(false);
-    const ifShowPrivacyPolicy=ref(false);
+    const ifShowPrivacyPolicy = ref(false);
+    const ifShowToKnow=ref(false);
     const ifShowDialog = computed(() => {
-      return ifShowEmailExmineCode.value || ifShowPrivacyPolicy.value;
+      return ifShowEmailExmineCode.value || ifShowPrivacyPolicy.value || ifShowToKnow.value;
     })
     const setEmailExmineCodeCardState = (state) => {
       ifShowEmailExmineCode.value = state;
+    }
+    const setToKnowState=(state)=>{
+      ifShowToKnow.value=state;
     }
     const setPrivacyPolicyState = (state) => {
       ifShowPrivacyPolicy.value = state;
@@ -164,6 +202,8 @@ export default {
       setEmailExmineCodeCardState,
       setPrivacyPolicyState,
       ifShowPrivacyPolicy,
+      ifShowToKnow,
+      setToKnowState,
     }
   },
   data() {
@@ -172,8 +212,13 @@ export default {
       passwd: '',
       userName: '',
     }
+    const college_list=getCurrentInstance().appContext.config.globalProperties.$colleges;
+    const campu_list=getCurrentInstance().appContext.config.globalProperties.$campus;
     return {
-      agreeContent:'',
+      college_list,
+      campu_list,
+      privacyContent: '',//隐私政策的HTML内容  
+      toKnowContent:'',//入站须知的HTML内容  
       emailCardMessage,
       cardType: 'register',
       rules: {
@@ -208,9 +253,12 @@ export default {
         confirmpasswd: '',
         email: '',
         exmineCode: '',
+        college:'',
+        major:'',
+        campu:'',
         showpasswd: false,
       },
-      agreementStatus:null,
+      agreementStatus: null,
     }
   },
   components: {
@@ -246,8 +294,8 @@ export default {
       return (
         this.registerForm.email &&
         this.checkEmail(this.registerForm.email) &&
-        this.checkEmail(this.registerForm.email) && 
-        this.agreementStatus=='agree'
+        this.checkEmail(this.registerForm.email) &&
+        this.agreementStatus == 'agree'
       )
     },
   },
@@ -371,11 +419,24 @@ export default {
     alert(message) {
       this.$emit('alert', message);
     },
-    async showToKnow(){
+    async showToKnow() {
       try {
-        const response = await fetch('/htmls/agree.html'); // 直接使用路径
+        const response = await fetch('/htmls/to_know.html'); // 直接使用路径
         if (response.ok) {
-          this.agreeContent = await response.text();
+          this.toKnowContent = await response.text();
+          this.setToKnowState(true);
+        } else {
+          console.error('Failed to load HTML content');
+        }
+      } catch (error) {
+        console.error('Error loading HTML content:', error);
+      }
+    },
+    async showPrivacy() {
+      try {
+        const response = await fetch('/htmls/privacy.html'); // 直接使用路径
+        if (response.ok) {
+          this.privacyContent = await response.text();
           this.setPrivacyPolicyState(true);
         } else {
           console.error('Failed to load HTML content');

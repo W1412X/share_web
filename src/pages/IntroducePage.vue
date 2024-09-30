@@ -1,7 +1,6 @@
 <template>
   <LoadingView v-model="progressMsg"></LoadingView>
-  <main>
-    <v-row style="height: 100%;">
+  <main style="height: 100%;">
       <!-- 侧边栏 -->
       <div style="display: flex;flex-direction: column;">
         <v-card style="width: 120px;">
@@ -78,6 +77,31 @@
           <ul style="margin-left: 20px; list-style: none; padding-left: 0;">
             <!-- 文章部分 -->
             <h3 style="margin-top: 20px; border-bottom: 2px solid #ccc; padding-bottom: 10px;">文章部分</h3>
+            <ul>
+              <li>
+                <h4>文章部分功能说明</h4>
+                <ul>
+                  <li>对于一篇文章，你可以发布任意的有关学习的内容，包括但不限于<ul>
+                      <li style="margin-left:20px ;">课程作业思路/自己的实践 </li>
+                      <li style="margin-left:20px ;">学习心得体会 </li>
+                      <li style="margin-left:20px ;">保研考研经验/其他考试经验 </li>
+                      <li style="margin-left:20px ;">期末考试资料/回忆 </li>
+                      <li style="margin-left:20px ;">其他</li>
+                    </ul>
+                  </li>
+                  <li>你可以在编辑文章时上传文章附加资源，支持的格式有(压缩包 PPT WORD PDF) </li>
+                  <li>对于一篇文章，添加标签会使资源的查找更加精准 </li>
+                  <li>我们提供三种编辑文章的方式 <ul>
+                      <li style="margin-left:20px ;">富文本编辑器 </li>
+                      <li style="margin-left:20px ;">Markdown编辑器 </li>
+                      <li style="margin-left:20px ;">Markdown压缩包上传</li>
+                    </ul>
+                  </li>
+                  <li>对于任何一篇文章，可以以问题的形式发表评论 </li>
+                  <li>对于您认为不当的文章，您可以直接举报</li>
+                </ul>
+              </li>
+            </ul>
             <li style="margin-bottom: 40px;">
               <v-carousel style="border: 2px solid rgba(0,116,248,0.5);" progress="secondary" show-arrows="hover">
                 <v-carousel-item v-for="(image, i) in articleImages" :key="i">
@@ -86,45 +110,79 @@
                 </v-carousel-item>
               </v-carousel>
             </li>
+            <ul>
 
-            <!-- 问答部分 -->
-            <h3 style="margin-top: 20px; border-bottom: 2px solid #ccc; padding-bottom: 10px;">问答部分</h3>
-            <li style="margin-bottom: 40px;">
-              <v-carousel style="border: 2px solid rgba(0,116,248,0.5);" progress="secondary" show-arrows="hover">
-                <v-carousel-item v-for="(image, i) in questionImages" :key="i">
-                  <v-img :src="image.src" :alt="image.alt"
-                    style="border: 1px solid #ddd; padding: 10px; background-color: #f9f9f9;"></v-img>
-                </v-carousel-item>
-              </v-carousel>
-            </li>
 
-            <!-- 课程部分 -->
-            <h3 style="margin-top: 20px; border-bottom: 2px solid #ccc; padding-bottom: 10px;">课程部分</h3>
-            <li style="margin-bottom: 40px;">
-              <v-carousel style="border: 2px solid rgba(0,116,248,0.5);" progress="secondary" show-arrows="hover">
-                <v-carousel-item v-for="(image, i) in courseImages" :key="i">
-                  <v-img :src="image.src" :alt="image.alt"
-                    style="border: 1px solid #ddd; padding: 10px; background-color: #f9f9f9;"></v-img>
-                </v-carousel-item>
-              </v-carousel>
-            </li>
-            <!-- 用户部分 -->
-            <h3 style="margin-top: 20px; border-bottom: 2px solid #ccc; padding-bottom: 10px;">用户部分</h3>
-            <li style="margin-bottom: 40px;">
-              <v-carousel style="border: 2px solid rgba(0,116,248,0.5);" progress="secondary" show-arrows="hover">
-                <v-carousel-item v-for="(image, i) in userImages" :key="i">
-                  <v-img :src="image.src" :alt="image.alt"
-                    style="border: 1px solid #ddd; padding: 10px; background-color: #f9f9f9;"></v-img>
-                </v-carousel-item>
-              </v-carousel>
-            </li>
+
+              <!-- 问答部分 -->
+              <h3 style="margin-top: 20px; border-bottom: 2px solid #ccc; padding-bottom: 10px;">问答部分</h3>
+              <ul>
+                <li>
+                  <h4>问题功能说明</h4>
+                  <ul>
+                    <li style="margin-left:20px ;">发布问题，可以是任何不涉及敏感或不当话题的内容 </li>
+                    <li style="margin-left:20px ;">编辑回答，发表您的看法或者经验 </li>
+                    <li style="margin-left:20px ;">添加关联链接，如果问题涉及到了一些其他的预备资料 </li>
+                    <li style="margin-left:20px ;">对于你认为不当的问题或者问题回答，您可以直接举报</li>
+                  </ul>
+                </li>
+              </ul>
+              <li style="margin-bottom: 40px;">
+                <v-carousel style="border: 2px solid rgba(0,116,248,0.5);" progress="secondary" show-arrows="hover">
+                  <v-carousel-item v-for="(image, i) in questionImages" :key="i">
+                    <v-img :src="image.src" :alt="image.alt"
+                      style="border: 1px solid #ddd; padding: 10px; background-color: #f9f9f9;"></v-img>
+                  </v-carousel-item>
+                </v-carousel>
+              </li>
+
+              <!-- 课程部分 -->
+              <h3 style="margin-top: 20px; border-bottom: 2px solid #ccc; padding-bottom: 10px;">课程部分</h3>
+              <ul>
+                <li>
+                  <h4>课程部分功能说明</h4>
+                  <ul>
+                    <li style="margin-left:20px ;">用户可以编辑和发布新的课程(发布后的课程由网站统一管理)</li>
+                    <li style="margin-left:20px ;">对于任意发布的课程，用户可以发布自己的评分以及评价，包括各个方面的评价 </li>
+                    <li style="margin-left:20px ;">对于课程信息或者评价内容有疑问者，可以举报反馈给网站管理员 </li>
+                    <li style="margin-left:20px ;">我们将会对用户的评分和评价汇总，展示给其他用户</li>
+                  </ul>
+                </li>
+              </ul>
+              <li style="margin-bottom: 40px;">
+                <v-carousel style="border: 2px solid rgba(0,116,248,0.5);" progress="secondary" show-arrows="hover">
+                  <v-carousel-item v-for="(image, i) in courseImages" :key="i">
+                    <v-img :src="image.src" :alt="image.alt"
+                      style="border: 1px solid #ddd; padding: 10px; background-color: #f9f9f9;"></v-img>
+                  </v-carousel-item>
+                </v-carousel>
+              </li>
+              <!-- 用户部分 -->
+              <h3 style="margin-top: 20px; border-bottom: 2px solid #ccc; padding-bottom: 10px;">用户部分</h3>
+              <ul>
+                <li>
+                  <h4>用户部分说明</h4>
+                  <ul>
+                    <li style="margin-left:20px ;">管理/修改您的创作的内容，收藏的内容以及个人的信息 </li>
+                    <li style="margin-left:20px ;">查看网站的信息</li>
+                  </ul>
+                </li>
+              </ul>
+              <li style="margin-bottom: 40px;">
+                <v-carousel style="border: 2px solid rgba(0,116,248,0.5);" progress="secondary" show-arrows="hover">
+                  <v-carousel-item v-for="(image, i) in userImages" :key="i">
+                    <v-img :src="image.src" :alt="image.alt"
+                      style="border: 1px solid #ddd; padding: 10px; background-color: #f9f9f9;"></v-img>
+                  </v-carousel-item>
+                </v-carousel>
+              </li>
+            </ul>
           </ul>
-
 
 
           <h2 id="tech-stack">7. 技术栈</h2>
           <p style="font-size: 18px"><strong style="font-size: 20px">前端：</strong>HTML，Vue3，Javascript 等</p>
-          <p style="font-size: 18px"><strong style="font-size: 20px">后端：</strong>Django 等</p>
+          <p style="font-size: 18px"><strong style="font-size: 20px">后端：</strong>Django REST framework 等</p>
           <p style="font-size: 18px"><strong style="font-size: 20px">数据库：</strong>MySQL 等</p>
           <p style="font-size: 18px"><strong style="font-size: 20px">其他工具：</strong>Git、Webpack、Docker , Pytorch 等</p>
           <h2 id="feedback">8. 用户反馈</h2>
@@ -170,7 +228,6 @@
           <p style="font-size: 18px">QQ群 246680702</p>
         </v-card>
       </div>
-    </v-row>
   </main>
 </template>
 

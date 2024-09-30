@@ -298,7 +298,7 @@ export default {
         },
         async clickPrivacyPolicy() {
             try{
-                const response = await fetch('/htmls/agree.html');
+                const response = await fetch('/htmls/privacy.html');
                 this.agreeContent =await response.text();
                 this.setPrivacyPolicyState(true);
             }catch(error){

@@ -95,7 +95,7 @@
 
 <script>
 import SensitiveTextArea from './SensitiveTextArea.vue';
-
+import { getCurrentInstance } from 'vue';
   export default {
     props: {
       id: {
@@ -104,24 +104,8 @@ import SensitiveTextArea from './SensitiveTextArea.vue';
       },
     },
     data() {
-      const colleges = [
-        '计算机科学与技术学院',
-        '智能学院',
-        '法学院',
-        '物理学院',
-        '网络安全学院',
-        '其他',
-      ]
-      const campus = [
-        '青岛校区',
-        '威海校区',
-        '中心校区',
-        '软件园校区',
-        '兴隆山校区',
-        '洪家楼校区',
-        '千佛山校区',
-        '洪家楼校区',
-      ]
+      const colleges = getCurrentInstance().appContext.config.globalProperties.$colleges;
+      const campus = getCurrentInstance().appContext.config.globalProperties.$campus;
       const types = [
         '必修课',
         '限选课',
