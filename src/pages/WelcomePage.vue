@@ -45,6 +45,7 @@
     ">
       <v-card-title style="color: rgba(156,12,19,0.9)">Share⛰️Sdu</v-card-title>
       <v-spacer></v-spacer>
+      <v-btn @click="downloadApk" height="100%" variant="plain" style="font-size: 16px; font-weight: 600">安装APP</v-btn>
       <v-btn height="100%" variant="plain" style="font-size: 16px; font-weight: 600">项目地址</v-btn>
       <v-btn @click="toContact" height="100%" variant="plain" style="font-size: 16px; font-weight: 600">联系我们</v-btn>
     </div>
@@ -93,6 +94,7 @@ export default {
       wx: 'https://github.com/W1412X',
       wh: 'https://github.com/zzysssigm',
       project: 'https://github.com/ShareSdu',
+      downloadApkUrl:"http://sharesdu.com:5001/apk?param=download",
       backgroundColor: '#f9f9f9',
       dialog: false, // 控制对话框显示的变量
       progressMsg: {
@@ -114,6 +116,9 @@ export default {
     },
     close() {
       this.setContactState(false);
+    },
+    downloadApk(){
+      window.open(this.downloadApkUrl);
     }
   },
 }

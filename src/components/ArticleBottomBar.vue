@@ -1,6 +1,6 @@
 <template>
   <v-card
-    :style="{ 'width': '1000px', 'max-width': '1000px', 'height': '50px', 'box-shadow': 'none', 'box-radius': '0', 'border-top': '1px solid #8a8a8a', 'border-bottom': '1px solid #8a8a8a', 'position': 'fixed', 'justify-content': 'center', 'bottom': '0' }">
+    :style="{ 'width': '1000px', 'max-width': '1000px', 'height': '50px'}">
     <v-row :style="{ 'margin-top': '15px' }">
       <div style="display: flex; flex-direction: row;margin-left: 10px;">
         <user-profile :name="userName" :url="profileUrl" :size="25" :style="{ 'margin-top': '0px', 'margin-right': '0px', 'margin-left': '10px', 'font-size': '14px' }"></user-profile>

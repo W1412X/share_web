@@ -14,7 +14,6 @@ const routes = [
     name:'IntroducePage',
     component:(()=>import('@/pages/IntroducePage.vue'))
   },
-  /*
   {
     path: '/login',
     name: 'LoginPage',
@@ -77,7 +76,7 @@ const routes = [
     path:'/manage',
     name:'ManagePage',
     component:(()=>import('@/pages/ManagePage.vue')),
-  },*/
+  },
   {
     path:'/error/:reason?',
     name:'ErrorPage',
