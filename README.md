@@ -62,7 +62,7 @@
 ### `./src/axios/*`
 > 所有的网络请求方法
 - `identify.js` 有关身份认证
-- ... ...
+- ... ...  
 
 ## 安全性  
 - [前端敏感词检测](https://github.com/W1412X/JS-Sentsitive-Detect)  
@@ -70,6 +70,8 @@
     ```bash  
     npm install wx-sensitive-detect
     ```  
+> 前端敏感词检测的敏感词的 对于 AB ABC两个敏感词同时存在的情况，只屏蔽AB的BUG已经修复
+> 还有一个BUG就是对于 AB BC 仅屏蔽AB，没有屏蔽C的BUG还没修  
 - [图片违规检测](https://github.com/W1412X/SensitiveImgDetect)  
   - 下载  
     ```bash
@@ -94,7 +96,7 @@
 - 发布公告  
 
 ## 邮箱配置 
-> 目前可以发送的邮箱有 @126.com, @163.com, @mail.sdu.edu.cn.com   
+> 目前可以发送的邮箱有 @126.com, @163.com, @mail.sdu.edu.cn.com ，其他的邮箱比如qq邮箱，也许有更严密的限制？不管了，能发校园邮件就可    
 - ~~本来是想搞这个的，但是发现最后发现，貌似是什么某一个证书错误什么的(应该是颁发证书机构的问题？)，去阿里云买SSL证书就不值了，最后决定直接用邮件推送~~  
 - 利用Postfix+Doecot实现  
 ### 遇到的一些BUG

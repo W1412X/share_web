@@ -136,7 +136,7 @@
       <v-spacer></v-spacer>
     </div>
   <div ref="questionAndAnswerRef" v-if="ifShowComment"  style="right: 0;position: fixed;top: 0;background-color: rgba(255,255,255,0);">
-    <article-comment-list :id="article.id" :type="'article'" @close_comment="closeComment" @alert="alert"></article-comment-list>
+    <question-and-answers :id="article.id" :type="'article'" @close_comment="closeComment" @alert="alert"></question-and-answers>
   </div>
 </template>
 <script>
@@ -146,13 +146,13 @@
   import { mdiClock,mdiEyeOutline,mdiStar,mdiMessage } from '@mdi/js';
   import SvgIcon from '@jamescoyle/vue-icon'
 import TagButton from '@/components/TagButton.vue';
+import QuestionAndAnswers from '@/components/QuestionAndAnswers.vue';
 import SourceBar from '@/components/SourceBar.vue';
 import UserProfile from '@/components/UserProfile.vue';
 import { getArticleDetail } from '@/axios/detail';//获取文章详细内容的请求
 import { getStatusMessage,/*unknowError*/ } from '@/statusCodeMessages';
 import { getUser } from '@/utils/storage';
 import ArticleDisplay from '@/components/ArticleDisplay.vue';
-import ArticleCommentList from '@/components/ArticleCommentList.vue';
   export default {
     setup(){
       const router=useRouter();
@@ -164,10 +164,10 @@ import ArticleCommentList from '@/components/ArticleCommentList.vue';
       ArticleBottomBar,
       SvgIcon,
       TagButton,
+      QuestionAndAnswers,
       SourceBar,
       UserProfile,
       ArticleDisplay,
-      ArticleCommentList,
     },
     data() {
       const userName=getUser('userName');

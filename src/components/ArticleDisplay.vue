@@ -1,12 +1,12 @@
 <template>
     <div style="border: 1px solid #ccc">
-      <Editor style="width:1000px;height: 100vh; overflow-y: hidden;" v-model="html" :defaultConfig="editorConfig"
+      <Editor :style="{ 'width': this.width,'height': '100vh','overflow-y': 'hidden'}" v-model="html" :defaultConfig="editorConfig"
         :mode="mode" @onCreated="handleCreated" />
     </div>
   </template>
   <script>
   import '@wangeditor/editor/dist/css/style.css' // 引入 css
-  import { onBeforeUnmount, ref, shallowRef, inject } from 'vue'
+  import { onBeforeUnmount, ref, shallowRef, inject , computed } from 'vue'
   import { Editor } from '@wangeditor/editor-for-vue'
   import { Boot } from '@wangeditor/editor'
   import formulaModule from '@wangeditor/plugin-formula'
@@ -16,7 +16,11 @@
       initialHtml: {
         type: String,
         default: ''
-      }
+      },
+      type:{
+        type:String,//取值为mobile/pc 分别对应移动端和pc端
+        default: 'pc'
+      },
     },
     components: { Editor },
     setup() {
@@ -51,8 +55,12 @@
     },
     data(){
       const html=this.initialHtml;
+      const width=computed(()=>{
+        return this.type==='pc'?'1000px':'100vw';
+      })
       return{
         html,
+        width
       }
     },
     methods: {

@@ -64,6 +64,15 @@
       </v-card>
     </div>
   </main>
+  <div style="width:100%;display:flex;flex-direction:row;justify-content:center">
+      <div style="display: flex;flex-direction: row;font-size: 14px;font-weight: 600;margin-right: 10px;">
+        <img style="max-width: 20px;max-height:20px;margin-right:5px;" src="/police.png" />
+        <a style="margin-top: 1px;" href="https://beian.mps.gov.cn/#/query/webSearch?code=37028202001173"
+          rel="noreferrer" target="_blank">鲁公网安备37028202001173</a>
+      </div>
+      <div style="display: flex;flex-direction: row;font-size: 14px;font-weight: 600;margin-top: 1px;"><a
+          href="https://beian.miit.gov.cn/" style="color: #ffffff;" target="_blank">鲁ICP备2024118409</a></div>
+    </div>
 </template>
 
 <script>
