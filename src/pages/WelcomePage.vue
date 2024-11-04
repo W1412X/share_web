@@ -46,7 +46,7 @@
       <v-card-title style="color: rgba(156,12,19,0.9)">Share⛰️Sdu</v-card-title>
       <v-spacer></v-spacer>
       <v-btn @click="downloadApk" height="100%" variant="plain" style="font-size: 16px; font-weight: 600">安装APP</v-btn>
-      <v-btn height="100%" variant="plain" style="font-size: 16px; font-weight: 600">项目地址</v-btn>
+      <v-btn href="/#/document" height="100%" variant="plain" style="font-size: 16px; font-weight: 600">开发文档</v-btn>
       <v-btn @click="toContact" height="100%" variant="plain" style="font-size: 16px; font-weight: 600">联系我们</v-btn>
     </div>
     <div style="display: flex;justify-content: center;align-items: center;">
