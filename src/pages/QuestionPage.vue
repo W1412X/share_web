@@ -186,6 +186,11 @@ export default {
     }
   },
   created() {
+    this.progressMsg={
+            state:true,
+            text:'正在加载问题信息',
+            progress:-1,
+        };
     //
     for (var i = 0; i < 10; i++) {
       this.answerList.push(this.answerList[0]);

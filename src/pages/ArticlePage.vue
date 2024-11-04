@@ -231,6 +231,11 @@ import os
       },
     },
     created() {//article.id的获取通过路径参数
+      this.progressMsg={
+            state:true,
+            text:'正在加载文章信息',
+            progress:-1,
+        };
       const route=useRoute();
       this.article.id=route.params.id;
       console.log('load article page',this.article.id);

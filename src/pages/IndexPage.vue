@@ -251,6 +251,11 @@ export default {
     }
   },
   created() {
+    this.progressMsg={
+            state:true,
+            text:'正在加载网站信息',
+            progress:-1,
+        };
     for (var i = 0; i < 10; i++) {
       this.articleItems.push(this.articleItems[0])
       this.questionItems.push(this.questionItems[0])

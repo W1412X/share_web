@@ -77,6 +77,11 @@ export default {
 
     },
     created() {
+        this.progressMsg={
+            state:true,
+            text:'正在加载课程信息',
+            progress:-1,
+        };
         const route = useRoute();
         this.course.id = route.params.id;
         //请求课程部分

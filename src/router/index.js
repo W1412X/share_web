@@ -83,6 +83,11 @@ const routes = [
     component:(()=>import('@/pages/MobileArticlePage.vue')),
   },
   {
+    path:'/document',
+    name:'DocumentPage',
+    component:(()=>import('@/pages/DocumentPage.vue')),
+  },
+  {
     path:'/error/:reason?',
     name:'ErrorPage',
     component: (()=>import('@/pages/ErrorPage.vue')),

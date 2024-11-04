@@ -90,6 +90,11 @@ export default {
 
   },
   created() {
+    this.progressMsg={
+            state:true,
+            text:'正在加载作者信息',
+            progress:-1,
+        };
     const route = useRoute();
     this.authorName = route.params.name;
     console.log('load author page', this.authorName);
