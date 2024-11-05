@@ -5,23 +5,32 @@
 同时通过此页面路由到开发者主页  
 -->
 <template>
-    <v-dialog v-model="ifShowDialog" style="width: 100%; height: 100%; justify-content: center">
-        <div style="display: flex; justify-content: center">
-            <v-card v-if="ifShowDev" style="padding: 10px; width: 390px">
-                <v-card-title class="headline">开发者主页</v-card-title>
-                <v-btn prepend-icon="mdi-github" href="https://github.com/W1412X" color="#222222"
-                    class="mx-2">@W1412X</v-btn>
-                <v-btn prepend-icon="mdi-github" href="https://github.com/zzysssigm" color="#222222"
-                    class="mx-2">@zzysssigm</v-btn>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn text @click="this.setDevState(false)">关闭</v-btn>
-                </v-card-actions>
-            </v-card>
-        </div>
-    </v-dialog>
-    <main style="height: 100%">
-        <div style="
+  <v-dialog v-model="ifShowDialog" style="width: 100%; height: 100%; justify-content: center">
+    <div style="display: flex; justify-content: center">
+      <v-card v-if="ifShowDev" style="padding: 10px; width: 390px">
+        <v-card-title class="headline">开发者主页</v-card-title>
+        <v-btn prepend-icon="mdi-github" href="https://github.com/W1412X" color="#222222" class="mx-2">@W1412X</v-btn>
+        <v-btn prepend-icon="mdi-github" href="https://github.com/zzysssigm" color="#222222"
+          class="mx-2">@zzysssigm</v-btn>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text @click="this.setDevState(false)">关闭</v-btn>
+        </v-card-actions>
+      </v-card>
+      <v-card v-if="ifShowEdit" style="padding: 10px; width: 400px">
+        <v-card-title class="headline">编辑此项目需要验证</v-card-title>
+        <sensitive-text-area label="输入验证密码" variant="outlined" density="compact" rows="1" max-rows="1" max-width="300px"
+          v-model="examinePasswd" style="margin: 20px;"></sensitive-text-area>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text @click="this.setEditState(false)">取消</v-btn>
+          <v-btn text @click="this.examineEdit()">验证</v-btn>
+        </v-card-actions>
+      </v-card>
+    </div>
+  </v-dialog>
+  <main style="height: 100%">
+    <div style="
           position: fixed;
           width: 100%;
           height: 50px;
@@ -31,69 +40,81 @@
           background-color: #ffffff;
           z-index: 1000;
         ">
-            <v-btn @click="showApiDoc" height="100%" variant="plain"
-                style="font-size: 16px; font-weight: 600">接口文档</v-btn>
-            <v-btn @click="showGuideDoc" height="100%" variant="plain"
-                style="font-size: 16px; font-weight: 600">部署指南</v-btn>
-            <v-btn @click="setDevState(true)" height="100%" variant="plain"
-                style="font-size: 16px; font-weight: 600">开发文档</v-btn>
-            <v-spacer></v-spacer>
-            <v-card-title style="color: rgba(156, 12, 19, 0.9)">ShareSdu 文档</v-card-title>
+      <v-btn @click="showApiDoc" height="100%" variant="plain" style="font-size: 16px; font-weight: 600">接口文档</v-btn>
+      <v-btn @click="showGuideDoc" height="100%" variant="plain" style="font-size: 16px; font-weight: 600">部署指南</v-btn>
+      <v-btn @click="setDevState(true)" height="100%" variant="plain"
+        style="font-size: 16px; font-weight: 600">开发文档</v-btn>
+      <v-spacer></v-spacer>
+      <v-card-title style="color: rgba(156, 12, 19, 0.9)">ShareSdu 文档</v-card-title>
+    </div>
+    <div style="display: flex; flex-direction: row;">
+      <v-list v-if="ifShowCatagory"
+        style="display: flex; width: 248px; height: 100%;flex-direction: column;position: fixed;background-color: #ffffff;padding-top: 70px;max-height: 100%;overflow-y: scroll;border-right: #8a8a8a solid 2px;">
+        <v-list-item v-for="anchor in titles" :key="anchor.lineIndex"
+          :style="{ padding: `10px 0 10px ${anchor.indent * 8 + 15}px` }" @click="handleAnchorClick(anchor)">
+          <a style="cursor: pointer">{{ anchor.title }}</a>
+        </v-list-item>
+      </v-list>
+      <div
+        style="width: 100%; display: flex; justify-content: center;padding-left: 300px;flex-direction: column;padding-right: 300px;">
+        <div style="display: flex; flex-direction: row; padding: 20px;padding-top: 70px;background-color: #ffffff;">
+          <div style="padding-left: 20px;">
+            <v-btn @click="reload" variant="tonal" icon="mdi-home" color="#9c0c13" size="30"></v-btn>
+            <span
+              style="padding-left: 20px;color: #9c0c13;padding-right: 10px;font-size: 12px;font-weight: 1000;">〉</span>
+            <v-btn variant="tonal"
+              style="height: fit-content;padding: 5px;font-size: 12px;color: #9c0c13;border-radius: 20px;">
+              {{ pageNameNow }}
+            </v-btn>
+          </div>
+          <v-spacer></v-spacer>
+          <v-btn v-if="mode == 'preview'" @click="edit" variant="tonal" icon="mdi-file-edit-outline" color="#8a8a8a"
+            size="35"></v-btn>
+          <v-btn v-else @click="submit" variant="tonal" icon="mdi-file" color="#9c0c13" size="35"></v-btn>
         </div>
-        <div style="display: flex; flex-direction: row;">
-            <v-list
-                v-if="ifShowCatagory"
-                style="display: flex; width: 248px; height: 100%;flex-direction: column;position: fixed;background-color: #ffffff;padding-top: 70px;max-height: 100%;overflow-y: scroll;border-right: #8a8a8a solid 2px;">
-                <v-list-item v-for="anchor in titles" :key="anchor.lineIndex"
-                    :style="{ padding: `10px 0 10px ${anchor.indent * 8 + 15}px` }" @click="handleAnchorClick(anchor)">
-                    <a style="cursor: pointer">{{ anchor.title }}</a>
-                </v-list-item>
-            </v-list>
-            <div style="width: 100%; display: flex; justify-content: center;padding-left: 300px;flex-direction: column;padding-right: 300px;">
-                <div style="display: flex; flex-direction: row; padding: 20px;padding-top: 70px;background-color: #ffffff;">
-                    <div style="padding-left: 20px;">
-                        <v-btn @click="reload" variant="tonal" icon="mdi-home" color="#9c0c13" size="30"></v-btn>
-                        <span
-                            style="padding-left: 20px;color: #9c0c13;padding-right: 10px;font-size: 12px;font-weight: 1000;">〉</span>
-                        <v-btn variant="tonal"
-                            style="height: fit-content;padding: 5px;font-size: 12px;color: #9c0c13;border-radius: 20px;">
-                            {{ pageNameNow }}
-                        </v-btn>
-                    </div>
-                    <v-spacer></v-spacer>
-                    <v-btn v-if="mode == 'preview'" @click="edit" variant="tonal" icon="mdi-file-edit-outline" color="#8a8a8a" size="35"></v-btn>
-                    <v-btn v-else @click="submit" variant="tonal" icon="mdi-file" color="#9c0c13" size="35"></v-btn>
-                </div>
-                <v-md-editor v-if="mode == 'preview'" ref="preview" :mode="'preview'" :include-level="[3, 4]" :disabled-menus="[]"
-                    @upload-image="handleUploadImage" v-model="nowDocument" height="100%"
-                    style="max-width: 1000px"></v-md-editor>
-                <v-md-editor v-if="mode == 'edit'" ref="edit" :include-level="[3, 4]" :disabled-menus="[]"
-                    @upload-image="handleUploadImage" v-model="nowDocument" height="100%"
-                    style="max-width: 1000px"></v-md-editor>
-            </div>
-        </div>
-    </main>
+        <v-md-editor v-if="mode == 'preview'" ref="preview" :mode="'preview'" :include-level="[3, 4]"
+          :disabled-menus="[]" @upload-image="handleUploadImage" v-model="nowDocument" height="100%"
+          style="max-width: 1000px"></v-md-editor>
+        <v-md-editor v-if="mode == 'edit'" ref="edit" :include-level="[3, 4]" :disabled-menus="[]"
+          @upload-image="handleUploadImage" v-model="nowDocument" height="100%" style="max-width: 1000px"></v-md-editor>
+      </div>
+    </div>
+  </main>
+  <v-snackbar :timeout="3000" :color="alertSet.color" v-model="alertSet.state">
+    <div class="text-subtitle-1 pb-2">{{ alertSet.title }}</div>
+    <p>{{ alertSet.content }}</p>
+  </v-snackbar>
 </template>
 <script>
 import { ref, computed } from 'vue'
-
+import SensitiveTextArea from '@/components/SensitiveTextArea.vue'
 export default {
     setup() {
         const ifShowDev = ref(false)
+        const ifShowEdit=ref(false);
         const ifShowDialog = computed(() => {
-            return ifShowDev.value
+            return ifShowDev.value || ifShowEdit.value;
         })
         const setDevState = state => {
             ifShowDev.value = state
         }
+        const setEditState = state => {
+            ifShowEdit.value = state
+        }
         return {
             ifShowDev,
             ifShowDialog,
+            ifShowEdit,
             setDevState,
+            setEditState,
         }
+    },
+    components: {
+        SensitiveTextArea,
     },
     data() {
         return {
+            examinePasswd:"",
             mode:"preview",//编辑器的模式，默认为preview
             ifShowCatagory: true,//控制侧边目录的显示状态，主要是在管理员编辑文档的时候设置为false  
             nowDocument:`
@@ -101,12 +122,11 @@ export default {
 ### 项目地址  
 [**ShareSdu**](https://github.com/ShareSdu)
 ### 开发者  
-[**@W1412X**](https://github.com/W1412X)
-[**@zzysssigm**](https://github.com/zzysssigm)
+[**@W1412X**](https://github.com/W1412X)      [**@zzysssigm**](https://github.com/zzysssigm)
             `,
             document: {
                 guide:`
-
+# 这个只是测试页面功能的文档  
 # 计算机图形学实验9 RayBounding Valume求交和 BVH查找  
 ## [Github地址](https://github.com/W1412X/sdu_jt_lab/tree/main/lab9) 
 ## [RBV,BVH参考文章](https://blog.csdn.net/qq_35312463/article/details/108419276)
@@ -316,6 +336,7 @@ Intersection BVHAccel::getIntersection(BVHBuildNode* node, const Ray& ray) const
 
                 ,
                 api: `
+# 这个只是测试页面功能的文档  
 # 计算机网络复习  
 ## Chapter 1 引言  
 ### 1. 网络协议的概念  
@@ -941,9 +962,15 @@ $$
             },
             titles: [],
             pageNameNow: '',
+          alertSet:{
+            state: false,
+            title: '',
+            color: '',
+            content: ''
+          },
         }
     },
-    methods: {
+    methods: {  
         showApiDoc() {
             if(this.mode=="edit"){
                 window.alert("请先保存编辑内容后操作");
@@ -1000,8 +1027,21 @@ $$
             }
         },
         edit(){//编辑文档
+            this.setEditState(true);
+        },
+        examineEdit(){//弹窗检测是否具有编辑权限
+          if(this.examinePasswd=="ShareSdu2024***"){
+            this.setEditState(false);
             this.ifShowCatagory=false;
             this.mode='edit';
+          }else{
+            this.alertSet={
+              state:true,
+              title:"验证失败",
+              content:"验证密码错误",
+              color:"error"
+            }
+          }
         },
         submit(){//提交文档
             this.mode='preview';
