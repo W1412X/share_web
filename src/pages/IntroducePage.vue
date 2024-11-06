@@ -195,11 +195,10 @@
 
           <h2 id="future">9. 未来发展</h2>
           <ul style="margin-left:20px">
-            <li style="font-size: 20px"><strong style="font-size: 20px">推广到更多高校，由各自高校的人员负责运营</strong></li>
-            <li style="font-size: 20px"><strong
-                style="font-size: 20px">其他添加功能如二手物品交易平台(本站仅提供平台服务，不从中获利也不参与交易过程)，帖子广场等</strong></li>
-            <li style="font-size: 20px"><strong style="font-size: 20px">移动端原生APP开发，包括android，ios，harmony os</strong>
-            </li>
+            <li style="font-size: 20px"><strong style="font-size: 20px">功能扩展：用户基础建立后，利用用户优势建立其他平台以提供 如 提供家教/兼职对接服务、校内匿名交友服务、校内二手交易服务 以及更多的其他的具有优势的服务  </strong></li>
+            <li style="font-size: 20px"><strong style="font-size: 20px">范围扩展：推广到更多高校，由各自高校的人员负责运营</strong></li>
+            <li style="font-size: 20px"><strong style="font-size: 20px">平台扩展：移动端原生APP开发，包括android，ios，harmony os</strong></li>
+            <li style="font-size: 20px"><strong style="font-size: 20px">更多发展：应用后反应良好的话，精细化权限控制，集中数据管理，建立所有高校共用的平台。</strong></li>
           </ul>
           <h2 id="contribute">10. 如何参与或贡献</h2>
           <h2>参与</h2>
