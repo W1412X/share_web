@@ -224,10 +224,10 @@ export default {
       rules: {
         passwdRules: value =>
           this.checkpasswd(value) ||
-          '密码必须由字母，数字，符号组成且不少于8个字符',
+          '密码必须由大小字母，数字，符号组成且不少于8个字符',
         usernameRules: value =>
           this.checkUsername(value) ||
-          '用户名只允许包含字母，数字以及汉字且不少于一个字符',
+          '用户名只允许包含字母，数字以及汉字且不少于一个字符，不允许特殊用户名',
         emailRules: value => this.checkEmail(value) || '邮箱格式非法',
       },
       formValid: false,
@@ -374,9 +374,17 @@ export default {
       this.registerStep = 0;
     },
     checkUsername(username) {
-      const pattern = /^[a-zA-Z0-9\u4e00-\u9fa5]+$/
-      // 测试字符串是否符合模式
-      return pattern.test(username) && username.length >= 1
+      const pattern = /^[a-zA-Z0-9\u4e00-\u9fa5]+$/  
+      const disabled_names=["admin", "root", "superuser", "moderator", "guest", 
+        "test", "support", "webmaster", "system", "info", 
+        "service", "help", "contact", "feedback", "welcome", 
+        "update", "error", "default", "demo", "password", 
+        "管理员", "超级管理员", "访客", "测试账号", "用户名", 
+        "支持", "客服", "系统管理员", "客户", "反馈", 
+        "维护", "帮助", "错误", "默认", "更新", 
+        "禁止", "账号", "密码", "数据库", "系统"];
+      // 测试字符串是否符合模式，并且不可以包含禁止的名字
+      return pattern.test(username) && username.length >= 1 && !disabled_names.includes(username);
     },
     checkpasswd(passwd) {
       // 正则表达式用于检查是否包含至少两种类型的字符
