@@ -15,7 +15,7 @@ def is_all_digits(word):
 
 def is_letter_dot_pattern(word):
     # 正则表达式：由字母和点组成，且点不能出现在开头或结尾
-    letter_dot_pattern = r"^[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+$"
+    letter_dot_pattern = r"^[a-zA-Z0-9\-]+(\.[a-zA-Z0-9\-]+)+$"
     return bool(re.match(letter_dot_pattern, word))
 # 原代码逻辑改进
 for ind in range(len(wordList)):
@@ -29,14 +29,12 @@ for ind in range(len(wordList)):
                       "管理员", "超级管理员", "访客", "测试账号", "用户名", 
                       "支持", "客服", "系统管理员", "客户", "反馈", "维护", 
                       "帮助", "错误", "默认", "更新", "禁止", "账号", 
-                      "密码", "数据库", "系统"] and 
-        not word.endswith(".com") and not word.endswith(".cn") and 
-        not word.startswith("www") and 
-        not is_all_digits(word) and not is_domain_or_url(word) and not is_letter_dot_pattern(word)) or \
-        (len(word) == 1 and word not in ["屌", "屄"]):
-        f.write("\""+wordList[ind]+"\"")
-        if(ind!=len(wordList)-1):
-            f.write(",")
-        else:    
-            f.write("]")
+                      "密码", "数据库", "系统","管理"]):
+        if (len(word)!=1 or (len(word) == 1 and word in ["屌", "屄"])):
+            if  not word.endswith(".com") and not word.endswith(".cn") and not word.startswith("www") and not is_all_digits(word) and not is_domain_or_url(word) and not is_letter_dot_pattern(word):
+                f.write("\""+wordList[ind]+"\"")
+                if(ind!=len(wordList)-1):
+                    f.write(",")
+                else:    
+                    f.write("]")
 f.close()
