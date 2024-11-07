@@ -1,9 +1,7 @@
 <template>
   <v-dialog v-model="ifShowDialog" style="width: 100%;height:100%;justify-content: center;">
     <div v-if="ifShowEmailExmineCode" style="width: 100%;height:100%;justify-content: center;display: flex">
-      <email-exmine-card :email="emailCardMessage.email" :passwd="emailCardMessage.passwd"
-        :user-name="emailCardMessage.userName" :type="this.cardType" @alert="alert" @close="closeExamineCode"
-        @submit="submitExamineState"></email-exmine-card>
+      <email-exmine-card :form="this.formToSubmit" :type="this.cardType" @alert="alert" @close="closeExamineCode" @set_loading="setLoading"></email-exmine-card>
     </div>
     <div v-if="ifShowPrivacyPolicy" style="display: flex;justify-content: center;">
       <v-card style="padding:5px;width:750px;max-width:750px;">
@@ -55,9 +53,9 @@
       <!-- 用户名登录 -->
       <v-tabs-window-item v-if="loginMethod === 'username'" value="login">
         <v-card-text :style="{ 'margin-bottom': '0px', 'padding-bottom': '0px' }">
-          <sensitive-text-field label="用户名" v-model="loginByUsernameForm.username"
+          <sensitive-text-field label="用户名" v-model="loginByUsernameForm.user_name"
             :rules="[rules.usernameRules]"></sensitive-text-field>
-          <sensitive-text-field label="密码" type="passwd" v-model="loginByUsernameForm.passwd"
+          <sensitive-text-field label="密码" type="passwd" v-model="loginByUsernameForm.pass_word"
             :rules="[rules.passwdRules]"></sensitive-text-field>
         </v-card-text>
         <v-card-actions>
@@ -94,11 +92,11 @@
       <v-tabs-window-item v-if="registerStep === 0" value="register">
         <v-card-text :style="{ 'margin-bottom': '0px', 'padding-bottom': '0px' }">
           <!-- 注册表单内容 -->
-          <sensitive-text-field label="起一个名字" v-model="registerForm.username"
+          <sensitive-text-field label="起一个名字" v-model="registerForm.user_name"
             :rules="[rules.usernameRules]"></sensitive-text-field>
-          <sensitive-text-field label="密码" type="passwd" v-model="registerForm.passwd"
+          <sensitive-text-field label="密码" type="passwd" v-model="registerForm.pass_word"
             :rules="[rules.passwdRules]"></sensitive-text-field>
-          <sensitive-text-field label="确认密码" type="passwd" v-model="registerForm.confirmpasswd"
+          <sensitive-text-field label="确认密码" type="passwd" v-model="registerConfirmPasswd"
             :rules="[rules.passwdRules]"></sensitive-text-field>
         </v-card-text>
         <v-card-actions>
@@ -165,11 +163,11 @@ import { mapActions } from 'vuex';
 import { useStore } from 'vuex';
 import EmailExmineCard from './EmailExmineCard.vue';
 import { computed, ref } from 'vue';
-import { loginWithPassword } from '@/axios/identify'
 import { setUser } from '@/utils/storage';
-import { getStatusMessage, unknowError } from '@/statusCodeMessages';
 import SensitiveTextField from './SensitiveTextField.vue';
 import { getCurrentInstance } from 'vue';
+import { loginWithPassword } from '@/axios/account';
+import { getStatusMessage } from '@/axios/statusCodeMessages';
 export default {
   setup() {
     const router = useRouter();
@@ -207,11 +205,6 @@ export default {
     }
   },
   data() {
-    const emailCardMessage = {
-      email: '',
-      passwd: '',
-      userName: '',
-    }
     const college_list=getCurrentInstance().appContext.config.globalProperties.$colleges;
     const campu_list=getCurrentInstance().appContext.config.globalProperties.$campus;
     return {
@@ -219,7 +212,6 @@ export default {
       campu_list,
       privacyContent: '',//隐私政策的HTML内容  
       toKnowContent:'',//入站须知的HTML内容  
-      emailCardMessage,
       cardType: 'register',
       rules: {
         passwdRules: value =>
@@ -237,27 +229,26 @@ export default {
       registerStep: 0, //注册的步骤，第一步输入用户名密码，第二步输入邮箱，第三步输入验证码，最后返回登录界面
       loginByUsernameForm: {
         //通过用户名登录时提交的表单
-        username: '',
-        passwd: '',
-        showpasswd: false,
+        user_name: '',
+        pass_word: ''
       },
       loginByEmailForm: {
         //通过邮箱登录时提交的表单
         email: '',
-        exmineCode: '',
+        email_code: '',
       },
       registerForm: {
         //注册时提交的表单
-        username: '',
-        passwd: '',
-        confirmpasswd: '',
+        user_name: '',
+        pass_word: '',
         email: '',
-        exmineCode: '',
+        email_code: '',
         college:'',
         major:'',
         campu:'',
-        showpasswd: false,
       },
+      registerConfirmPasswd:'',//注册时的二次密码输入
+      formToSubmit: null,//待提交的表单，主要针对向验证码卡片传递信息
       agreementStatus: null,
     }
   },
@@ -268,10 +259,10 @@ export default {
   computed: {
     canLoginByUsername() {
       return (
-        this.loginByUsernameForm.username &&
-        this.loginByUsernameForm.passwd &&
-        this.checkpasswd(this.loginByUsernameForm.passwd) &&
-        this.checkUsername(this.loginByUsernameForm.username)
+        this.loginByUsernameForm.user_name &&
+        this.loginByUsernameForm.pass_word &&
+        this.checkpasswd(this.loginByUsernameForm.pass_word) &&
+        this.checkUsername(this.loginByUsernameForm.user_name)
       )
     },
     canLoginByEmail() {
@@ -282,12 +273,12 @@ export default {
     },
     canRegisterNextStep1() {
       return (
-        this.registerForm.username &&
-        this.registerForm.passwd &&
-        this.registerForm.confirmpasswd &&
-        this.checkUsername(this.registerForm.username) &&
-        this.checkpasswd(this.registerForm.passwd) &&
-        this.registerForm.passwd === this.registerForm.confirmpasswd
+        this.registerForm.user_name &&
+        this.registerForm.pass_word &&
+        this.registerConfirmPasswd &&
+        this.checkUsername(this.registerForm.user_name) &&
+        this.checkpasswd(this.registerForm.pass_word) &&
+        this.registerForm.pass_word === this.registerConfirmPasswd
       )
     },
     canRegisterNextStep2() {
@@ -311,50 +302,28 @@ export default {
         this.loginMethod = 'username'
       }
     },
-    loginByUsername() {
-      // 登陆逻辑
-      const form = {
-        user_name: this.loginByUsernameForm.username,
-        passwd: this.loginByUsernameForm.passwd
-      }
-      if (form.user_name == 'test') {//特殊
+    async loginByUsername() {//通过用户名登陆
+      //登陆
+      this.loginByUsernameForm;
+      this.setLoading({state:true,progress:-1,text:'登陆中...'});  
+      const response=await loginWithPassword(this.loginByUsernameForm); 
+      this.setLoading({state:false,progress:-1,text:''});  
+      var alertSet=getStatusMessage('login',response.status);
+      this.alert(alertSet);
+      if (response.status==200) {
         setUser({
           id: '00000000',
-          userName: 'test',
-          email: 'test@test.com'
+          userName: 'sharesdu',
+          email: 'sharesdu@sharesdu.com'
         });
-        window.alert('临时游客登陆');
         this.router.push({ name: 'IndexPage' });
         return;
       }
-      loginWithPassword(form)
-        .then(response => {
-          // 处理成功登录后的逻辑
-          console.log(response);
-          const status = response.status;
-          if (status == 200) {//如果是请求成功
-            setUser({
-              id: response.id,
-              userName: response.user_name
-            })
-            this.$emit('alert', getStatusMessage('login', status));
-            this.router.push({ name: 'IndexPage' });
-          } else {
-            this.$emit('alert', getStatusMessage('login', status));
-          }
-        })
-        .catch(error => {
-          // 处理登录失败的逻辑
-          console.error('Error logging in:', error);
-          this.$emit('alert', unknowError);
-        });
-      //补充获取到结果的逻辑
     },
     loginByEmail() {
-      this.cardType = 'login'
+      this.cardType = 'login';
+      this.formToSubmit = this.loginByEmailForm;
       this.setEmailExmineCodeCardState(true);
-      //补充获取到结果的逻辑
-      this.emailCardMessage.email = this.loginByEmailForm.email;
     },
     register1() {
       //注册第一步，用户名，密码设置完成
@@ -365,9 +334,7 @@ export default {
       //注册第二步，邮箱设置完毕
       this.registerStep = 0;
       this.cardType = 'register';
-      this.emailCardMessage.email = this.registerForm.email;
-      this.emailCardMessage.passwd = this.registerForm.passwd;
-      this.emailCardMessage.userName = this.registerForm.username;
+      this.formToSubmit=this.registerForm;
       this.setEmailExmineCodeCardState(true);
     },
     registerLast() {//跳转的注册的上一步
@@ -402,30 +369,11 @@ export default {
       const regex = /.+@.+\..+/;
       return regex.test(email) && email.length >= 1
     },
-    showEmailExamineCard() {//显示对应的验证码发送
-      this.setEmailExmineCodeCardState(true);
-    },
-    submitExamineState(msg) {//接收来自检验卡的状态信息，其中
-      console.log(msg);
-      if (msg.type == 'register') {
-        if (msg.state == 'success') {
-          this.logtab = 'login';
-          const message = {
-            state: true,
-            color: 'info',
-            title: '重新登陆',
-            content: '现在你可以使用用户名密码或者邮箱在登陆界面进行登陆',
-          }
-          this.$emit('alert', message)
-        }
-      } else if (msg.type == 'login') {
-        if (msg.state == 'success') {
-          this.$router.push({ name: 'IndexPage' });
-        }
-      }
-    },
     alert(message) {
       this.$emit('alert', message);
+    },
+    setLoading(loading_msg) {//这里的loading不显示进度
+      this.$emit('set_loading', loading_msg);
     },
     async showToKnow() {
       try {

@@ -107,8 +107,6 @@
 
 <script>
 import { useRoute } from 'vue-router'
-import { getQuestionDetail } from '@/axios/detail';
-import { getStatusMessage } from '@/statusCodeMessages';
 import UserProfile from '@/components/UserProfile.vue';
 import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiAlertCircleOutline, mdiClock, mdiEyeOutline, mdiStar, mdiStarOutline, mdiMessage } from '@mdi/js';
@@ -199,28 +197,6 @@ export default {
     const route = useRoute();
     this.question.id = route.params.id;
     console.log('Load question page', this.question.id);
-    getQuestionDetail(this.question.id)
-      .then(response => {
-        console.log(response)
-        const status = response.status;
-        if (status == 200) {
-          this.question.title = response.title;
-          this.question.authorName = response.author_name;
-          this.question.profileUrl = response.author_profile_url;
-          this.question.starCount = response.star_count;
-          this.question.scanCount = response.scan_count;
-          this.question.replyCount = response.reply_count;
-          this.question.content = response.content;
-          this.question.time = response.publish_time;
-        } else {
-          this.$router.push({ name: 'ErrorPage', params: { reason: getStatusMessage('common', status).content } });
-        }
-      })
-      .catch(error => {
-        console.error(error);
-        /*
-        this.$router.push({name:'ErrorPage',params:{reason:'网络错误'}});*/
-      })
     if ('from' in route.params && route.params.from == 'message') {
       //逻辑
     }

@@ -42,7 +42,6 @@
 </template>
 
 <script>
-import { getPostList } from '@/axios/post';
 import { computed, ref } from 'vue';
 import QuestionEditor from './QuestionEditor.vue';
 import SvgIcon from '@jamescoyle/vue-icon';
@@ -153,20 +152,6 @@ export default {
       this.questionList.push(this.questionList[0]);
     }
     //
-    getPostList(this.type == 'article' ? 0 : 1, Number(this.id), this.gotPageNum, 20)
-      .then(response => {
-        console.log(response);
-      })
-      .catch(error => {
-        console.error('error', error);
-        const alertSet = {
-          state: true,
-          color: 'error',
-          title: '未知错误',
-          content: '可能是网络错误，检查网络状态后若仍无法运行，请联系开发者'
-        }
-        this.$emit('alert', alertSet)
-      })
   },
   created() {
     this.isMobile = /Mobi|Android/i.test(navigator.userAgent);

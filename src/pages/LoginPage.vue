@@ -1,5 +1,5 @@
 <template>
-  <LoadingView v-model="progressMsg"></LoadingView>
+  <LoadingView v-model="progressMsg" style="z-index: 9999;"></LoadingView>
   <main>
     <!-- 使用 main 根元素以确保填充整个视口 -->
     <v-main>
@@ -11,7 +11,7 @@
           <v-card width="100%" height="100%">
             <!-- 设置卡片的宽高为100%，但这样会导致溢出，因此使用内部的flex布局 -->
             <v-card-text class="text-center">
-              <LoginItem @alert="showNotification" />
+              <LoginItem @alert="alert" @set_loading="setLoading"/>
             </v-card-text>
           </v-card>
         </v-layout>
@@ -71,9 +71,14 @@ export default {
     }
   },
   methods: {
-    showNotification(message) {
+    alert(message) {
+      console.log(message);
       this.alertSet = message;
+      console.log(this.alertSet);
     },
+    setLoading(loading_msg) {//这里的loading不显示进度
+      this.progressMsg=loading_msg;
+    }
   },
   created() {
   },

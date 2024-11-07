@@ -245,7 +245,7 @@ export default {
     editUserName() {
       if (this.ifAbleEditUserName) {
         //如果已经开始编辑了，那么执行提交的逻辑
-        console.log(this.userMessage.userName)
+        this.alert({state:true,title:'功能暂不支持',content:'此功能暂不支持，开发者正在开发中，敬请期待！'})
         this.ifAbleEditUserName = false
       } else {
         //如果没有编辑，就开启编辑
@@ -254,7 +254,7 @@ export default {
     },
     editEmail() {
       if (this.ifAbleEditEmail) {
-        console.log(this.userMessage.email)
+        this.alert({state:true,title:'功能暂不支持',content:'此功能暂不支持，开发者正在开发中，敬请期待！'})
         this.ifAbleEditEmail = false
       } else {
         this.ifAbleEditEmail = true
@@ -262,7 +262,7 @@ export default {
     },
     editPasswd() {
       if (this.ifAbleEditPasswd) {//修改ing密码，显示邮箱验证谭传
-        console.log(this.userMessage.passwd)
+        this.alert({state:true,title:'功能暂不支持',content:'此功能暂不支持，开发者正在开发中，敬请期待！'})
         this.setEmailExmineCodeCardState(true)//显示对应的邮箱验证码
       } else {
         this.ifAbleEditPasswd = true
@@ -270,7 +270,7 @@ export default {
     },
     editIntroduce() {
       if (this.ifAbleEditIntroduce) {
-        console.log(this.userMessage.introduce)
+        this.alert({state:true,title:'功能暂不支持',content:'此功能暂不支持，开发者正在开发中，敬请期待！'})
         this.ifAbleEditIntroduce = false
       } else {
         this.ifAbleEditIntroduce = true

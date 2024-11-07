@@ -149,8 +149,6 @@ import TagButton from '@/components/TagButton.vue';
 import QuestionAndAnswers from '@/components/QuestionAndAnswers.vue';
 import SourceBar from '@/components/SourceBar.vue';
 import UserProfile from '@/components/UserProfile.vue';
-import { getArticleDetail } from '@/axios/detail';//获取文章详细内容的请求
-import { getStatusMessage,/*unknowError*/ } from '@/statusCodeMessages';
 import { getUser } from '@/utils/storage';
 import ArticleDisplay from '@/components/ArticleDisplay.vue';
   export default {
@@ -240,36 +238,7 @@ import os
       this.article.id=route.params.id;
       console.log('load article page',this.article.id);
       //来自消息跳转
-      getArticleDetail(this.article.id)
-      .then(response=>{
-        const status=response.status;
-        if(status==200){//请求成功
-          this.article.title=response.title;
-          this.article.authorName=response.author_name;
-          this.article.authorProfileUrl=response.author_profile_url;
-          this.article.tags=response.tags;
-          this.article.starCount=response.star_count;
-          this.article.scanCount=response.scan_count;
-          this.article.replyCount=response.reply_count;
-          this.article.content=response.content;
-          this.article.type=response.type;
-          this.article.originLink=response.origin_link;
-          this.article.sourceUrl=response.source_url;
-          this.article.publishTime=response.publish_time;
-        }else{
-          this.$router.push({name:'ErrorPage',params:{reason:getStatusMessage('common',status).content}});
-        }
-      })
-      .catch(error=>{
-        console.error('Failed to fetch article detail',error);
-        //测试不跳转
-        return;
-        /*
-        
-        this.alert(unknowError);
-        //跳转到errorPage
-        this.$router.push({name:'ErrorPage',params:{reason:'网络错误'}});*/
-      })
+      
       //在组件加载完成后，将Markdown文本解析为HTML并赋值给renderedMarkdown
       this.renderedContent = marked(this.article.content);
     },
