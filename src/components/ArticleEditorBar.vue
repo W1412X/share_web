@@ -62,7 +62,7 @@
               :style="{ 'padding-top': '0px', 'margin-bottom': '0px', 'margin-left': '5px' }"></svg-icon>
           </div>
           <div>
-            <v-img :width="259" aspect-ratio="1/1" cover :src="imgUrl"></v-img>
+            <v-img @click="selectImage()" :width="259" aspect-ratio="1/1" cover :src="imgUrl"></v-img>
           </div>
         </div>
         <div style="width: 960px; margin-top: 20px; display: flex">
@@ -142,7 +142,7 @@ export default {
       default: function () {
         return {
           id: '00000000',
-          tags: ['测试标签'],
+          tags: [],
           imgUrl: 'https://cdn.vuetifyjs.com/images/parallax/material.jpg',
           description: '这是描述',
           type: '转载',
@@ -170,12 +170,6 @@ export default {
     const inputTag = '';
     //是否显示输入标签的输入框  
     const ifShowTagInput = false;
-    const alertSet = {
-      state: true,
-      title: 'TEST',
-      text: 'message',
-      color: 'success',
-    };
     return {
       icons,
       tags,
@@ -185,13 +179,20 @@ export default {
       quoteUrl,
       inputTag,
       ifShowTagInput,
-      alertSet,
       file: null,
       uploadProgress: 0,
     }
   },
   methods: {
+    selectImage(){//选择封面图片  
+      this.alert({state:true,title:"此功能暂未开放",content:"服务器资源限制，暂不支持上传文章封面图片，敬请期待！",color:'warning'});
+    },
     handleFileChange(event) {//在此组件中仅提供选择文件的代码，在编辑器页面中发布文章时同时上传资源
+      this.alert({state:true,title:"此功能暂未开放",content:"服务器资源限制，暂不支持上传附加资源，您可以在山大云盘或者其他平台上传相关资源，在文章中附加相关链接，敬请期待！",color:'warning'});
+      this.file=null;
+      return;
+      //这里先不支持资源上传
+      /* eslint-disable */
       const selectedFile = event.target.files[0]
       if (!selectedFile) {
         this.$emit('alert', { state: true, color: 'warning', title: '为选择文件', content: '如果需要上传相关资源，请重新上传' })
@@ -229,7 +230,7 @@ export default {
           content: '',
           color: 'warning'
         };
-        this.$emit('alert', msg);
+        this.alert(msg);
         return;
       }
 
@@ -243,7 +244,7 @@ export default {
           content: '',
           color: 'warning'
         };
-        this.$emit('alert', msg);
+        this.alert(msg);
         return;
       }
 
@@ -255,7 +256,7 @@ export default {
           content: '',
           color: 'warning'
         };
-        this.$emit('alert', msg);
+        this.alert(msg);
         return;
       }
 
@@ -267,7 +268,7 @@ export default {
           content: '',
           color: 'warning'
         };
-        this.$emit('alert', msg);
+        this.alert(msg);
         return;
       }
 
@@ -279,7 +280,7 @@ export default {
           content: '',
           color: 'warning'
         };
-        this.$emit('alert', msg);
+        this.alert(msg);
         return;
       }
 
@@ -297,10 +298,8 @@ export default {
         }
       }
     },
-    alert() {
-      console.log(this.alertSet);
-      this.$emit('alert', this.alertSet);
-      console.log(this.alertSet);
+    alert(msg) {
+      this.$emit('alert', msg);
     },
   },
 }

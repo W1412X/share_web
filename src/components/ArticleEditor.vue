@@ -94,8 +94,13 @@ export default defineComponent({
       mode: 'default', // 或 'simple'
       toolbarConfig,
       handleCreated,
-      editorConfig
+      editorConfig,
     };
+  },
+  data(){
+    return {
+      html:'',
+    }
   },
   methods: {
     test() {
@@ -106,6 +111,7 @@ export default defineComponent({
   },
   created() {
     // 在组件创建时赋值initHtml
+    this.html=this.initialHtml;
   },
   mounted() {
   }

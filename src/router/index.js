@@ -68,7 +68,7 @@ const routes = [
     meta:{requiresAuth:true}
   },
   {
-    path:'/mdeditor',
+    path:'/mdeditor/:id?',
     name:'MdEditorPage',
     component:(()=>import('@/pages/MdEditorPage.vue')),
   },

@@ -16,7 +16,7 @@ const statusCodeMessages = {
       color: 'success',
       title: '成功',
       state: true,
-      content: '请求成功，返回期望的结果。'
+      content: '请求成功'
     },
     400: {
       color: 'error',
@@ -28,7 +28,7 @@ const statusCodeMessages = {
       color: 'error',
       title: '未授权',
       state: true,
-      content: '未授权，通常用于用户未登录或登录信息无效。'
+      content: '未授权，用户未登录或登录信息无效。'
     },
     403: {
       color: 'error',
@@ -40,7 +40,7 @@ const statusCodeMessages = {
       color: 'error',
       title: '未找到',
       state: true,
-      content: '资源不存在，例如用户或验证码未找到。'
+      content: '资源不存在，用户或验证码未找到。'
     },
     500: {
       color: 'error',

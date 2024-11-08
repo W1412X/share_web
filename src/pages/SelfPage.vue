@@ -194,11 +194,6 @@ export default {
     },
   },
   created() {
-    this.progressMsg={
-            state:true,
-            text:'正在加载个人信息',
-            progress:-1,
-        };
     this.isMobile = /Mobi|Android/i.test(navigator.userAgent);
     const route = useRoute();
     this.userName = route.params.name;

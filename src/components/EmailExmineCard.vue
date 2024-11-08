@@ -145,5 +145,8 @@ export default {
         }
     },
     components: {},
+    created(){//创建的时候就发送验证码
+        this.resend();
+    }
 }
 </script>

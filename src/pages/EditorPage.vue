@@ -34,24 +34,11 @@
 import ArticleEditor from '@/components/ArticleEditor.vue';
 import ArticleEditorBar from '@/components/ArticleEditorBar.vue';
 import SensitiveTextArea from '@/components/SensitiveTextArea.vue';
+import { getStatusMessage } from '@/axios/statusCodeMessages';
+import { createArticle } from '@/axios/article';
 import { useRoute } from 'vue-router';
 export default {
   props: {
-    article: {
-      type: Object,
-      default: function () {
-        return {
-          title: '',
-          content: '',
-          imgUrl: '',
-          quoteUrl: '',
-          type: '',
-          tags: '',
-          description: '',
-          fileUrl: '',
-        }
-      }
-    }
   },
   data() {
     const alertSet = {
@@ -61,9 +48,11 @@ export default {
       content: ''
     };
     const title = '';
+    const content = '';
     return {
       title,
       alertSet,
+      content,
       progressMsg: {
         state: false,
         text: '正在加载',
@@ -79,23 +68,46 @@ export default {
       console.log(this.alertSet);
       this.alertSet = alertSet;
     },
-    submit() {
+    async submit() {
       console.log(this.$refs.editorBarRef.$data);
       const form = new FormData();
       const editorData = this.$refs.editorRef.$data;
       const barData = this.$refs.editorBarRef.$data;
-      form.append('title', this.title);
+      form.append('article_title', this.title);
       form.append('content', editorData.html);
-      form.append('imgUrl', barData.imgUrl);
-      form.append('quoteUrl', barData.quoteUrl);
+      //form.append('imgUrl', barData.imgUrl);
+      form.append('origin_link', barData.quoteUrl);
       form.append('type', barData.type);
       form.append('tags', barData.tags);
       form.append('description', barData.description);
-      form.append('fileUrl', barData.fileUrl);
+      //form.append('fileUrl', barData.fileUrl);
+      //检查提交数据是否合法
+      if(form.get('article_title').length<=5){
+        this.alert({state:true,title:'标题长度过短',content:'标题长度不能小于5个字符',color:'warning'});
+        return;
+      }else if(form.get('content').length==0){
+        this.alert({state:true,title:'文章内容不可为空',content:'请输入文章内容',color:'warning'});
+        return;
+      }else if(form.get('tags')==''){
+        this.alert({state:true,title:'标签不可为空',content:'请输入文章标签',color:'warning'});
+        return;
+      }else if(form.get('description').length==0){
+        form.description='作者很懒，没有添加文章描述';
+      }
+      this.setLoading({ state: true, text: '上传中...',progress:-1});
+      const response = await createArticle(form);
+      this.alert(getStatusMessage('common', response.status));
+      this.setLoading({ state: false, text: '上传中...',progress:-1});  
+      if(response.status==200){
+        this.$router.push({ name: 'ArticlePage', params: { id: response.data.id } });
+      }
       console.log(form);
     },
     toMdEditor() {
       this.$router.push({ name: 'MdEditorPage' })
+    },
+    setLoading(msg) {//设置loading状态
+      this.progressMsg = msg;
     }
   },
   components: {
@@ -113,6 +125,6 @@ export default {
       console.log(route.params.id);
       this.alert({ state: true, color: 'info', title: '新建编辑', content: '新建一个编辑器' });
     }
-  }
+  },
 }
 </script>

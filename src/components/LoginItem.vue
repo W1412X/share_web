@@ -109,16 +109,16 @@
       <!-- 注册第二部分 -->
       <v-tabs-window-item v-if="registerStep === 1" value="register">
         <v-card-text :style="{ 'margin-bottom': '0px', 'padding-bottom': '0px' }">
-          <div style="margin-bottom: 10px;">
-            <span style="font-weight: bold;">注:</span>
-            校区，学院，专业信息均为选填(填写有助于您的贡献被他人精确查找)
-          </div>
           <div style="display: flex;flex-direction: row;">
             <v-select style="max-width: 125px;margin-right: 15px;" variant="outlined" density="compact" v-model="registerForm.campu" :items="campu_list" label="您的校区"
             ></v-select>
             <v-select style="max-width: 250px;" variant="outlined" density="compact" v-model="registerForm.college" :items="college_list" label="您的学院"
             ></v-select>
             <sensitive-text-field variant="outlined" label="您的专业" density="compact" v-model="registerForm.major" style="max-width: 125px;margin-left: 15px;margin-bottom: 5px;padding-bottom: 0px;"></sensitive-text-field>
+          </div>
+          <div style="margin-top: 5px;margin-bottom: 15px">
+            <span style="font-weight: bold;">注:</span>
+            校区，学院，专业信息均为选填(填写有助于您的贡献被他人精确查找)
           </div>
           <!-- 注册表单内容 -->
           <sensitive-text-field variant="outlined" label="您的校园邮箱地址(@mail.sdu.edu.cn)" v-model="registerForm.email"
