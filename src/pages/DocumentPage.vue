@@ -18,7 +18,7 @@
         </v-card-actions>
       </v-card>
       <v-card v-if="ifShowEdit" style="padding: 10px; width: 400px">
-        <v-card-title class="headline">编辑此项目需要验证</v-card-title>
+        <v-card-title class="headline">编辑此项目需要登陆(待修改)</v-card-title>
         <sensitive-text-area label="输入验证密码" variant="outlined" density="compact" rows="1" max-rows="1" max-width="300px"
           v-model="examinePasswd" style="margin: 20px;"></sensitive-text-area>
         <v-card-actions>
@@ -120,7 +120,7 @@ export default {
             nowDocument:`
 ## 欢迎使用 ShareSdu 分享平台，本页面提供了一些开发文档  
 ### 项目地址  
-[**ShareSdu**](https://github.com/ShareSdu)
+[**ShareSdu(已寄)**](https://github.com/ShareSdu)
 ### 开发者  
 [**@W1412X**](https://github.com/W1412X)      [**@zzysssigm**](https://github.com/zzysssigm)
             `,

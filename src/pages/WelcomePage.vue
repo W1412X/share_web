@@ -43,17 +43,18 @@
       display: flex;
       flex-direction: row;
     ">
-      <v-card-title style="color: rgba(156,12,19,0.9)">Share⛰️Sdu</v-card-title>
+      <v-card-title style="color: rgba(156,12,19,0.9)">ShareSdu</v-card-title>
       <v-spacer></v-spacer>
       <v-btn @click="downloadApk" height="100%" variant="plain" style="font-size: 16px; font-weight: 600">安装APP</v-btn>
       <v-btn href="/#/document" height="100%" variant="plain" style="font-size: 16px; font-weight: 600">开发文档</v-btn>
       <v-btn @click="toContact" height="100%" variant="plain" style="font-size: 16px; font-weight: 600">联系我们</v-btn>
     </div>
     <div style="display: flex;justify-content: center;align-items: center;">
-      <v-card class="text-center pa-5" outlined elevation="12" style="margin-top: 200px;">
+      <v-card class="text-center pa-5" outlined elevation="12" style="margin-top: 80px;max-width: 1000px;">
         <div class="mb-4">
-          <h1 class="display-1 font-weight-bold">这是一个大学学习助手</h1>
-          <h3 class="font-weight-light">旨在分享大学生活中的学习资源，以及提供一些常见问题的解答，课程选择的建议</h3>
+          <h1 class="display-1 font-weight-bold">一个大学资源分享平台</h1>
+          <h3 class="font-weight-light">旨在为大学生提供一个分享、搜索、获取大学生活中需要的学习资料，经验贴，课程评价、问答以及其他信息的
+            <span style="font-weight: bold;">永久免费的</span>平台</h3>
         </div>
         <div style="margin: 20px;">
           <v-btn prepend-icon="mdi-file-document" @click="toIntro" color="primary" class="mx-2">点击查看网站介绍</v-btn>
@@ -61,7 +62,20 @@
         <div style="margin: 20px;">
           <v-btn prepend-icon="mdi-login-variant" @click="toLogin" color="secondary" class="mx-2">注册成为一名用户</v-btn>
         </div>
+        <div style="font-size: 14px;color: #8a8a8a;">当前仅对山东大学(济南，青岛，威海)全体在校本科生开放 （¯﹃¯） </div>
       </v-card>
+    </div>
+    <div style="display: flex;justify-content: center;align-items: center;margin-top: 50px;">
+        <div style="display: flex;flex-direction: row;">
+          <div style="flex-direction: column;margin: 10px;">
+            <div style="font-size: 18px;flex-direction: row;justify-content: center;display: flex;font-weight: bold;"><span>官方QQ交流群</span></div>
+            <img style="width: 200px;height: 200px;" src="/qq_img/group_qr.png"/>
+          </div>
+          <div style="flex-direction: column;margin: 10px;">
+            <div style="font-size: 18px;flex-direction: row;justify-content: center;display: flex;font-weight: bold;"><span>微信公众号</span></div>
+            <img style="width: 200px;height: 200px;" src="/wechat/wechat_qr.jpg"/>
+          </div>
+        </div>
     </div>
   </main>
   <div style="width:100%;display:flex;flex-direction:row;justify-content:center">
