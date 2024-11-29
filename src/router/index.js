@@ -88,6 +88,11 @@ const routes = [
     component:(()=>import('@/pages/DocumentPage.vue')),
   },
   {
+    path:'/test',
+    name:'TestPage',
+    component:(()=>import('@/pages/TestPage.vue')),
+  },
+  {
     path:'/error/:reason?',
     name:'ErrorPage',
     component: (()=>import('@/pages/ErrorPage.vue')),

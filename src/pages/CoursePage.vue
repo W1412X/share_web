@@ -5,7 +5,7 @@
             <div>
                 <rating-course-card :course="course" :if-rated="true"></rating-course-card>
             </div>
-            <div style="display: flex;flex-direction: column;">
+            <div style="display: flex;flex-direction: column;overflow-y: auto;">
                 <course-answer v-for="(answer, index) in answerList" :answer="answer" :key="index"></course-answer>
                 <v-pagination v-model="answerPage" :length="answerPageNum" :total-visible="5" :size="30"></v-pagination>
             </div>
@@ -41,18 +41,35 @@ export default {
         };
         const answerList = [
             {
+                id:"00000001",
                 authorName: 'test',
                 rate: 4,
                 content: '这是评论内容',
                 time: '2024-09-01 09:00'
             },
             {
+                id:"0000002",
                 authorName: 'test',
                 rate: 4,
                 content: '这是评论内容',
                 time: '2024-09-01 09:00'
             },
             {
+                id:"0000003",
+                authorName: 'test',
+                rate: 4,
+                content: '这是评论内容',
+                time: '2024-09-01 09:00'
+            },
+            {
+                id:"0000004",
+                authorName: 'test',
+                rate: 4,
+                content: '这是评论内容',
+                time: '2024-09-01 09:00'
+            },
+            {
+                id:"0000005",
                 authorName: 'test',
                 rate: 4,
                 content: '这是评论内容',
@@ -75,11 +92,12 @@ export default {
 
     },
     created() {
+        /*
         this.progressMsg={
             state:true,
             text:'正在加载课程信息',
             progress:-1,
-        };
+        };*/
         const route = useRoute();
         this.course.id = route.params.id;
         //请求课程部分

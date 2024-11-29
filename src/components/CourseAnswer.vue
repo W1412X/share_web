@@ -42,7 +42,7 @@
           >{{answer.rate}}</span
         >-->
     </div>
-    <div style="font-size: 18px;">
+    <div style="font-size: 18px;word-wrap: break-word;">
       {{ answer.content }}
     </div>
     <div style="display:flex;flex-direction: row;margin-top:5px;color:#8a8a8a">
@@ -66,7 +66,7 @@ export default {
           id: '00000000',
           authorName: 'visitor',
           rate: 4,
-          content: '这是评论内容',
+          content: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
           time: '2024-09-01 09:00',
           profileUrl: 'https://pic2.zhimg.com/v2-0dda71bc9ced142bf7bb2d6adbebe4f0_r.jpg?source=1940ef5c',
         }
