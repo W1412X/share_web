@@ -1,250 +1,443 @@
 <template>
-  <LoadingView v-model="progressMsg"></LoadingView>
-  <v-snackbar
-    :timeout="3000"
-    :color="alertSet.color"
-    v-model="alertSet.state"
-  >
-    <div class="text-subtitle-1 pb-2">{{ alertSet.title }}</div>
-    <p>{{ alertSet.content }}</p>
-  </v-snackbar>
-    <main
-      :style="{ 'justify-content': 'center', 'width': '100%', 'display': 'flex', 'padding-bottom': '50px' }"
-    >
-      <v-card
-        :style="{ 'max-width': '1000px', 'width': '1000px', 'background-color': '#eef0f4' }"
-      >
-        <v-card
-          :style="{ 'margin-right': '2px', 'margin-left': '2px', 'margin-top': '2px'}"
-        >
-          <v-card-title
-            :style="{ 'font-size': '30px', 'font-weight': 'bold', 'color': '#2f2f2f','margin-bottom':'0px','padding-bottom':'0px'}"
-          >
-            {{ article.title }}
-          </v-card-title>
-          <v-row
-            :style="{ 'margin-top':'0px','padding-left': '20px', 'color': '#8a8a8a' }"
-          >
-            <user-profile :name="article.authorName" :url="article.authorProfileUrl" style="margin-top:8px;margin-left: 10px;"></user-profile>
-            <span
-              @click="toAuthorPage"
-              :style="{ 'margin-top': '10px', 'margin-right': '10px', 'margin-left': '10px', 'font-size': '14px' }"
-              >{{ article.authorName }}</span
-            >
-            <v-spacer></v-spacer>
-            <div
-              :no-gutters="true"
-              :style="{ 'margin-top': '10px', 'margin-left': '10px', 'margin-right': '10px', 'padding-left': '0px', 'padding-right': '0px' }"
-            >
-              <v-row :style="{ 'margin-top': '0px' }">
-                <svg-icon
-                  type="mdi"
-                  :path="icons.timeClock"
-                  size="18"
-                  :style="{ 'padding-top': '0px', 'margin-bottom': '0px', 'margin-left': '5px' }"
-                ></svg-icon>
-                <span :style="{ 'margin-left': '5px', 'font-size': '14px' }"
-                  >编辑于 {{ article.publishTime }}</span
-                >
-              </v-row>
+    <LoadingView :initial-data="loadingMsg"></LoadingView>
+    <v-dialog v-model="ifShowDialog" class="full-screen dialog">
+        <div class="dialog-card-container">
+            <post-editor v-if="ifShowPostEditor" @close="closeDialog"></post-editor>
+        </div>
+    </v-dialog>
+    <div class="full-center">
+        <div>
+            <div class="top-bar">
+                <div class="title-container">
+                    <div class="title">
+                        <p class="title-big-bold">
+                            {{ article.title }}
+                        </p>
+                    </div>
+                    <v-spacer></v-spacer>
+                    <div class="title-right-type">
+                        {{ article.type }}
+                    </div>
+                </div>
+                <div class="top-bar-msg-div">
+                    <div class="full-column-center text-medium grey-font">
+                        作者: {{ article.author }}
+                    </div>
+                    <v-spacer></v-spacer>
+                    <div class="full-column-center text-small grey-font">
+                        <div class="row-div">
+                            <div class="row-right-20px">
+                                <v-icon class="icon-right-5px" color="#8a8a8a" icon="mdi-star"
+                                    size="18"></v-icon>
+                                <div class="column-center">
+                                    {{ article.star }}
+                                </div>
+                            </div>
+                            <div class="row-right-20px">
+                                <v-icon class="icon-right-5px" color="#8a8a8a" icon="mdi-comment"
+                                    size="16"></v-icon>
+                                <div class="column-center">
+                                    {{ article.comment }}
+                                </div>
+                            </div>
+                            <div class="row-right-20px">
+                                <v-icon class="icon-right-5px" color="#8a8a8a" icon="mdi-clock"
+                                    size="17"></v-icon>
+                                <div class="column-center">
+                                    {{ article.time }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="top-bar-msg-div">
+                    <div class="before-text text-small">
+                        标签：
+                    </div>
+                    <tag-button v-for="(tag, index) in article.tags" :data="tag" :key="index"></tag-button>
+                </div>
+                <div class="source-bar-container">
+                    <source-bar :init-data="article.source"></source-bar>
+                </div>
             </div>
-            <div
-              :no-gutters="true"
-              :style="{ 'max-width': '100px', 'margin-top': '10px', 'margin-left': '15px', 'margin-right': '0px', 'padding-left': '0px', 'padding-right': '0px' }"
-            >
-              <v-row
-                :style="{ 'margin-top': '0px', 'margin-left': '0px', 'margin-right': '0px' }"
-              >
-                <svg-icon
-                  type="mdi"
-                  :path="icons.viewCount"
-                  size="18"
-                  :style="{ 'padding-top': '0px', 'margin-bottom': '0px', 'margin-left': '5px' }"
-                ></svg-icon>
-                <span :style="{ 'margin-left': '5px', 'font-size': '14px' }"
-                  >{{ article.scanCount }}</span
-                >
-              </v-row>
+            <article-display class="margin-bottom-40px" :init-data="article"></article-display>
+            <div class="bottom-bar">
+                <div class="column-center user-name text-medium">
+                    {{ userName }}
+                </div>
+                <v-spacer class="spacer"></v-spacer>
+                <div class="row-reverse">
+                    <div class="column-center padding-right-10px">
+                        <star-button></star-button>
+                    </div>
+                    <div class="column-center padding-right-5px">
+                        <alert-button></alert-button>
+                    </div>
+                    <div class="column-center padding-right-10px">
+                        <v-btn elevation="0" @click="comment" icon class="bottom-btn">
+                            <v-icon icon="mdi-comment-outline"></v-icon>
+                        </v-btn>
+                    </div>
+                </div>
             </div>
-            <div
-              :style="{ 'max-width': '100px', 'margin-top': '10px', 'margin-left': '10px', 'margin-right': '10px', 'padding-left': '0px', 'padding-right': '0px' }"
-            >
-              <v-row
-                :style="{ 'margin-top': '0px', 'margin-left': '0px', 'margin-right': '0px' }"
-              >
-                <svg-icon
-                  type="mdi"
-                  :path="icons.starCount"
-                  size="18"
-                  :style="{ 'padding-top': '0px', 'margin-bottom': '0px', 'margin-left': '5px' }"
-                ></svg-icon>
-                <span :style="{ 'margin-left': '4px', 'font-size': '14px' }"
-                  >{{ article.starCount }}</span
-                >
-              </v-row>
-            </div>
-            <div
-              :style="{ 'max-width': '100px', 'margin-top': '10px', 'margin-left': '10px', 'margin-right': '50px', 'padding-left': '0px', 'padding-right': '0px' }"
-            >
-              <v-row
-                :style="{ 'margin-top': '0px', 'margin-left': '0px', 'margin-right': '0px' }"
-              >
-                <svg-icon
-                  type="mdi"
-                  :path="icons.comment"
-                  size="18"
-                  :style="{ 'padding-top': '0px', 'margin-bottom': '0px', 'margin-left': '5px' }"
-                ></svg-icon>
-                <span :style="{ 'margin-left': '4px', 'font-size': '14px' }"
-                  >{{ article.replyCount }}</span
-                >
-              </v-row>
-            </div>
-          </v-row>
-          <v-row
-            :style="{'margin-top':'20px','margin-left':'10px','margin-right':'10px'}"
-          >
-            <span :style="{'margin-left':'10px','color':'#8a8a8a'}">标签:</span>
-            <div :style="{'overflow':'auto', 'white-space': 'nowrap'}">
-              <tag-button v-for="(tag,index) in article.tags" :tag="tag" :key="index"></tag-button>
-            </div>
-          </v-row>
-          <div
-            :style="{ 'display':'flex','flex-direction':'row','font-size': '12px', 'color': '#8a8a8a', 'font-weight': 'bold', 'margin-left': '20px', 'margin-top': '18px','margin-bottom':'5px' }"
-          >
-            {{article.type}}<span style="width:10px;"></span> <span v-if="article.type=='原创'">{{ article.authorName }}</span>
-            <a v-if="article.type=='转载'" href="#" @click="toSource">原文链接</a>
-            <v-spacer></v-spacer>
-          </div>
-          <source-bar :source-link="article.sourceUrl" :source-name="article.sourceName"></source-bar>
-        </v-card>
-        <!--
-        <div
-          v-html="renderedContent"
-          :style="{ 'max-width': '900px', 'margin-left': '10px', 'margin-right': '10px', 'margin-top': '30px', 'margin-bottom': '30px', 'width': '900px' }"
-        ></div>
-        -->
-        <!--这里代码不高亮，先直接吧编辑器搬过来-->
-          <article-display :initial-html="article.content"></article-display>
-      </v-card>
-    </main>
-    <div :style="{ 'justify-content': 'center', 'display': 'flex' }">
-      <v-spacer></v-spacer>
-      <div ref="bottomBar"  :style="{'width':'1000px','max-width':'1000px','height':'50px','box-shadow':'none','box-radius':'0','border-top':'1px solid #8a8a8a','border-bottom':'1px solid #8a8a8a','position':'fixed','justify-content':'center','bottom':'0'}">
-        <article-bottom-bar :article-id="article.id" :profile-url="profileUrl" :user-name="userName"  @get_comment="getComment"/>
-      </div>
-      <v-spacer></v-spacer>
+        </div>
     </div>
-  <div ref="questionAndAnswerRef" v-if="ifShowComment"  style="right: 0;position: fixed;top: 0;background-color: rgba(255,255,255,0);">
-    <question-and-answers :id="article.id" :type="'article'" @close_comment="closeComment" @alert="alert"></question-and-answers>
-  </div>
+    <v-overlay v-model="ifShowComment" class="posts-dialog">  
+        <div class="posts-container">
+                <div class="column-div">
+                    <v-btn @click="setPostEditorState(true)" variant="tonal" :color="themeColor">
+                        发表帖子
+                    </v-btn>
+                    <post-item 
+                        v-for="(item,index) in postItems"
+                        :init-data="item"
+                        :key="index">
+                    </post-item>
+                </div>
+            </div>
+    </v-overlay>
 </template>
 <script>
-  import {marked} from 'marked';
-  import {useRoute,useRouter} from 'vue-router';
-  import ArticleBottomBar from '@/components/ArticleBottomBar.vue';
-  import { mdiClock,mdiEyeOutline,mdiStar,mdiMessage } from '@mdi/js';
-  import SvgIcon from '@jamescoyle/vue-icon'
 import TagButton from '@/components/TagButton.vue';
-import QuestionAndAnswers from '@/components/QuestionAndAnswers.vue';
+import { globalProperties } from '@/main.js';
+import { articleShort,postItemLong } from '@/utils/data'
 import SourceBar from '@/components/SourceBar.vue';
-import UserProfile from '@/components/UserProfile.vue';
-import { getUser } from '@/utils/storage';
 import ArticleDisplay from '@/components/ArticleDisplay.vue';
-  export default {
-    setup(){
-      const router=useRouter();
-      return {
-        router,
-      }
+import { getCookie } from '@/utils/cookie';
+import StarButton from '@/components/StarButton.vue';
+import AlertButton from '@/components/AlertButton.vue';
+import { computed, ref } from 'vue';
+import PostItem from '@/components/PostItem.vue';
+import PostEditor from '@/components/PostEditor.vue';
+export default {
+    name: 'ArticlePage',
+    components: {
+        TagButton,
+        SourceBar,
+        ArticleDisplay,
+        StarButton,
+        AlertButton,
+        PostItem,
+        PostEditor,
     },
-    components:{
-      ArticleBottomBar,
-      SvgIcon,
-      TagButton,
-      QuestionAndAnswers,
-      SourceBar,
-      UserProfile,
-      ArticleDisplay,
+    setup() {
+        const themeColor = globalProperties.$themeColor;
+        const loadingMsg = {
+            state: false,
+            text: '加载中...',
+            progress: -1
+        }
+        /**
+         * get user msg
+         */
+        var userName = getCookie('userName');
+        if (userName == null) {
+            userName = "游客";
+        }
+        /**
+         * posts list visibility control here
+         */
+        const ifShowComment= ref(false);
+        const ifShowPostEditor=ref(false);
+        const ifShowDialog=computed(()=>{
+            return ifShowPostEditor.value;
+        })
+        const setPostEditorState=(state)=>{
+            ifShowPostEditor.value=state;
+        }
+        const setCommentState=(state)=>{
+            ifShowComment.value=state;
+        }
+        return {
+            themeColor,
+            loadingMsg,
+            userName,
+            ifShowComment,
+            setPostEditorState,
+            ifShowDialog,
+            ifShowPostEditor,
+            setCommentState,
+        }
     },
     data() {
-      const userName=getUser('userName');
-      const profileUrl=getUser('profileUrl');
-      return {
-        alertSet:{
-          state:false,
-          color:'success',
-          title:'获取成功',
-          content:''
-        },
-        icons:{
-          timeClock:mdiClock,
-          viewCount:mdiEyeOutline,
-          starCount:mdiStar,
-          comment:mdiMessage,
-        },
-        article: {
-          id:'00000000',
-          title: '标题',
-          authorName: '作者名称',
-          authorProfileUrl:'https://pic2.zhimg.com/v2-0dda71bc9ced142bf7bb2d6adbebe4f0_r.jpg?source=1940ef5c',
-          publishTime: '2024-09-01 00:00',
-          tags: ['计算机','测试'],
-          starCount: '0',
-          scanCount: '0',
-          replyCount:'0',
-          content: `<p><span style="color: rgb(0, 0, 0); font-size: 24px; font-family: 楷体;"><strong>图片与视频：</strong></span></p><p><span style="color: rgb(0, 0, 0); font-size: 16px;"><strong>支持直接加载网络图片以及上传图片</strong></span></p><p><span style="color: rgb(0, 0, 0); font-size: 16px;"><strong>支持加载网络视频，不支持上传视频</strong></span></p><p><span style="color: rgb(0, 0, 0); font-size: 24px; font-family: 微软雅黑;"><strong>其他样式：</strong></span></p><p><span style="color: rgb(216, 68, 147); font-size: 48px;"><strong>标题</strong></span><span style="font-size: 48px;"><strong> </strong></span><span style="color: rgb(106, 57, 201); font-size: 40px;"><strong>标题</strong></span><span style="font-size: 48px;"><strong> </strong></span><span style="color: rgb(66, 144, 247); font-size: 32px;"><strong>标题</strong></span><span style="font-size: 32px;"><strong> </strong></span><span style="color: rgb(114, 192, 64); font-size: 24px;"><strong>标题</strong></span><span style="font-size: 32px;"><strong> </strong></span><span style="color: rgb(245, 219, 77); font-size: 16px;"><strong>标题</strong></span><span style="font-size: 32px;"><strong> </strong></span><span style="color: rgb(225, 60, 57); font-size: 12px;"><strong>标题</strong></span><span style="font-size: 14px;"><strong> </strong></span><span style="font-size: 22px;"><strong> </strong></span><span style="font-size: 24px;"><strong> </strong></span><span style="font-size: 32px;"><strong> </strong></span></p><p><span style="font-size: 48px;"><strong>😀</strong></span><span style="font-size: 32px;"><strong> </strong></span><span style="font-size: 40px;"><strong>😀</strong></span><span style="font-size: 32px;"><strong> 😀 </strong></span><span style="font-size: 24px;"><strong>😀</strong></span><span style="font-size: 32px;"><strong> </strong></span><span style="font-size: 16px;"><strong>😀</strong></span><span style="font-size: 32px;"><strong> </strong></span><span style="font-size: 12px;"><strong>😀</strong></span><span style="font-size: 32px;"><strong>   </strong></span></p><p><span data-w-e-type="formula" data-w-e-is-void data-w-e-is-inline data-value="\\frac{a}{b} a^2, a_i \\sqrt{a}, \\sqrt[n]{a} \\sum_{i=1}^{n} i, \\int_{a}^{b} x^2 , dx  x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}"></span></p><p> <a href="sss" target="_blank">链接</a> </p><table style="width: auto;"><tbody><tr><th colSpan="1" rowSpan="1" width="auto">111</th><th colSpan="1" rowSpan="1" width="auto">111</th><th colSpan="1" rowSpan="1" width="auto">111</th><th colSpan="1" rowSpan="1" width="auto">111</th></tr><tr><td colSpan="1" rowSpan="1" width="auto">111</td><td colSpan="1" rowSpan="1" width="auto">111</td><td colSpan="1" rowSpan="1" width="auto">111</td><td colSpan="1" rowSpan="1" width="auto">111</td></tr><tr><td colSpan="1" rowSpan="1" width="auto">111</td><td colSpan="1" rowSpan="1" width="auto">111</td><td colSpan="1" rowSpan="1" width="auto">111</td><td colSpan="1" rowSpan="1" width="auto">111</td></tr></tbody></table><pre><code class="language-python">import numpy
-import pandas
-import os
-... ... </code></pre><blockquote>引用部分</blockquote><p><br></p>`,
-          type:'转载',
-          originLink:'https://sss',//如果文章类型为转载，反之为'',
-          sourceUrl:'https://sss.zip',//如果文章含有资源，反之为'',
-          sourceName:'这是资源',
-        },
-        renderedContent:'',
-        ifShowComment:false,
-        selectedQuestionId:'',
-        userName,
-        profileUrl,
-        progressMsg:{
-          state:false,
-          text:'正在加载',
-          progress:-1,
+        return {
+            article: {
+                id: null,
+                title: null,
+                detail: null,
+                star: null,
+                comment: null,
+                author: null,
+                editor: null,//the ditor type used(md or html)
+                type: null,//origin/reprint
+                content: null,
+                time: null,
+                tags: null,
+                source: {
+                    name: null,
+                    link: null
+                }
+            },
+            postItems:[],
         }
-      }
     },
-    methods:{
-      toSource(){//去文章的源站  
-        window.location.replace(this.article.originLink);
-      },
-      getComment(){
-        this.ifShowComment=true;
-      },
-      closeComment(){
-        this.ifShowComment=false;
-      },
-      alert(msg){
-        this.alertSet=msg;
-      },
+    methods: {
+        comment(){
+            this.setCommentState(true);
+        },
+        closeDialog(){
+            this.setPostEditorState(false);
+        }
     },
-    created() {//article.id的获取通过路径参数
-      this.progressMsg={
-            state:true,
-            text:'正在加载文章信息',
-            progress:-1,
-        };
-      const route=useRoute();
-      this.article.id=route.params.id;
-      console.log('load article page',this.article.id);
-      //来自消息跳转
-      
-      //在组件加载完成后，将Markdown文本解析为HTML并赋值给renderedMarkdown
-      this.renderedContent = marked(this.article.content);
+    mounted() {
+        /**
+         * get the route params and fetch data
+         */
+        this.article = articleShort;
+        /**
+         * the tags format is divided by ,
+         * so convert it into list here
+         */
+        try{
+            this.article.tags = this.article.tags.split(",");
+        }catch(e){
+            /**
+             * do nothing
+             */
+            console.log(this.article.tags);
+        }
+        /**
+         * test the posts
+         */
+        for(let i=0;i<15;i++){
+            console.log(postItemLong);
+            this.postItems.push(postItemLong)
+        }
     },
-  }
+}
 </script>
+<style scoped>
+.show-post-btn{
+    width: 100%;
+}
+.column-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}
 
-<style>
-  /* 可选样式 */
+.margin-bottom-40px {
+    margin-bottom: 40px;
+}
+
+.bottom-bar {
+    display: flex;
+    width: 1000px;
+    flex-direction: row;
+    position: fixed;
+    bottom: 0;
+    height: 40px;
+    border: #8a8a8a 1px solid;
+    background-color: #ffffff;
+}
+.bottom-btn{
+    width: 23px;
+    height: 23px;
+    color:#8a8a8a;
+    background-color:rgba(0, 0, 0,0);
+}
+.row-right-20px {
+    display: flex;
+    flex-direction: row;
+    margin-right: 20px;
+    align-items: center;
+}
+
+.icon-right-5px {
+    margin-right: 5px;
+}
+
+.dialog-card-container {
+        display: flex;
+        justify-content: center;
+}
+
+.top-bar-msg-div {
+    margin-top: 5px;
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 5px;
+    overflow-x: scroll;
+}
+
+.source-bar-container {
+    width: 100%;
+}
+
+.padding-right-5px {
+    padding-right: 5px;
+}
+.padding-right-10px {
+    padding-right: 10px;
+}
+.full-column-center {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.row-div {
+    overflow-x: scroll;
+    max-width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.before-text {
+    font-weight: bold;
+    min-width: 45px;
+    color: grey;
+}
+
+.grey-font {
+    min-width: 200px;
+    white-space: nowrap;
+    word-break: break-all;
+    overflow: hidden;
+    color: grey;
+}
+
+.theme-color-font {
+    color: var(--theme-color)
+}
+
+.column-div{
+    display: flex;
+    flex-direction: column;
+}
+@media screen and (min-width: 600px) {
+    .full-center {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        height: 100%;
+    }
+
+    .top-bar {
+        border: grey 1px solid;
+        width: 1000px;
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+
+    .title-container {
+        width: 980px;
+        display: flex;
+        flex-direction: row;
+    }
+    .title{
+        width:750px;
+        white-space: normal;
+        word-break: break-all;
+        overflow: hidden;
+    }
+    .title-right-type{
+        margin-right: 30px;
+        font-size: 20px;
+        color:var(--theme-color);
+        font-weight: bold;
+    }
+    .user-name {
+        margin-left: 10px;
+        max-width: 300px;
+        color: var(--theme-color);
+    }
+    .row-reverse {
+        display: flex;
+        flex-direction: row-reverse;
+    }
+    .posts-dialog{
+        padding:0px;
+        display: flex;
+        flex-direction: row-reverse;
+    }
+    .posts-container{
+        background-color: #ffffff;
+        border-top: #8a8a8a 1px solid;
+        width: 752px;
+        padding:1px;
+        height: 100vh;
+        overflow-y: scroll;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .full-center {
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        height: 100vh;
+    }
+
+    .top-bar {
+        border: grey 1px solid;
+        width: 100vw;
+        padding-left: 2vw;
+        padding-right: 2vw;
+        padding-top: 1vw;
+        padding-bottom: 1vw;
+    }
+
+    .title-container {
+        width: 98vw;
+        display: flex;
+        flex-direction: row;
+    }
+    .title{
+        width: 75vw;
+        white-space: normal;
+        word-break: break-all;
+        overflow:hidden;
+    }
+    .title-right-type{
+        margin-right: 3vw;
+        font-size: 20px;
+        color:var(--theme-color);
+        font-weight: bold;
+    }
+    .user-name {
+        margin-left: 2vw;
+        width: 30vw;
+        color: var(--theme-color);
+    }
+
+    .spacer {
+        max-width: 30vw;
+        font-size: 0px;
+    }
+    .row-reverse {
+        display: flex;
+        flex-direction: row-reverse;
+        width: 40vw;
+    }
+    .posts-dialog{
+        padding:0px;
+        display: flex;
+        flex-direction: column-reverse;
+    }
+    .posts-container{
+        background-color: #ffffff;
+        border-top: #8a8a8a 1px solid;
+        width: 100vw;
+        height: 60vh;
+        overflow-y: scroll;
+        border-radius: 5px;
+    }
+}
 </style>

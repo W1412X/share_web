@@ -1,6 +1,7 @@
 // src/main.js
 import { createApp } from 'vue';
 import App from './App.vue';
+import { getCookie } from './utils/cookie';
 import router from './router';
 import "vuetify/styles";
 import { createVuetify } from "vuetify";
@@ -12,10 +13,11 @@ import '@mdi/font/css/materialdesignicons.css';
 
 
 import VMdEditor from '@kangc/v-md-editor/lib/codemirror-editor';
+import VMdPreview from '@kangc/v-md-editor/lib/preview';
 import '@kangc/v-md-editor/lib/style/codemirror-editor.css';
 import githubTheme from '@kangc/v-md-editor/lib/theme/github.js';
 import '@kangc/v-md-editor/lib/theme/style/github.css';
-// codemirror 编辑器的相关资源
+// codemirror the editor source  
 import Codemirror from 'codemirror';
 // mode
 import 'codemirror/mode/markdown/markdown';
@@ -39,21 +41,38 @@ import 'codemirror/lib/codemirror.css';
 // highlightjs
 import hljs from 'highlight.js';
 import createKatexPlugin from '@kangc/v-md-editor/lib/plugins/katex/cdn';
-import LoadingView from './components/LoadingView.vue';
+//import LoadingView from './components/LoadingView.vue';
+
+/**
+ * import global css style   
+ */
+import './style/global.css';
+import { getDeviceType } from './utils/device';
 VMdEditor.Codemirror = Codemirror;
 VMdEditor.use(githubTheme, {
   Hljs: hljs,
 })
 .use(createKatexPlugin())
 ;
-
+VMdPreview.Codemirror = Codemirror;
+VMdPreview.use(githubTheme, {
+  Hljs: hljs,
+})
+.use(createKatexPlugin())
+;
 const vuetify = createVuetify({
   components,
   directives,
 })
 const app=createApp(App);
-app.component('LoadingView',LoadingView);
+/**
+ * LoadingView
+ */
+//app.component('LoadingView',LoadingView);
 
+/**
+ * some sdu's settings
+ */
 app.config.globalProperties.$colleges =[
   "哲学与社会发展学院",
   "经济学院",
@@ -132,10 +151,49 @@ app.config.globalProperties.$campus=[
     "软件园校区",
     "青岛校区"
 ]
+app.config.globalProperties.$courseTypes=[
+  '必修课',
+  '限选课',
+  '选修课',
+]
+app.config.globalProperties.$teachMethods=[
+'线上', '线下', '混合', '其他'
+]
+app.config.globalProperties.$examineMethods=[
+'考试', '论文', '项目展示', '其他']
+
+/**
+ * lazy load img url
+ */
+app.config.globalProperties.$lazyImgUrl="https://cdn.vuetifyjs.com/images/parallax/material.jpg";
+
+const deviceType=getDeviceType();
+/**
+ * mobile/desktop  
+ */
+app.config.globalProperties.$deviceType=deviceType;
+/**
+ * Get the current theme color,default #9c0c13   
+ */
+var tmp=getCookie("themeColor");
+var themeColor="#9c0c13";
+if(tmp!=null){
+  themeColor=tmp;
+}
+console.log("themeColor:"+themeColor);
+/**
+ * Set the theme color, personalized theme color storaged in cookies
+ */
+app.config.globalProperties.$themeColor=themeColor;
+/**
+ * export global attributes  
+ */
+export const globalProperties=app.config.globalProperties;
 
 app.provide(store);
 app.use(router)
   .use(vuetify)
   .use(store)
   .use(VMdEditor)
+  .use(VMdPreview)
   .mount('#app');

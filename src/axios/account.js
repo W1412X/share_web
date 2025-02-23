@@ -1,15 +1,16 @@
-/*
- * 本文件提供所有有关账户操作的接口请求
- * 要求输入的参数为对象，且对象中包含所有请求参数
- * 返回响应信息原文
- * 由各自的页面处理后续逻辑  
- * 对于请求的异常，本模块会统一处理，返回状态码-1  
- * 在请求函数中将异常转换为状态码-1(表明为网络问题/未知错误)
- * 同时在控制台输出错误信息  
+/** 
+ * this document provides all interface request for account operations
+ * the required input parameter is a json object
+ * returns the original response message
+ * every function return a json with status code and message
  */
 import axiosInstance from "./axios.js";
 
-// 注册函数
+/**
+ * registe by Email
+ * @param {*} data 
+ * @returns 
+ */
 export const register = async (data) => {
   try {
     console.log('Request Type: POST');
@@ -23,7 +24,11 @@ export const register = async (data) => {
   }
 };
 
-// 获取验证码（注册用）
+/**
+ * get the email exmaine code 
+ * @param {*} email 
+ * @returns 
+ */
 export const getRegisterEmailCode = async (email) => {
   try {
     console.log('Request Type: GET');
@@ -36,7 +41,11 @@ export const getRegisterEmailCode = async (email) => {
   }
 };
 
-// 用户名和密码登录函数
+/**
+ * login with username 
+ * @param {*} data 
+ * @returns 
+ */
 export const loginWithPassword = async (data) => {
   try {
     console.log('Request Type: POST');
@@ -50,7 +59,11 @@ export const loginWithPassword = async (data) => {
   }
 };
 
-// 获取验证码（邮箱登录用）
+/**
+ * get login email code 
+ * @param {*} email 
+ * @returns 
+ */
 export const getLoginEmailCode = async (email) => {
   try {
     console.log('Request Type: GET');
@@ -63,7 +76,11 @@ export const getLoginEmailCode = async (email) => {
   }
 };
 
-// 邮箱和验证码登录函数
+/**
+ * login with email 
+ * @param {*} data 
+ * @returns 
+ */
 export const loginWithEmail = async (data) => {
   try {
     console.log('Request Type: POST');
@@ -77,7 +94,10 @@ export const loginWithEmail = async (data) => {
   }
 };
 
-// 登出函数
+/**
+ * logout
+ * @returns 
+ */
 export const logout = async () => {
   try {
     console.log('Request Type: POST');
@@ -90,7 +110,11 @@ export const logout = async () => {
   }
 };
 
-// 注销账户函数
+/**
+ * delete account
+ * @param {*} data 
+ * @returns 
+ */
 export const deleteAccount = async (data) => {
   try {
     console.log('Request Type: POST');
@@ -104,7 +128,11 @@ export const deleteAccount = async (data) => {
   }
 };
 
-// 获取验证码（注销账户用）
+/**
+ * get email code to delete account 
+ * @param {*} email 
+ * @returns 
+ */
 export const getDeleteAccountEmailCode = async (email) => {
   try {
     console.log('Request Type: GET');
@@ -117,7 +145,11 @@ export const getDeleteAccountEmailCode = async (email) => {
   }
 };
 
-// 重置密码函数
+/**
+ * reset passwd 
+ * @param {*} data 
+ * @returns 
+ */
 export const resetPassword = async (data) => {
   try {
     console.log('Request Type: POST');
@@ -131,7 +163,11 @@ export const resetPassword = async (data) => {
   }
 };
 
-// 获取验证码（重置密码用）
+/**
+ * get the email code to reset passwd
+ * @param {*} email 
+ * @returns 
+ */
 export const getResetPasswordEmailCode = async (email) => {
   try {
     console.log('Request Type: GET');

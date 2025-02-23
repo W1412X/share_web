@@ -15,7 +15,7 @@ const store=createStore({
   },
   mutations: {//修改state的唯一路径，定义所有修改用户状态的方法
     setUser(state, user) {
-      state.user = user
+      state.user = user;
     },
     setcookie(state, cookie) {
       state.cookie = cookie;

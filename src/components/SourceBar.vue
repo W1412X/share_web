@@ -1,46 +1,54 @@
 <template>
-  <v-card
-    color="rgba(0,0,0,0.3)"
-    @click="downloadSource"
-    style="padding: 5px;margin:5px"
-    variant="outlined"
-  >
-    <div style="display: flex; flex-direction: row">
-      <svg-icon type="mdi" :path="icons.file" size="20"></svg-icon>
-      <span style="font-size: 18px; color: #8a8a8a;font-size: 14px;margin-left:10px;font-weight: 600;"
-        >{{ sourceName }}</span
-      >
-    </div>
-  </v-card>
+    <v-card
+      color="rgba(0,0,0,0.3)"
+      @click="downloadSource"
+      style="padding: 5px;margin:5px"
+      variant="outlined"
+    >
+      <div style="display: flex; flex-direction: row">
+        <v-icon icon="mdi-paperclip" size="20"></v-icon>
+        <span style="font-size: 18px; color: #8a8a8a;font-size: 14px;margin-left:10px;font-weight: 600;"
+          >{{ initData.name }}</span
+        >
+      </div>
+    </v-card>
 </template>
 <script>
-  import { mdiPaperclip } from '@mdi/js'
-  import SvgIcon from '@jamescoyle/vue-icon'
-  export default {
+export default {
     props: {
-      sourceName: {
-        type: String,
-        default: '资源的名称',
-      },
-      sourceLink: {
-        type: String,
-        default: 'http://www.nnana.com/test.zip',
-      },
+        initData:{
+            type: Object,
+            default: () => {
+                return {
+                    name:null,
+                    link:null,
+                }
+            },
+        }
     },
     components: {
-      SvgIcon,
     },
     data() {
-      return {
-        icons: {
-          file: mdiPaperclip,
-        },
-      }
+        return {
+        }
     },
     methods: {
-      downloadSource() {
-        window.open(this.sourceLink)
-      },
+        downloadSource() {
+            window.open(this.initData.link)
+        },
     },
-  }
+}
 </script>
+<style scoped>
+.card{
+    width:100%;
+    padding:5px;
+    margin:5px;
+}
+@media screen and (min-width: 600px) {
+    
+}
+
+@media screen and (max-width: 600px) {
+}
+</style>

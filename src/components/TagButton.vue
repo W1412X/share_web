@@ -1,25 +1,48 @@
 <template>
     <v-btn
         @click="toTagPage()"
-        :style="{ 'height': '20px', 'font-size': '12px','margin-left':'5px' }"
-        color="#9c0c13"
-        variant="outlined"
-        rounded>
-            {{ tag }}
+        :color=themeColor
+        variant="tonal"
+        density="compact"
+        class="tag text-small">
+            {{ data }}
     </v-btn>
 </template>
 <script>
+import { globalProperties } from '@/main'
 export default{
     props:{
-        tag:{
+        data:{//tag string
             type:String,
             required: true 
         }
     },
+    setup(){
+      const themeColor=globalProperties.$themeColor;  
+      return {
+        themeColor,
+      }
+    },
     methods:{
-        toTagPage(){
-            window.alert("搜索标签"+this.tag);
+        toTagPage(){//need a search page 
+            window.alert("搜索标签"+this.data);
         }
     }
 }
 </script>
+<style scoped>
+.tag{
+    height: 20px;
+    margin-left: 5px;
+    padding-left:5px;
+    padding-right:5px;
+    min-width:0px;
+    color: var(--theme-color);
+}
+@media screen and (min-width: 600px) {
+
+}
+
+@media screen and (max-width: 600px) {
+}
+</style>

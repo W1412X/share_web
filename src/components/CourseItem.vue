@@ -1,102 +1,184 @@
 <template>
-  <v-card :style="{'width':'750px','max-width':'750px'}" @click="navigateToCourse()">
-    <v-row :style="{'margin':'0px','padding':'0px'}">
-      <div :style="{'width':'750px'}">
-        <div
-          :style="{'font-size':'22px','font-weight':'600','white-space':'nowrap','text-overflow':'ellipsis','overflow':'hidden','margin-left':'10px','margin-top':'10px'}"
-        >
-          {{ course.name }}
+    <v-card class="card" @click="click()">
+        <div class="row-div">
+            <div class="name-container">
+                <div class="name title">
+                    {{ data.course_name }}
+                </div>
+                <div class="row-div">
+                    <div class="text-medium msg">
+                        校区:{{ data.campus }}
+                </div>
+                <div class="text-medium msg">
+                        学院:{{ data.college }}
+                </div>
+                </div>
+            </div>
+            <div class="score-container">
+                <div class="title score">
+                    {{ data.score }}
+                </div>
+                <div class="text-small score-num">
+                    {{ data.all_people }}个评价
+                </div>
+            </div>
         </div>
-        <div style="display: flex; flex-direction: row"></div>
-        <div style="display: flex; flex-direction: row">
-          <div
-            :style="{'font-size':'18px','color':'#8a8a8a','margin-right':'30px','font-weight':'normal','white-space':'nowrap','text-overflow':'ellipsis','overflow':'hidden','margin-left':'15px','margin-top':'5px'}"
-          >
-            课程类型: {{ course.type }}
-          </div>
-          <div
-            :style="{'font-size':'18px','color':'#8a8a8a','margin-right':'30px','white-space':'nowrap','font-weight':'normal','text-overflow':'ellipsis','overflow':'hidden','margin-left':'15px','margin-top':'5px'}"
-          >
-            授课教师: {{ course.teacher }}
-          </div>
-          <div
-            :style="{'font-size':'18px','color':'#8a8a8a','margin-right':'30px','white-space':'nowrap','font-weight':'normal','text-overflow':'ellipsis','overflow':'hidden','margin-left':'15px','margin-top':'5px'}"
-          >
-            教学方式: {{ course.teacheMethod }}
-          </div>
-        </div>
-        <div style="display: flex; flex-direction: row">
-          <div
-            :style="{'font-size':'18px','color':'#8a8a8a','margin-right':'30px','white-space':'nowrap','font-weight':'normal','text-overflow':'ellipsis','overflow':'hidden','margin-left':'15px','margin-top':'5px'}"
-          >
-            开设校区: {{ course.campus }}
-          </div>
-          <div
-            :style="{'font-size':'18px','color':'#8a8a8a','white-space':'nowrap','font-weight':'normal','text-overflow':'ellipsis','overflow':'hidden','margin-left':'15px','margin-right':'15px','margin-top':'5px'}"
-          >
-            开设学院: {{ course.college }}
-          </div>
-          <div
-            :style="{'font-size':'18px','color':'#8a8a8a','margin-right':'30px','white-space':'nowrap','font-weight':'normal','text-overflow':'ellipsis','overflow':'hidden','margin-left':'15px','margin-top':'5px'}"
-          >
-            考核方式: {{ course.examineMethod }}
-          </div>
-        </div>
-      </div>
-      <div style="display: flex; flex-direction: row">
-        <v-rating
-          style="margin: 0px"
-          :model-value="course.rate"
-          color="rgba(156,12,19,0.8)"
-          half-increments
-        ></v-rating>
-        <div
-          style="
-            font-size: 16px;
-            margin-top: 14px;
-            margin-left: 15px;
-            font-weight: 800;
-            color: #8a8a8a;
-          "
-        >
-          平均评分 {{ course.rate }}
-        </div>
-      </div>
-    </v-row>
-  </v-card>
+    </v-card>
 </template>
 <script>
-  export default {
+//import SvgIcon from '@jamescoyle/vue-icon';
+import { mdiComment, mdiStar } from '@mdi/js';
+import { globalProperties } from '@/main';
+export default {
+    name: 'CourseItem',
+    components: {
+        //SvgIcon
+    },
     props: {
-      course:{
-        type:Object,
-        default:function(){
-          return {
-            id: '00000000',
-            name: '程序思维设计与实践',
-            teacher: '蔡晓军',
-            type: '必修课 通识选修',
-            college: '计算机科学与技术学院',
-            campus: '青岛校区',
-            examineMethod: '',//考试/论文/项目展示/其他
-            teacheMethod: '线上',//线上/线下/混合
-            rate: 3.5,
-          }
+        initData: {
+            type: Object,
+            default: () => {
+                return {
+                    /**
+                     * some keys not displayed
+                     */
+                    course_id: null,
+                    course_name: null,
+                    score: null,
+                    all_people:null,
+                    campus:null,
+                    college:null,
+                }
+            }
         }
-      }
     },
     setup(){
-      return {
-      }
+        const lazyImgUrl=globalProperties.$lazyImgUrl;
+        const deviceType=globalProperties.$deviceType;
+        return{
+            deviceType,
+            lazyImgUrl,
+        }
     },
-    data() {
-      return {
-      }
+    data(){
+        const data=this.initData;
+        return {
+            data,
+            star:mdiStar,
+            comment:mdiComment,
+        }
     },
     methods:{
-      navigateToCourse(){
-        this.$router.push({name:'CoursePage',params:{id:this.course.id}})
-      }
+        click(){
+            /**
+             * open a new tab and go
+             */
+            if(this.data.course_id==null){//no id param
+                this.$router.push({
+                    name:'ErrorPage'
+                })
+            }
+            this.$router.push({ name: 'CoursePage', params: { id: this.data.course_id } });
+        }
     }
-  }
+}
 </script>
+<style scoped>
+@media screen and (min-width: 600px) {
+    .card{
+        width: 750px;
+        padding:10px;
+        margin-top: 5px;
+    }    
+    .row-div{
+        display: flex;
+        height: 100%;
+        flex-direction: row;
+    }
+    .name-container{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 450px;
+        height: 100%;
+    }
+    .name{
+        width: 450px;
+        min-height: 27px;
+        white-space:nowrap; 
+        overflow:hidden;
+        text-overflow:ellipsis;
+        justify-self: center;
+    }
+    .score-container{
+        margin-left: 50px;
+        width: 250px;
+        display: grid;
+    }
+    .score{
+        font-weight: bold;
+        color: var(--theme-color);
+        justify-self: center;
+    }
+    .score-num{
+        color:grey;
+        justify-self: center;
+    }
+    .msg{
+        color:grey;
+        width: 200px;
+        white-space:nowrap; 
+        overflow:hidden;
+        text-overflow:ellipsis;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .card{
+        width: 100vw;
+        padding:1vw;
+        margin-top: 2px;
+    }
+    .row-div{
+        display: flex;
+        height: 100%;
+        flex-direction: row;
+    }
+    .name-container{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 60vw;
+        height: 100%;
+    }
+    .name{
+        width: 60vw;
+        min-height: 27px;
+        white-space:nowrap; 
+        overflow:hidden;
+        text-overflow:ellipsis;
+    }
+    .score-container{
+        margin-left: 3vw;
+        width: 35vw;
+        display: grid;
+    }
+    .score{
+        font-weight: bold;
+        color: var(--theme-color);
+        justify-self: center;
+    }
+    .score-num{
+        color:grey;
+        justify-self: center;
+    }
+    .msg{
+        color:grey;
+        margin-right:2vw;
+        width: 25vw;
+        white-space: nowrap;; 
+        overflow:hidden;
+        text-overflow:ellipsis;
+    }
+}
+</style>

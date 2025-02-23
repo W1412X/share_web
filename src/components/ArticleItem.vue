@@ -1,192 +1,185 @@
 <template>
-  <v-card elevation="3"
-    :style="{ width: '750px', 'margin': '5px', height: '175px', display: 'grid', 'place-items': 'center' }">
-    <v-row :style="{ width: '100%', 'height': '100%', position: 'relative' }">
-      <v-col
-        :style="{ 'margin-top': '5px', height: '100%', width: '100%', position: 'relative', display: 'grid', 'place-items': 'center', 'padding': '0px', flex: '19' }">
-        <v-img class="bg-grey-lighten-2" :src="article.imgUrl"
-          :style="{ 'padding-left': '8px', position: 'relative', width: '140px', height: '140px', border: '2px', 'border-radius': '2px', padding: '0px' }"
-          cover @click="navigateToArticle()" aspect-ratio="1/1">
-        </v-img>
-        <span :style="{ 'font-size': '14px', color: '#8a8a8a', 'padding-bottom': '3px' }">
-          {{ article.publishTime }}
-        </span>
-      </v-col>
-      <v-col @click="navigateToArticle()"
-        :style="{ flex: '65', height: '100%', width: '100%', position: 'relative', 'padding': '0px' }">
-        <v-card-title class="text-overflow-ellipsis" :style="{
-          'padding-left': '0px',
-          'padding-top': '12px',
-          'padding-bottom': '0px',
-          'font-size': '18px',
-          'font-style': 'bold',
-          'line-height': '1.2',
-          'padding-right': '20px',
-          'overflow': 'hidden',
-          'text-overflow': 'ellipsis',
-          'white-space': 'nowrap',
-          'max-width': '400px'
-        }">
-          {{ article.title }}
-        </v-card-title>
-        <div style="display: flex;flex-direction: row;">
-          <div :no-gutters="true"
-            :style="{ 'max-width': '100px', 'margin-top': '10px', 'margin-left': '15px', 'margin-right': '0px', 'padding-left': '0px', 'padding-right': '0px' }">
-            <div style="display: flex;flex-direction: row;">
-              <svg-icon type="mdi" :path="icon.viewCount" size="18" color="#8a8a8a"
-                :style="{ 'padding-top': '0px', 'margin-bottom': '0px', 'margin-left': '5px' }"></svg-icon>
-              <div :style="{ 'margin-left': '5px', 'font-size': '14px', 'color': '#8a8a8a', }">{{ article.scanCount }}
-              </div>
+    <v-card class="card" @click="click()">
+        <div class="column-div">
+            <v-img v-if="deviceType === 'desktop'" :width="imgSize" class="img" :lazy-src="lazyImgUrl" :src="data.link"
+                cover aspect-ratio="4/3"></v-img>
+            <div class="row-div">
+                <div class="title title-container">{{ data.title }}</div>
+                <div class="text-small detail-container">{{ data.detail }}</div>
+                <div class="text-small bottom-bar">
+                    <div class="bottom-item">
+                        @{{ data.author }}
+                    </div>
+                    <v-spacer></v-spacer>
+                    <div class="bottom-item">
+                        <v-icon icon="mdi-star" size="20"></v-icon>
+                        {{ data.star }}
+                    </div>
+                    <div class="bottom-item">
+                        <v-icon icon="mdi-comment" size="18" style="margin-top: 2px;"></v-icon>
+                        {{ data.comment }}
+                    </div>
+                </div>
             </div>
-          </div>
-          <div
-            :style="{ 'max-width': '100px', 'margin-top': '10px', 'margin-left': '10px', 'margin-right': '0px', 'padding-left': '0px', 'padding-right': '0px' }">
-            <div style="display: flex;flex-direction: row;">
-              <svg-icon type="mdi" :path="icon.starCount" size="18" color="#8a8a8a"
-                :style="{ 'padding-top': '0px', 'margin-bottom': '0px', 'margin-left': '5px' }"></svg-icon>
-              <div :style="{ 'margin-left': '4px', 'font-size': '14px', 'color': '#8a8a8a' }">{{ article.starCount }}
-              </div>
-            </div>
-          </div>
-          <div
-            :style="{ 'max-width': '100px', 'margin-top': '10px', 'margin-left': '10px', 'margin-right': '50px', 'padding-left': '0px', 'padding-right': '0px' }">
-            <div style="display: flex;flex-direction: row;">
-              <svg-icon type="mdi" :path="icon.replyCount" size="18" color="#8a8a8a"
-                :style="{ 'padding-top': '0px', 'margin-bottom': '0px', 'margin-left': '5px' }"></svg-icon>
-              <div :style="{ 'margin-left': '4px', 'font-size': '14px', 'color': '#8a8a8a' }"> {{ article.replyCount }}
-              </div>
-            </div>
-          </div>
         </div>
-        <v-row
-          :style="{ 'margin-top': '0px', 'padding-top': '6px', 'padding-bottom': '12px', 'padding-left': '10px', 'font-size': '16px', 'font-style': 'bold', 'color': '#8a8a8a' }">标签：
-          <v-btn :style="{ 'height': '20px', 'font-size': '12px' }" color="#9c0c13" variant="outlined" rounded>
-            计算机
-          </v-btn>
-        </v-row>
-        <v-card-text :style="{
-          'padding-top': '7px',
-          'padding-bottom': '2px',
-          'color': '#8a8a8a',
-          'display': '-webkit-box',
-          '-webkit-line-clamp': '3',
-          'overflow-y': 'scroll',
-          'font-size': '16px',
-          'text-overflow': 'ellipsis',
-          '-webkit-box-orient': 'vertical',
-          'line-height': '1.4',
-          'height': '3.5em',
-          'padding-left': '0px',
-          'padding-right': '20px'
-        }">
-          {{ article.description }}
-        </v-card-text>
-        <v-row v-if="status == 'reader'"
-          :style="{ 'padding-left': '10px', 'padding-top': '37px', 'padding-right': '20px', 'color': '#8a8a8a', 'font-size': '13px' }"
-          dir="rtl">
-          {{ article.authorName }}@
-        </v-row>
-      </v-col>
-      <v-col
-        :style="{ flex: '4', height: '100%', width: '100%', position: 'relative', 'padding': '0px', 'margin-left': '2px' }">
-        <div :style="{ display: 'flex', flexDirection: 'column-reverse', height: '100%', width: '100%' }">
-          <user-profile :url="this.article.profileUrl" :name="this.article.authorName"
-            style="margin-top:11px;margin-bottom: 6px;"></user-profile>
-          <v-spacer></v-spacer>
-          <star-button v-if="status == 'reader'" :id="this.article.id" :type="'article'" :style="{
-            'padding-left': '0px',
-            'margin-top': '10px',
-            'margin-left': '2px',
-          }">
-          </star-button>
-          <v-btn v-if="status == 'writer'" elevation="0" icon :style="{
-            'width': '25px',
-            'padding': '0px',
-            'height': '25px',
-            'margin-top': '5px',
-            'color': '#8a8a8a',
-            'margin-left': '1px',
-          }">
-            <svg-icon type="mdi" :path="icon.delete"></svg-icon>
-          </v-btn>
-          <v-btn v-if="status == 'writer'" @click="toEditorPage" elevation="0" icon :style="{
-            'max-width': '25px',
-            'padding-left': '0px',
-            'max-height': '25px',
-            'color': '#8a8a8a',
-            'margin-top': '10px',
-            'margin-left': '2px',
-            'border-radius': '100%',
-
-          }">
-            <svg-icon type="mdi" :path="icon.edit"></svg-icon>
-          </v-btn>
-        </div>
-      </v-col>
-    </v-row>
-  </v-card>
+    </v-card>
 </template>
 <script>
-import SvgIcon from '@jamescoyle/vue-icon'
-import { mdiEye, mdiMessage, mdiPencilCircleOutline, mdiStar, mdiTrashCanOutline } from '@mdi/js'
-import StarButton from './StarButton.vue'
-import UserProfile from './UserProfile.vue';
+import { globalProperties } from '@/main';
 export default {
-  props: {
-    status: {
-      type: String,
-      default: 'reader', //reader,writer,manager
+    name: 'ArticleItem',
+    components: {
     },
-    article: {
-      type: Object,
-      default: function () {
-        return {
-          id: '00000000',
-          title: '这是文章标题',
-          tags: ['计算机', '测试'],
-          description:
-            '这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介这是文章简介',
-          publishTime: '2022-09-01 00:00',
-          imgUrl:
-            'https://tse2-mm.cn.bing.net/th/id/OIP-C.B6see3otwDOwdcSecD_W8QHaHa?w=173&h=180&c=7&r=0&o=5&pid=1.7',
-          authorName: '测试用户',
-          profileUrl:
-            'https://tse1-mm.cn.bing.net/th/id/OIP-C.PO7d9IfnPUy2RO173QYt6wHaHV?w=216&h=213&c=7&r=0&o=5&pid=1.7',
-          starCount: '99999',
-          scanCount: '99999',
-          replyCount: '99999',
+    props: {
+        initData: {
+            type: Object,
+            default: () => {
+                return {
+                    id: null,
+                    title: null,
+                    detail: null,
+                    star: null,
+                    comment: null,
+                    author: null,
+                }
+            }
         }
-      }
-
-    }
-  },
-  setup() {
-
-  },
-  data() {
-    return {
-      icon: {
-        delete: mdiTrashCanOutline,
-        edit: mdiPencilCircleOutline,
-        viewCount: mdiEye,
-        starCount: mdiStar,
-        replyCount: mdiMessage,
-      },
-    }
-  },
-  methods: {
-    navigateToArticle() {
-      this.$router.push({ name: 'ArticlePage', params: { id: this.article.id } });
     },
-    toEditorPage() {
-      this.$router.push({ name: 'EditorPage', params: { id: this.article.id } })
+    setup() {
+        const lazyImgUrl = globalProperties.$lazyImgUrl;
+        const deviceType = globalProperties.$deviceType;
+        return {
+            deviceType,
+            lazyImgUrl,
+        }
+    },
+    data() {
+        const data = this.initData;
+        return {
+            data,
+        }
+    },
+    methods:{
+        click(){
+            /**
+             * open a new tab and go
+             */
+            if(this.data.id==null){//no id param
+                this.data.id=0;
+            }
+            this.$router.push({ name: 'ArticlePage', params: { id: this.data.id } });
+        }
     }
-  },
-  components: {
-    StarButton,
-    SvgIcon,
-    UserProfile,
-  },
-  name: 'ArticleItem',
 }
 </script>
+<style scoped>
+@media screen and (min-width: 600px) {
+    .card {
+        padding: 5px;
+        width: 750px;
+        margin-top: 5px;
+    }
+
+    .column-div {
+        display: flex;
+        flex-direction: row;
+        height: 130px;
+    }
+
+    .row-div {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .img {
+        margin: 5px;
+        max-width: 150px;
+        max-height: 120px;
+    }
+
+    .title-container {
+        max-width: 550px;
+        height: 27px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .detail-container {
+        max-width: 590px;
+        height: 65px;
+        white-space: normal;
+        word-break: break-all;
+        overflow: hidden;
+        line-height: 1.2;
+        color: #8a8a8a;
+    }
+
+    .bottom-bar {
+        width: 580px;
+        display: flex;
+        flex-direction: row;
+        color: #8a8a8a;
+        margin-left: 5px;
+        margin-top: 12px;
+    }
+
+    .bottom-item {
+        display: flex;
+        flex-direction: row;
+        margin-right: 20px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .card {
+        width: 100vw;
+        margin-top: 5px;
+    }
+
+    .column-div {
+        display: flex;
+        flex-direction: row;
+        padding: 5px;
+        height: 105px;
+    }
+
+    .row-div {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .title-container {
+        max-width: 90vw;
+        height: 35px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .detail-container {
+        color: #8a8a8a;
+        height: 55px;
+        padding-top: 5px;
+        white-space: normal;
+        word-break: break-all;
+        overflow: hidden;
+        line-height: 1.2;
+    }
+
+    .bottom-bar {
+        display: flex;
+        flex-direction: row;
+        color: #8a8a8a;
+        margin-left: 5px;
+        margin-top: 12px;
+    }
+
+    .bottom-item {
+        display: flex;
+        flex-direction: row;
+        margin-right: 10px;
+    }
+}
+</style>

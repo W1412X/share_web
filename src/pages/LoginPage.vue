@@ -1,86 +1,485 @@
 <template>
-  <LoadingView v-model="progressMsg" style="z-index: 9999;"></LoadingView>
-  <main>
-    <!-- 使用 main 根元素以确保填充整个视口 -->
-    <v-main>
-      <!-- v-main 用于适应内容到视口的大小 -->
-      <v-container fluid fill-height>
-        <!-- fluid 属性使容器占据整个视口宽度，fill-height 使容器占据整个视口高度 -->
-        <v-layout align-center justify-center>
-          <!-- align-center 和 justify-center 分别垂直和水平居中子元素 -->
-          <v-card width="100%" height="100%">
-            <!-- 设置卡片的宽高为100%，但这样会导致溢出，因此使用内部的flex布局 -->
-            <v-card-text class="text-center">
-              <LoginItem @alert="alert" @set_loading="setLoading"/>
-            </v-card-text>
-          </v-card>
-        </v-layout>
-      </v-container>
-    </v-main>
-  </main>
-  <v-snackbar :timeout="3000" :color="alertSet.color" v-model="alertSet.state">
-    <div class="text-subtitle-1 pb-2">{{ alertSet.title }}</div>
-    <p>{{ alertSet.content }}</p>
-  </v-snackbar>
+    <v-dialog v-model="ifShowDialog" class="full-screen dialog">
+        <div style="width: 100%;height:100%;justify-content: center;display: flex">
+            <email-examine-card @close="setEmailExamineCardState(false)"
+                :init-data="examineCardInfo"
+                @alert="alert"
+                @set_loading="setLoading"
+                v-if="ifShowEmailExamineCard"></email-examine-card>
+        </div>
+    </v-dialog>
+    <div class="full-center">
+        <v-card class="card">
+            <v-tabs v-model="nowTab" bg-color="indigo-darken-2" fixed-tabs>
+                <v-tab :style="{ background: '#9c0c13', 'font-size': '18px' }" value="login" text="登陆"></v-tab>
+                <v-tab :style="{ background: '#9c0c13', 'font-size': '18px' }" value="register" text="注册"></v-tab>
+            </v-tabs>
+            <v-tabs-window v-model="nowTab">
+                <!-- login by userName -->
+                <v-tabs-window-item v-if="loginMethod === 'userName'" title="登录" value="login">
+                    <sensitive-text-field v-model="loginByUsernameData.userName" :rules="[loginRules.userName]"
+                        class="input" :density="inputType" variant="solo-filled" label="用户名"></sensitive-text-field>
+                    <sensitive-text-field v-model="loginByUsernameData.passwd" :rules="[loginRules.password]"
+                        class="input" :density="inputType" variant="solo-filled" label="密码"></sensitive-text-field>
+                    <v-btn @click="loginByUsername()" class="login-btn" variant="outlined"
+                        :disabled="!(valUserName(loginByUsernameData.userName) && valPassWord(loginByUsernameData.passwd))"
+                        :color="themeColor">登陆</v-btn>
+                </v-tabs-window-item>
+                <!-- login by email  -->
+                <v-tabs-window-item v-if="loginMethod === 'email'" title="登录" value="login">
+                    <sensitive-text-field v-model="loginByEmailData.email" class="input" :rules="[loginRules.email]"
+                        :density="inputType" variant="solo-filled" label="邮箱"></sensitive-text-field>
+                    <v-btn @click="loginByEmail()" class="login-btn" variant="outlined" :color="themeColor"
+                        :disabled="!valEmail(loginByEmailData.email)">登陆</v-btn>
+                </v-tabs-window-item>
+                <!-- register by email STEP 1 -->
+                <v-tabs-window-item v-if="registerMethod === 'email' && registerByEmailStep === 0" title="注册"
+                    value="register">
+                    <sensitive-text-field v-model="registerByEmailData.userName" class="input"
+                        :rules="[loginRules.userName]" :density="inputType" variant="solo-filled"
+                        label="用户名"></sensitive-text-field>
+                    <sensitive-text-field v-model="registerByEmailData.passwd" class="input"
+                        :rules="[loginRules.password]" :density="inputType" variant="solo-filled"
+                        label="密码"></sensitive-text-field>
+                    <sensitive-text-field v-model="registerByEmailData.passwdConfirm" class="input"
+                        :rules="[loginRules.password]" :density="inputType" variant="solo-filled"
+                        label="确认密码"></sensitive-text-field>
+                    <v-btn @click="step" class="login-btn" variant="outlined" :color="themeColor"
+                        :disabled="!(valUserName(registerByEmailData.userName) && valPassWord(registerByEmailData.passwd) && valPassWord(registerByEmailData.passwdConfirm))">下一步</v-btn>
+                </v-tabs-window-item>
+                <!-- register by email STEP 2 -->
+                <v-tabs-window-item v-if="registerMethod === 'email' && registerByEmailStep === 1" title="注册"
+                    value="register">
+                    <div class="text-small-bold tip-text-container">
+                        <span>注：校区，学院，专业均为选填</span>
+                    </div>
+                    <div class="row-center-div">
+                        <v-select class="select-input" v-model="registerByEmailData.campus" variant="solo-filled"
+                            density="compact" :items="campusList" label="校区"></v-select>
+                        <v-select class="select-input" v-model="registerByEmailData.college" variant="solo-filled"
+                            density="compact" :items="collegeList" label="学院"></v-select>
+                        <sensitive-text-field class="select-input" v-model="registerByEmailData.major"
+                            :density="inputType" variant="solo-filled" label="专业"></sensitive-text-field>
+                    </div>
+                    <sensitive-text-field v-model="registerByEmailData.email" class="input" :rules="[loginRules.email]"
+                        :density="inputType" variant="solo-filled" label="校园邮箱(@sdu.edu.cn)"></sensitive-text-field>
+                    <div class="text-small agreement-text-container">
+                        注册即代表您已阅读并同意
+                        <router-link to="/document/to_know">
+                            <strong style="color: #0074e8; text-decoration: underline;">入站须知</strong>
+                        </router-link>与
+                        <router-link to="/document/privacy">
+                            <strong style="color: #0074e8; text-decoration: underline;">隐私政策</strong>
+                        </router-link>
+                    </div>
+                    <div class="row-center-div">
+                        <v-btn @click="stepBack" class="last-step-btn" variant="outlined"
+                            :color="themeColor">上一步</v-btn>
+                        <v-btn @click="registerByEmail" class="register-btn" variant="outlined" :color="themeColor"
+                            :disabled="!valEmail(registerByEmailData.email)">注册</v-btn>
+                    </div>
+                </v-tabs-window-item>
+                <!-- register by invite STEP 1 -->
+                <v-tabs-window-item v-if="registerMethod === 'invite' && registerByInviteStep === 0" title="注册"
+                    value="register">
+                    <sensitive-text-field v-model="registerByInviteData.userName" class="input"
+                        :rules="[loginRules.userName]" :density="inputType" variant="solo-filled"
+                        label="用户名"></sensitive-text-field>
+                    <sensitive-text-field v-model="registerByInviteData.passwd" class="input"
+                        :rules="[loginRules.password]" :density="inputType" variant="solo-filled"
+                        label="密码"></sensitive-text-field>
+                    <sensitive-text-field v-model="registerByInviteData.passwdConfirm" class="input"
+                        :rules="[loginRules.password]" :density="inputType" variant="solo-filled"
+                        label="确认密码"></sensitive-text-field>
+                    <v-btn @click="step" class="login-btn" variant="outlined" :color="themeColor"
+                        :disabled="!(valUserName(registerByInviteData.userName) && valPassWord(registerByInviteData.passwd) && valPassWord(registerByInviteData.passwdConfirm))">下一步</v-btn>
+                </v-tabs-window-item>
+                <!-- register by invite STEP2 -->
+                <v-tabs-window-item v-if="registerMethod === 'invite' && registerByInviteStep === 1" title="注册"
+                    value="register">
+                    <div class="text-small-bold tip-text-container">
+                        <span>注：校区，学院，专业均为选填</span>
+                    </div>
+                    <div class="row-center-div">
+                        <v-select class="select-input" v-model="registerByInviteData.campus" variant="solo-filled"
+                            density="compact" :items="campusList" label="校区"></v-select>
+                        <v-select class="select-input" v-model="registerByInviteData.college" variant="solo-filled"
+                            density="compact" :items="collegeList" label="学院"></v-select>
+                        <sensitive-text-field class="select-input" v-model="registerByInviteData.major"
+                            :density="inputType" variant="solo-filled" label="专业"></sensitive-text-field>
+                    </div>
+                    <sensitive-text-field v-model="registerByInviteData.code" class="input" :density="inputType"
+                        variant="solo-filled" label="输入邀请码"></sensitive-text-field>
+                    <div class="text-small agreement-text-container">
+                        注册即代表您已阅读并同意
+                        <router-link to="/document/to_know">
+                            <strong style="color: #0074e8; text-decoration: underline;">入站须知</strong>
+                        </router-link>与
+                        <router-link to="/document/privacy">
+                            <strong style="color: #0074e8; text-decoration: underline;">隐私政策</strong>
+                        </router-link>
+                    </div>
+                    <div class="row-center-div">
+                        <v-btn @click="stepBack" class="last-step-btn" variant="outlined"
+                            :color="themeColor">上一步</v-btn>
+                        <v-btn @click="registerByInvite" class="register-btn" variant="outlined"
+                            :color="themeColor">注册</v-btn>
+                    </div>
+                </v-tabs-window-item>
+                <div v-if="nowTab === 'login'" class="bottom-bar">
+                    <v-btn @click="shiftLoginMethod" class="text-small" density="compact" variant="text">{{
+                        loginMethod == 'userName' ?'使用邮箱登陆':'使用用户名登陆' }}</v-btn>
+                </div>
+                <div v-if="nowTab === 'register'" class="bottom-bar">
+                    <v-btn @click="shiftRegisterMethod" class="text-small" density="compact" variant="text">{{
+                        registerMethod == 'email' ?'使用邀请码注册':'使用邮箱注册' }}</v-btn>
+                </div>
+            </v-tabs-window>
+        </v-card>
+    </div>
 </template>
+<script>
+import { globalProperties } from '@/main';
+import EmailExamineCard from '@/components/EmailExamineCard.vue';
+import SensitiveTextField from '@/components/SensitiveTextField.vue';
+import { computed, ref } from 'vue';
+import { rules } from '@/utils/rules';
+import { validateEmail, validatePassWord, validateUserName } from '@/utils/rules';
+import { /*getRegisterEmailCode*/ loginWithPassword, /*loginWithEmail, register*/ } from '@/axios/account';
+import { getCancelLoadMsg, getLoadMsg } from '@/utils/other';
+import { getErrorMsg } from '@/axios/statusCodeMessages';
+import { setCookie } from '@/utils/cookie';
+import { csLoginByUserName } from '@/axios/api_convert/account';
+export default {
+    name: 'LoginPage',
+    setup() {
+        const themeColor = globalProperties.$themeColor;
+        const ifShowEmailExamineCard = ref(false);
+        const ifShowDialog = computed(() => {
+            return ifShowEmailExamineCard.value;
+        })
+        const campusList = globalProperties.$campus;
+        const collegeList = globalProperties.$colleges;
+        const setEmailExamineCardState = (state) => {
+            ifShowEmailExamineCard.value = state;
+        }
+        const nowTab = ref('login');
+        const deviceType = globalProperties.$deviceType;
+        const inputType = deviceType == 'desktop' ? 'compact' : 'comfortable';
+        return {
+            themeColor,
+            ifShowEmailExamineCard,
+            ifShowDialog,
+            setEmailExamineCardState,
+            nowTab,
+            deviceType,
+            inputType,
+            campusList,
+            collegeList,
+        }
+    },
+    components: {
+        EmailExamineCard,
+        SensitiveTextField,
+    },
+    data() {
+        const loginByUsernameData = {
+            userName: null,
+            passwd: null,
+        }
+        const loginByEmailData = {
+            email: null,
+            emailCode: null,
+        }
+        const registerByEmailData = {
+            email: null,
+            passwd: null,
+            passwdConfirm: null,
+            userName: null,
+            campus: null,
+            major: null,
+            college: null,
+            emailCode: null,
+        }
+        const registerByInviteData = {
+            userName: null,
+            emailCode: null,
+            campus: null,
+            major: null,
+            college: null,
+            passwd: null,
+            passwdConfirm: null,
+        }
+        /**
+         * card message card 
+         */
+        var examineCardInfo=computed(()=>{
+            if(this.nowTab=='login'){
+                return {
+                    type:'login',
+                    email:this.loginByEmailData.email,
+                }
+            }else{
+                return {
+                    type:'register',
+                    email:this.registerByEmailData.email,
+                    campus:this.registerByEmailData.campus,
+                    college:this.registerByEmailData.college,
+                    major:this.registerByEmailData.major,
+                    userName:this.registerByEmailData.userName,
+                    passwd:this.registerByEmailData.passwd,
+                }
+            }
+        })
+        var loginMethod = 'userName';// userName/email
+        var registerMethod = 'email';// email/invite
+        var registerByEmailStep = 0;
+        var registerByInviteStep = 0;
+        const loginRules = rules;
+        return {
+            loginByUsernameData,
+            loginByEmailData,
+            registerByEmailData,
+            registerByInviteData,
+            loginMethod,
+            registerMethod,
+            registerByEmailStep,
+            loginRules,
+            registerByInviteStep,
+            examineCardInfo,
+        }
+    },
+    methods: {
+        async loginByUsername() {
+            /**
+             * login
+             */
+            this.$emit('set_loading',getLoadMsg('正在登陆...',-1));
+            console.log(this.loadMsg);
+            const response=await loginWithPassword(csLoginByUserName(this.loginByUsernameData));
+            if(response.status==-1){
+                this.alert(getErrorMsg());
+            }else if(response.status==200){
+                this.alert({
+                    color: 'success',
+                    title: '登陆成功',
+                    state: true,
+                    content: response.message,
+                })
+                /**
+                 * save the user message
+                 */
+                setCookie('userName',response.userName);
+                setCookie('userId',response.userId);
+                setCookie('email',response.email);
+                /**
+                 * to the index page
+                 */
+                this.$router.push({
+                    name: 'index',
+                })
+            }else{
+                this.alert({
+                    color: 'error',
+                    title: '请求错误',
+                    state: true,
+                    content: response.message,
+                })
+            }
+            this.$emit('set_loading',getCancelLoadMsg());
+        },
+        loginByEmail() {
+            /**
+             * show the examine card  
+             */
+            this.setEmailExamineCardState(true);
+        },
+        registerByEmail() {
+            /**
+             * show the examine card
+             */
+            this.setEmailExamineCardState(true);
+        },
+        registerByInvite() {
+            /**
+             * temporarily do nothing
+             */
+        },
+        step() {
+            if (this.registerMethod == 'email') {
+                this.registerByEmailStep++;
+            } else {
+                this.registerByInviteStep++;
+            }
+        },
+        stepBack() {
+            if (this.registerMethod == 'email') {
+                this.registerByEmailStep--;
+            } else {
+                this.registerByInviteStep--;
+            }
+        },
+        shiftLoginMethod() {
+            this.loginMethod = this.loginMethod === 'userName' ? 'email' : 'userName'
+        },
+        shiftRegisterMethod() {
+            /**
+            * temprorarily disable register by invite
+            */
+           this.alert({ color: 'warning',
+                        title: null,
+                        state: true,
+                        content: '暂不支持使用邀请码注册'
+                    })
+            //this.registerMethod = this.registerMethod === 'email' ? 'invite' : 'email';
+        },
+        valEmail(email) {
+            return validateEmail(email);
+        },
+        valUserName(name) {
+            return validateUserName(name);
+        },
+        valPassWord(passWord) {
+            return validatePassWord(passWord);
+        },
+        alert(msg){
+            this.$emit('alert',msg);
+        },
+        setLoading(msg){
+            this.$emit('set_loading',msg);
+        }
+    },
+    mounted() {
 
+    },
+    created() {
+
+    },
+}
+</script>
 <style scoped>
-.text-center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
+.bottom-bar {
+    padding: 5px;
+    display: flex;
+    flex-direction: row-reverse;
+    width: 100%;
+}
+
+.margin-right-10px {
+    margin-right: 10px;
+}
+
+.row-center-div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.tip-text-container {
+    width: 100%;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    color: grey;
+}
+
+.row-center-div {
+    display: flex;
+    padding-left: 5%;
+    padding-right: 5%;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.select-input {
+    width: 30%;
+    margin: 1%;
+}
+
+.agreement-text-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+@media screen and (min-width: 600px) {
+    .full-center {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        height: 100%;
+    }
+
+    .input {
+        width: 90%;
+        margin-left: 5%;
+        margin-right: 5%;
+        margin-top: 20px;
+    }
+
+    .card {
+        width: 600px;
+        margin-top: 50px;
+    }
+
+    .login-btn {
+        width: 50%;
+        margin-left: 25%;
+        margin-right: 25%;
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+
+    .register-btn {
+        width: 25%;
+        margin-left: 20px;
+    }
+
+    .last-step-btn {
+        width: 25%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .full-center {
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .input {
+        width: 90%;
+        margin-left: 5%;
+        margin-right: 5%;
+        margin-top: 20px;
+    }
+
+    .card {
+        width: 80vw;
+        margin-top: 50px;
+    }
+
+    .login-btn {
+        width: 80%;
+        margin-left: 10%;
+        margin-right: 10%;
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+
+    .register-btn {
+        width: 25%;
+        margin-left: 20px;
+    }
+
+    .last-step-btn {
+        width: 25%;
+    }
 }
 </style>
-
-<script>
-import { computed } from 'vue';
-import LoginItem from '../components/LoginItem.vue';
-import { useRouter } from 'vue-router';
-import { useStore } from 'vuex';
-export default {
-  setup() {
-    const router = useRouter();
-    const store = useStore();
-    const user = computed(() => store.getters.getUser);
-    const navigateToIndex = () => {
-      router.push({ name: 'IndexPage' }); // 使用路由名称跳转
-    };
-    return {
-      router,
-      user,
-      navigateToIndex,
-    }
-  },
-  components: {
-    LoginItem,
-  },
-  data() {
-    return {
-      alertSet: {
-        color: 'success',
-        title: '登陆成功',
-        content: '登陆成功',
-        state: false,
-      },
-      progressMsg: {
-        state: false,
-        text: '正在加载',
-        progress: -1,
-      }
-    }
-  },
-  methods: {
-    alert(message) {
-      console.log(message);
-      this.alertSet = message;
-      console.log(this.alertSet);
-    },
-    setLoading(loading_msg) {//这里的loading不显示进度
-      this.progressMsg=loading_msg;
-    }
-  },
-  created() {
-  },
-};
-</script>

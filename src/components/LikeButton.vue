@@ -4,12 +4,10 @@
         'height': '25px',
         'border-radius': '100%',
     }">
-        <svg-icon type="mdi" :color="color" :path="heart"></svg-icon>
+        <v-icon :color="color" size="25" :icon="heart"></v-icon>
     </v-btn>
 </template>
 <script>
-import SvgIcon from '@jamescoyle/vue-icon';
-import {  mdiHeartOutline,mdiHeart } from '@mdi/js';
 import { computed } from 'vue';
 export default{
     props:{
@@ -32,7 +30,7 @@ export default{
             return this.ifClicked?'#db261f': '#8a8a8a';
         })
         const heart=computed(()=>{
-           return this.ifClicked? mdiHeart:mdiHeartOutline;
+           return this.ifClicked? 'mdi-heart':'mdi-heart-outline';
         });
         return {
             color,
@@ -42,7 +40,6 @@ export default{
         }
     },
     components:{
-        SvgIcon,
     },
     methods:{
         click(){

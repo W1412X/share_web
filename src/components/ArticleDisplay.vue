@@ -1,74 +1,88 @@
 <template>
-    <div style="border: 1px solid #ccc">
-      <Editor :style="{ 'width': this.width,'height': '100vh','overflow-y': 'hidden'}" v-model="html" :defaultConfig="editorConfig"
-        :mode="mode" @onCreated="handleCreated" />
+    <div class="container">
+        <Editor 
+            v-if="data.type==='html'"
+            :mode="mode"
+            v-model="data.content" :defaultConfig="editorConfig"
+            @onCreated="handleCreated"
+            class="displayer">
+        </Editor>
+        <v-md-preview v-if="data.type==='md'" :text="data.content"></v-md-preview>
     </div>
-  </template>
-  <script>
-  import '@wangeditor/editor/dist/css/style.css' // 引入 css
-  import { onBeforeUnmount, ref, shallowRef, inject , computed } from 'vue'
-  import { Editor } from '@wangeditor/editor-for-vue'
-  import { Boot } from '@wangeditor/editor'
-  import formulaModule from '@wangeditor/plugin-formula'
-  //import { DomEditor } from '@wangeditor/editor'
-  export default {
+</template>
+<script>
+import '@wangeditor/editor/dist/css/style.css' // import css
+import { computed, onBeforeUnmount, shallowRef } from 'vue'
+import { Editor } from '@wangeditor/editor-for-vue'
+//import { Boot } from '@wangeditor/editor'
+//import formulaModule from '@wangeditor/plugin-formula'
+export default {
+    name: 'ArticleDisplay', 
     props: {
-      initialHtml: {
-        type: String,
-        default: ''
-      },
-      type:{
-        type:String,//取值为mobile/pc 分别对应移动端和pc端
-        default: 'pc'
-      },
+        initData: {
+            type: Object,
+            default: () => {
+                return {
+                    type: null,//md/html
+                    content: null,
+                }
+            }
+        }
     },
     components: { Editor },
     setup() {
-      const store = inject('store');
-      if (!store.state.ifRegisterEditor) {
-        Boot.registerModule(formulaModule);
-        store.commit('registerEditor');
-      }
-      // 编辑器实例，必须用 shallowRef
-      const editorRef = shallowRef()
-      // 内容 HTML
-      const valueHtml = ref('<p>Hello World!</p>');
-      // 组件销毁时，也及时销毁编辑器
-      onBeforeUnmount(() => {
-        const editor = editorRef.value
-        if (editor == null) return
-        editor.destroy()
-      })
-      const handleCreated = (editor) => {
-        editorRef.value = editor // 记录 editor 实例，重要！
-        editor.disable();
-        console.log(editor);
-        console.log(editorRef.value);
-        console.log("创建编辑器完成");
-      }
-      return {
-        editorRef,
-        valueHtml,
-        mode: 'default', // 或 'simple'
-        handleCreated,
-      };
+        //Boot.registerModule(formulaModule);
+        // editor instance shallowRef
+        const editorRef = shallowRef()
+        // dispose editor when the component is unmounted
+        onBeforeUnmount(() => {
+            const editor = editorRef.value
+            if (editor == null) return
+            editor.destroy()
+        })
+        const handleCreated = (editor) => {
+            editorRef.value = editor // record the editor instance
+            editor.disable();
+        }
+        return {
+            editorRef,
+            mode: 'default', // simple
+            handleCreated,
+        };
     },
     data(){
-      const html=this.initialHtml;
-      const width=computed(()=>{
-        return this.type==='pc'?'1000px':'100vw';
-      })
-      return{
-        html,
-        width
-      }
-    },
-    methods: {
-    },
-    created(){//在组件创建时赋值initHtml
+        const data=computed(()=>{
+            return this.initData;
+        });
+        return{
+            data,
+        }
     },
     mounted(){
+
     }
-  }
-  </script>
-  
+}
+</script>
+<style scoped>
+@media screen and (min-width: 600px) {
+    .container {
+        width: 1000px;
+        padding: 5px;
+        border: #8a8a8a 1px solid;
+    }
+    .displayer {
+        width: 100%;
+        overflow-y: scroll;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .container {
+        width: 100vw;
+    }
+    .displayer{
+        width: 100%;
+        overflow-y: scroll;
+    }
+}
+</style>

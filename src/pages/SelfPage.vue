@@ -1,203 +1,287 @@
 <template>
-  <LoadingView v-model="progressMsg"></LoadingView>
-  <v-snackbar :timeout="3000" :color="alertSet.color" v-model="alertSet.state">
-    <div class="text-subtitle-1 pb-2">{{ alertSet.title }}</div>
-    <p>{{ alertSet.content }}</p>
-  </v-snackbar>
-  <main style="width: 100%;justify-content: center;">
-    <v-bottom-navigation v-if="isMobile">
-      <v-btn color="#9c0c13" :prepend-icon="'mdi-pencil'" value="create" @click="setView('create')">创作</v-btn>
-      <v-btn color="#9c0c13" :prepend-icon="'mdi-star'" value="star" @click="setView('star')">收藏</v-btn>
-      <v-btn color="#9c0c13" :prepend-icon="'mdi-account-plus'" value="follow" @click="setView('follow')">关注</v-btn>
-      <v-btn color="#9c0c13" :prepend-icon="'mdi-email-alert'" value="message" @click="setView('message')">消息</v-btn>
-      <v-btn color="#9c0c13" :prepend-icon="'mdi-account'" value="account" @click="setView('account')">个人</v-btn>
-      <v-btn color="#9c0c13" :prepend-icon="'mdi-cog'" value="setting" @click="setView('setting')">设置</v-btn>
-    </v-bottom-navigation>
-    <v-row style="width: 100%;justify-content: center;">
-      <v-navigation-drawer v-if="!isMobile" expand-on-hover rail>
-        <v-list>
-          <v-list-item prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
-            :title="userName"></v-list-item>
-        </v-list>
-        <v-divider></v-divider>
-        <v-list density="compact" color="#9c0c13" nav>
-          <v-list-item color="#9c0c13" :prepend-icon="'mdi-pencil'" title="创作" value="create"
-            @click="setView('create')"></v-list-item>
-          <v-list-item color="#9c0c13" :prepend-icon="'mdi-star'" title="收藏" value="star"
-            @click="setView('star')"></v-list-item>
-          <v-list-item color="#9c0c13" :prepend-icon="'mdi-account-plus'" title="关注" value="follow"
-            @click="setView('follow')"></v-list-item>
-          <v-list-item color="#9c0c13" :prepend-icon="'mdi-email-alert'" title="消息" value="message"
-            @click="setView('message')"></v-list-item>
-          <v-list-item color="#9c0c13" :prepend-icon="'mdi-account'" title="个人" value="account"
-            @click="setView('account')"></v-list-item>
-          <v-list-item color="#9c0c13" :prepend-icon="'mdi-cog'" title="设置" value="setting"
-            @click="setView('setting')"></v-list-item>
-        </v-list>
-      </v-navigation-drawer>
-      <v-col
-        :style="{ position: 'relative', 'margin-left': '55px', 'width': '100%', 'justify-content': 'center', 'margin-bottom': '45px' }">
-        <div style="width: 100%;display: flex;justify-content: center;">
-          <div v-if="this.currentView === 'create'" style="display: flex;flex-direction: column;padding: 10px;">
-            <self-create></self-create>
-          </div>
-          <div v-if="this.currentView === 'star'" style="display: flex;flex-direction: column;padding: 10px;">
-            <self-star></self-star>
-          </div>
-          <div v-if="this.currentView === 'follow'" style="display: flex;flex-direction: column;padding: 10px;">
-            <div style="width:100%;display: flex; flex-direction: column;justify-content: center;">
-              <follow-user-bar v-for="(user, index) in this.followUserList" :key="index" :user="user"
-                v-bind:if-with-introduce="false"></follow-user-bar>
-            </div>
-          </div>
-          <div v-if="this.currentView === 'setting'" style="display: flex;flex-direction: column;padding: 10px;">
-            <setting-card></setting-card>
-          </div>
-          <div v-if="this.currentView === 'message'"
-            style="width:100%;display: flex;flex-direction: column;padding: 10px;">
-            <div style="width:100%;display: flex; justify-content: center;">
-              <div style="display: flex;flex-direction: column;">
-                <message-bar v-for="(message, index) in messageList" :key="index" :message="message"></message-bar>
-              </div>
-            </div>
-          </div>
-          <div v-if="this.currentView === 'account'"
-            style="display: flex;justify-content: center;flex-direction: column;width: 100%;">
-            <div style="display: flex;justify-content: center;">
-              <div style="display: flex; flex-direction: column;">
-                <user-message-editor @alert="alert"></user-message-editor>
-              </div>
-            </div>
-          </div>
+  <div class="full-center">
+    <v-navigation-drawer v-if="deviceType==='desktop'" v-model="drawer" :rail="rail" permanent @click="rail = false">
+      <v-list-item class="name" :prepend-avatar="user.avatar" :title="user.name" nav>
+      </v-list-item>
+      <v-divider></v-divider>
+      <v-btn v-if="!rail" size="30" class="menu-btn" :icon="'mdi-chevron-left'"
+        @click.stop="rail = !rail"></v-btn>
+      <v-list density="compact" nav :color="themeColor">
+        <v-list-item @click="choose='write'" prepend-icon="mdi-pencil" title="创作" value="write"></v-list-item>
+        <v-list-item @click="choose='star'" prepend-icon="mdi-star" title="收藏" value="star"></v-list-item>
+        <v-list-item @click="choose='follow'" prepend-icon="mdi-account-plus" title="关注" value="follow"></v-list-item>
+        <v-list-item @click="choose='message'" prepend-icon="mdi-email" title="信息" value="message"></v-list-item>
+        <v-list-item @click="choose='account'" prepend-icon="mdi-account" title="账户" value="account"></v-list-item>
+        <v-list-item @click="choose='setting'" prepend-icon="mdi-cog" title="设置" value="setting"></v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+    <v-navigation-drawer v-if="deviceType==='mobile'&&navVisible" v-model="drawer" :rail='false' permanent @click="rail = false">
+      <v-list-item class="name" :prepend-avatar="user.avatar" :title="user.name" nav>
+      </v-list-item>
+      <v-divider></v-divider>
+      <v-btn size="30" class="menu-btn" :icon="navVisible? 'mdi-chevron-left':'mdi-chevron-right'"
+        @click="navVisible=!navVisible"></v-btn>
+      <v-list density="compact" nav :color="themeColor">
+        <v-list-item @click="choose='write'" prepend-icon="mdi-pencil" title="创作" value="write"></v-list-item>
+        <v-list-item @click="choose='star'" prepend-icon="mdi-star" title="收藏" value="star"></v-list-item>
+        <v-list-item @click="choose='follow'" prepend-icon="mdi-account-plus" title="关注" value="follow"></v-list-item>
+        <v-list-item @click="choose='message'" prepend-icon="mdi-email" title="信息" value="message"></v-list-item>
+        <v-list-item @click="choose='account'" prepend-icon="mdi-account" title="账户" value="account"></v-list-item>
+        <v-list-item @click="choose='setting'" prepend-icon="mdi-cog" title="设置" value="setting"></v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+    <v-btn size="30" class="mobile-menu-btn" :icon="'mdi-chevron-right'"
+      @click="navVisible=true"></v-btn>
+    <div class="view-container">
+      <!-- write part -->
+      <div v-if="choose === 'write'">
+        <v-tabs v-model="selfItemType" fixed-tabs class="select-bar">
+          <v-tab class="tab"
+            :style="{ background: 'rgba(255,255,255,1)', 'color': this.selfItemType == 'article' ? '#000000' : '#8a8a8a' }"
+            height="40px" value="article" text="文章"></v-tab>
+          <v-tab class="tab"
+            :style="{ background: 'rgba(255,255,255,1)', 'color': this.selfItemType == 'post' ? '#000000' : '#8a8a8a' }"
+            height="40px" value="post" text="帖子"></v-tab>
+          <v-tab class="tab"
+            :style="{ background: 'rgba(255,255,255,1)', 'color': this.selfItemType == 'course' ? '#000000' : '#8a8a8a' }"
+            height="40px" value="course" text="课程"></v-tab>
+        </v-tabs>
+        <div v-if="selfItemType == 'article'" class="item-container">
+          <article-item v-for="(item, index) in this.selfArticleList" :key="index" :init-data="item">
+          </article-item>
+          <v-btn variant="tonal" class="load-btn">加载更多</v-btn>
         </div>
-      </v-col>
-    </v-row>
-  </main>
+        <div v-if="selfItemType == 'post'" class="item-container">
+          <post-item v-for="(item, index) in this.selfPostList" :key="index" :init-data="item">
+          </post-item>
+          <v-btn variant="tonal" class="load-btn">加载更多</v-btn>
+        </div>
+        <div v-if="selfItemType == 'course'" class="item-container">
+          <course-item v-for="(item, index) in this.selfCourseList" :key="index" :init-data="item">
+          </course-item>
+          <v-btn variant="tonal" class="load-btn">加载更多</v-btn>
+        </div>
+      </div>
+      <!-- star part -->
+      <div v-if="choose === 'star'">
+        <v-tabs v-model="starItemType" fixed-tabs class="select-bar">
+          <v-tab class="tab"
+            :style="{ background: 'rgba(255,255,255,1)', 'color': this.starItemType == 'article' ? '#000000' : '#8a8a8a' }"
+            height="40px" value="article" text="文章"></v-tab>
+          <v-tab class="tab"
+            :style="{ background: 'rgba(255,255,255,1)', 'color': this.starItemType == 'post' ? '#000000' : '#8a8a8a' }"
+            height="40px" value="post" text="帖子"></v-tab>
+          <v-tab class="tab"
+            :style="{ background: 'rgba(255,255,255,1)', 'color': this.starItemType == 'course' ? '#000000' : '#8a8a8a' }"
+            height="40px" value="course" text="课程"></v-tab>
+        </v-tabs>
+        <div v-if="starItemType == 'article'" class="item-container">
+          <article-item v-for="(item, index) in this.starArticleList" :key="index" :init-data="item">
+          </article-item>
+          <v-btn variant="tonal" class="load-btn">加载更多</v-btn>
+        </div>
+        <div v-if="starItemType == 'post'" class="item-container">
+          <post-item v-for="(item, index) in this.starPostList" :key="index" :init-data="item">
+          </post-item>
+          <v-btn variant="tonal" class="load-btn">加载更多</v-btn>
+        </div>
+        <div v-if="starItemType == 'course'" class="item-container">
+          <course-item v-for="(item, index) in this.starPostList" :key="index" :init-data="item">
+          </course-item>
+          <v-btn variant="tonal" class="load-btn">加载更多</v-btn>
+        </div>
+      </div>
+      <!-- follow part  -->
+      <div v-if="choose === 'follow'">
+        <div v-for="(item, index) in followList" :key="index" class="follow-bar">
+          <avatar-name :init-data="{name:item.name,avatar:item.avatar}"></avatar-name>
+          <v-spacer></v-spacer>
+          <v-btn @click="follow(item.name,index)" variant="tonal" :color="followStateList[index]?'grey':themeColor" rounded>
+            {{ followStateList[index] ? '已关注' : '关注' }}
+          </v-btn>
+        </div>
+      </div>
+      <!-- message part  -->
+      <div v-if="choose === 'message'">
+        <div v-for="(item, index) in this.messageList" :key="index" class="message-bar">
+          <avatar-name :init-data="{name:item.name,avatar:item.avatar}"></avatar-name>
+          <div class="text-medium message-text">{{ item.message }}</div>
+          <div class="text-small message-time">{{ item.time }}</div>
+        </div>
+      </div>
+      <!-- account part  -->
+      <div v-if="choose === 'account'">
+        <user-message-editor-card></user-message-editor-card>
+      </div>
+      <!-- setting part -->
+      <div v-if="choose === 'setting'">
+        <div class="column-list">
+          <v-btn to="/document/to_know" prepend-icon="mdi-bulletin-board" color="grey" variant="outlined" text="入站须知"></v-btn>
+          <v-btn to="/document/about_us" prepend-icon="mdi-information-variant" color="grey" variant="outlined" text="关于我们"></v-btn>
+          <v-btn prepend-icon="mdi-account-cancel" color="grey" variant="outlined" text="黑名单"></v-btn>
+          <v-btn prepend-icon="mdi-delete-outline" color="grey" variant="outlined" text="注销账号"></v-btn>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 <script>
-import SettingCard from '@/components/SettingCard.vue';
-import { useRouter } from 'vue-router';
-import { mapActions } from 'vuex';
-import UserMessageEditor from '@/components/UserMessageEditor.vue';
-import '@mdi/font/css/materialdesignicons.css';
-import MessageBar from '@/components/MessageBar.vue';
-import SelfCreate from '@/components/SelfCreate.vue';
-import SelfStar from '@/components/SelfStar.vue';
-import { useRoute } from 'vue-router'
-import FollowUserBar from '@/components/FollowUserBar.vue';
+import ArticleItem from '@/components/ArticleItem.vue';
+import AvatarName from '@/components/AvatarName.vue';
+import CourseItem from '@/components/CourseItem.vue';
+import PostItem from '@/components/PostItem.vue';
+import UserMessageEditorCard from '@/components/UserMessageEditorCard.vue';
+import { globalProperties } from '@/main';
+import { articleItemLong, courseItemLong, messageData, postItemLong, userData } from '@/utils/data';
+import { ref } from 'vue'
 export default {
+  name: 'SelfPage',
   setup() {
-    const router = useRouter();
-    const navigateToLogin = () => {
-      router.push({ name: 'LoginPage' })
-    };
-    const userName = '';
+    var drawer = ref(true);
+    var choose=ref('write');
+    const rail = ref(true);
+    const deviceType = globalProperties.$deviceType;
+    const themeColor = globalProperties.$themeColor;
+    const navVisible=ref(false);
+    const selfItemType = ref('article');
+    const starItemType = ref('article');
     return {
-      userName,
-      navigateToLogin,
+      drawer,
+      rail,
+      deviceType,
+      themeColor,
+      selfItemType,
+      starItemType,
+      choose,
+      navVisible,
     }
   },
   components: {
-    UserMessageEditor,
-    MessageBar,
-    FollowUserBar,
-    SelfCreate,
-    SelfStar,
-    SettingCard,
+    ArticleItem,
+    PostItem,
+    CourseItem,
+    AvatarName,
+    UserMessageEditorCard,
   },
   data() {
-    const messageList = [//消息列表
-      {//一个示例
-        content: '这是信息',
-        userName: 'test',
-        time: '2022-09-01 08:00',
-        userId: '00000000',
-        type: '文章新增问题',//类型分为新增问题(文章)，新增回答(问题),以及被@
-        relativeItemType: 'article',//article/question
-        relativeItemId: '00000000',
-      },
-      {
-        content: '这是信息',
-        userName: 'test',
-        time: '2022-09-01 08:00',
-        userId: '00000000',
-        type: '文章新增问题',//类型分为新增问题(文章)，新增回答(问题),以及被@
-        relativeItemType: 'article',//article/question
-        relativeItemId: '00000000',
-      },
-      {
-        content: '这是信息',
-        userName: 'test',
-        time: '2022-09-01 08:00',
-        userId: '00000000',
-        type: '文章新增问题',//类型分为新增问题(文章)，新增回答(问题),以及被@
-        relativeItemType: 'article',//article/question
-        relativeItemId: '00000000',
-      }
-    ];
-    const followUserList = [//关注者列表
-      {
-        userId: '00000000',
-        userName: 'test',
-        followState: false,
-        introduce: '这是介绍部分',
-        profileUrl:
-          'https://tse1-mm.cn.bing.net/th/id/OIP-C.PO7d9IfnPUy2RO173QYt6wHaHV?w=216&h=213&c=7&r=0&o=5&pid=1.7',
-      },
-      {
-        userId: '00000000',
-        userName: 'test',
-        followState: false,
-        introduce: '这是介绍部分',
-        profileUrl:
-          'https://tse1-mm.cn.bing.net/th/id/OIP-C.PO7d9IfnPUy2RO173QYt6wHaHV?w=216&h=213&c=7&r=0&o=5&pid=1.7',
-      },
-      {
-        userId: '00000000',
-        userName: 'test',
-        followState: false,
-        introduce: '这是介绍部分',
-        profileUrl:
-          'https://tse1-mm.cn.bing.net/th/id/OIP-C.PO7d9IfnPUy2RO173QYt6wHaHV?w=216&h=213&c=7&r=0&o=5&pid=1.7',
-      }
-    ];
     return {
-      messageList,
-      followUserList,
-      currentView: 'setting',
-      alertSet: {
-        color: 'success',
-        title: '登陆成功',
-        content: '登陆成功',
-        state: false,
-      },
-      isMobile: false,
-      progressMsg: {
-        state: false,
-        text: '正在加载',
-        progress: -1,
-      }
-    };
+      user: {},
+      selfArticleList: [],
+      selfPostList: [],
+      selfCourseList: [],
+      starArticleList: [],
+      starPostList: [],
+      starCourseList: [],
+      followList:[],
+      followStateList:[],
+      messageList:[],
+    }
   },
   methods: {
-    ...mapActions(['storeLogout']),
-    alert(alertSet) {//接收组件的alert事件
-      console.log(alertSet);
-      this.alertSet = alertSet;
+    test(){
+      console.log(this.drawer);
     },
-    logout() {
-      this.storeLogout();
-      this.navigateToLogin();
-    },
-    setView(view) {
-      this.currentView = view;
-    },
+    follow(name,index){
+      this.followStateList[index]=!this.followStateList[index];
+    }
   },
-  created() {
-    this.isMobile = /Mobi|Android/i.test(navigator.userAgent);
-    const route = useRoute();
-    this.userName = route.params.name;
-    console.log('Load self page', this.userName);
-  },
+  mounted() {
+    /**
+     * test
+     */
+    this.user = userData;
+    for (let i = 0; i < 10; i++) {
+      this.selfArticleList.push(articleItemLong);
+      this.selfPostList.push(postItemLong);
+      this.selfCourseList.push(courseItemLong);
+      this.starArticleList.push(articleItemLong);
+      this.starPostList.push(postItemLong);
+      this.starCourseList.push(courseItemLong);
+      this.followList.push(userData);
+      this.followStateList.push(true);
+      this.messageList.push(messageData);
+    }
+  }
 }
 </script>
+<style scoped>
+.name {
+  color: var(--theme-color);
+  margin-left: 8px;
+}
+.load-btn{
+    height: 30px;
+    width: 100%;
+    margin-top: 5px;
+}
+.menu-btn {
+  position: fixed;
+  bottom: 50%;
+  right: -15px;
+  z-index: 100;
+}
+.mobile-menu-btn{
+  position: fixed;
+  bottom: 50%;
+  left: 0px;
+  z-index: 100;
+}
+.follow-bar{
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  border-radius: 5px;
+  border: grey 1px solid;
+}
+.setting-btn{
+  width: 100%;
+}
+@media screen and (min-width: 600px) {
+  .full-center {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100%;
+  }
+
+  .column-list {
+    width: 750px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .view-container {
+    width: 750px;
+  }
+
+  .select-bar {
+    width: 750px;
+    height: 40px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .full-center {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100%;
+  }
+
+  .column-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .view-container {
+    width: 100vw;
+  }
+  .select-bar {
+    width: 100vw;
+    height: 40px;
+  }
+}
+</style>

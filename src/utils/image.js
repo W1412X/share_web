@@ -1,9 +1,13 @@
-/* 本文件提供对上传的图片进行操作的函数
- * 目前主要是压缩图片至size*size大小  
- * 就是取中间正方形区域进行压缩/扩张  
+/**
+ * 
+ * @param {File objects} file 
+ * @param {The size of the target compressed image} size 
+ * @returns 
  */
 export const compressImage = async (file, size) => {
-  // 返回一个Promise来处理异步操作
+  /**
+   * returns a Promise to handle asynchronous operations
+   */
   return new Promise((resolve, reject) => {
     try {
       const img = new Image();
@@ -13,7 +17,10 @@ export const compressImage = async (file, size) => {
         const ctx = canvas.getContext('2d');
         const ori_width = img.width;
         const ori_height = img.height;
-        // 计算裁剪区域，确保裁剪为正方形
+        /**
+         * Calculate the clipping area,
+         * make sure the clipping is a squareCalculate the clipping area
+         */
         let crop_width = ori_width > ori_height ? (ori_width - ori_height) / 2 : 0;
         let crop_height = ori_height > ori_width ? (ori_height - ori_width) / 2 : 0;
         canvas.width = size;
@@ -29,11 +36,13 @@ export const compressImage = async (file, size) => {
           size,
           size
         );
-        // 将canvas内容转换为Blob并返回
+        /**
+         * Convert the canvas content to a blob and return
+         */
         canvas.toBlob(function(blob) {
           if (blob) {
             console.log(blob);
-            resolve(blob); //通过Promise返回Blob
+            resolve(blob);
           } else {
             reject('Image compression failed');
           }

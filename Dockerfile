@@ -7,7 +7,7 @@ COPY . .
 RUN npm run build
 FROM nginx:alpine
 COPY --from=build /app/dist /usr/share/nginx/html
-#配置证书
+#config the certs
 COPY ./certs/cert.pem /etc/ssl/certs/
 COPY ./certs/privkey.pem /etc/ssl/private/
 COPY ./certs/chain.pem /etc/ssl/certs/

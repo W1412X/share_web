@@ -1,58 +1,64 @@
+/**
+ * define routes
+ * pages are imported dynamically  
+ */
 import { createRouter, createWebHashHistory } from 'vue-router';
-//import { getCookie,/*setCookie*/ } from '@/utils/cookie';
-/*import { login } from '@/utils/api';*/
-import { getUser } from '@/utils/storage';
 const routes = [
   {
-    path:'/',
-    //redirect:'/index',
+    path:"/",
+    redirect:"/welcome",
+  },
+  {
+    path:'/welcome',
     name:'WelcomePage',
-    component:(()=>import('@/pages/WelcomePage.vue'))
+    component: (()=>import('@/pages/WelcomePage.vue')),
   },
   {
-    path:'/intro',
-    name:'IntroducePage',
-    component:(()=>import('@/pages/IntroducePage.vue'))
-  },
-  {
-    path: '/login',
-    name: 'LoginPage',
-    component: (()=>import('@/pages/LoginPage.vue')),
-  },
-  {
-    path: '/index',
-    name: 'IndexPage',
+    path:'/index',
+    name:'IndexPage',
     component: (()=>import('@/pages/IndexPage.vue')),
     meta: { requiresAuth: true },
   },
   {
-    path: '/self/:name',
-    name: 'SelfPage',
-    component: (()=>import('@/pages/SelfPage.vue')),
-    meta: { requiresAuth: true },
-  },
-  {
-    path: '/article/:id/:from?',
-    name: 'ArticlePage',
+    path:'/article/:id',
+    name:'ArticlePage',
     component: (()=>import('@/pages/ArticlePage.vue')),
     meta: { requiresAuth: true },
   },
   {
-    path:'/editor/:id?',
+    path:'/post/:id',
+    name:'PostPage',
+    component: (()=>import('@/pages/PostPage.vue')),
+    meta: { requiresAuth: true },
+  },
+  {
+    path:'/course/:id',
+    name:'CoursePage',
+    component: (()=>import('@/pages/CoursePage.vue')),
+    meta: { requiresAuth: true },
+  },
+  {
+    path:'/login',
+    name:'LoginPage',
+    component: (()=>import('@/pages/LoginPage.vue')),
+    meta: { requiresAuth: false },
+  },
+  {
+    path:'/error/:reason?',
+    name:'ErrorPage',
+    component: (()=>import('@/pages/ErrorPage.vue')),
+    meta: { requiresAuth: false },
+  },
+  {
+    path:'/editor',
     name:'EditorPage',
     component: (()=>import('@/pages/EditorPage.vue')),
     meta: { requiresAuth: true },
   },
   {
-    path: '/components',
-    name: 'ComponentsPage',
-    component: (()=>import('@/pages/ComponentsPage.vue')),
-    meta: { requiresAuth: true },
-  },
-  {
-    path: '/question/:id/:from?',
-    name:'QuestionPage',
-    component: (()=>import('@/pages/QuestionPage.vue')),
+    path:'/self/:name',
+    name:'SelfPage',
+    component: (()=>import('@/pages/SelfPage.vue')),
     meta: { requiresAuth: true },
   },
   {
@@ -62,44 +68,21 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
-    path:'/course/:id',
-    name:'CoursePage',
-    component: (()=>import('@/pages/CoursePage.vue')),
-    meta:{requiresAuth:true}
-  },
-  {
-    path:'/mdeditor/:id?',
-    name:'MdEditorPage',
-    component:(()=>import('@/pages/MdEditorPage.vue')),
-  },
-  {
-    path:'/manage',
-    name:'ManagePage',
-    component:(()=>import('@/pages/ManagePage.vue')),
-  },
-  {
-    path:'/mobilearticle',
-    name:'MobileArticlePage',
-    component:(()=>import('@/pages/MobileArticlePage.vue')),
-  },
-  {
-    path:'/document',
+    path:'/document/:name',
     name:'DocumentPage',
-    component:(()=>import('@/pages/DocumentPage.vue')),
+    component: (()=>import('@/pages/DocumentPage.vue')),
+    meta: { requiresAuth: false },
   },
   {
-    path:'/test',
-    name:'TestPage',
-    component:(()=>import('@/pages/TestPage.vue')),
-  },
-  {
-    path:'/error/:reason?',
-    name:'ErrorPage',
-    component: (()=>import('@/pages/ErrorPage.vue')),
+    path:'/chat/:id',//user id
+    name:'ChatPage',
+    component: (()=>import('@/pages/ChatPage.vue')),
+    meta: { requiresAuth: true },
   },
   {
     path: '/:pathMatch(.*)*',
-    redirect: '/error'
+    redirect: '/error/找不到此资源',
+    meta: { requiresAuth: false },
   },
 ];
 
@@ -107,25 +90,27 @@ const router = createRouter({
   history: createWebHashHistory(process.env.BASE_URL),
   routes,
 });
-
-// 路由守卫，用于检查登录状态
 router.beforeEach((to, from, next) => {
+  //test
+  next();
+  /**
+   * page need login
+   */
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    console.log(getUser(''));
-    if(getUser()!=''){//如果存储了用户信息则直接尝试登陆
+    // eslint-disable-next-line
+    if(true){//if store the user's message
       console.log(to.path);
       if(to.path=="/login"){
         router.push('/index');
         return;
       }
       next();
-    }else{//否则跳转到登陆界面 
-      window.alert('未登录');
+    }else{//visit set content need login 
+      window.alert('访问站内内容需要登陆');
       router.push('/login');
     }
-  }else{
+  }else{//page public
     next();
   }
 });
-
 export default router;

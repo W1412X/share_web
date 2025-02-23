@@ -1,0 +1,222 @@
+<template>
+    <div class="full-center">
+        <v-card class="total-container">
+            <div class="top-bar title-bold">
+                {{ receiverName }}
+            </div>
+            <div class="message-container">
+                <chat-message v-for="(message,index) in messages" :init-data="message" :key="index" @alert="alert" @set_loading="setLoading"></chat-message>
+             </div>
+            <div class="message-editor row-div">
+                <sensitive-text-field variant="outlined" density="compact" v-model="editingMessage"/>
+                <div class="send-btn-container">
+                    <v-btn icon="mdi-send" size="40" rounded="false" :color="themeColor"></v-btn>
+                </div>
+            </div>
+            <v-btn class="refresh-btn" icon="mdi-refresh"></v-btn>
+        </v-card>
+    </div>
+</template>
+<script>
+import ChatMessage from '@/components/ChatMessage.vue';
+import SensitiveTextField from '@/components/SensitiveTextField.vue';
+import { getCookie } from '@/utils/cookie';
+import { getLoadMsg,getCancelLoadMsg } from '@/utils/other';
+import { globalProperties } from '@/main';
+export default{
+    setup(){
+        /**
+         * get the user id
+         */
+        const selfId=getCookie('user_id');
+        const selfName=getCookie('user_name');
+        const themeColor=globalProperties.$themeColor;
+        return{
+            selfId,
+            selfName,
+            themeColor,
+        }
+    },
+    components:{
+        ChatMessage,
+        SensitiveTextField,
+    },
+    data(){
+        return{
+            messages:[
+                {
+                    content:'contentcontent',
+                    time:'2022-08-01 22:55:11',
+                    avatar:'avatar',
+                    isSelf:false,
+                },
+                {
+                    content:'contentcontent',
+                    time:'2022-08-01 22:55:11',
+                    avatar:'avatar',
+                    isSelf:true,
+                },
+                {
+                    content:'contentcontent',
+                    time:'2022-08-01 22:55:11',
+                    avatar:'avatar',
+                    isSelf:false,
+                },
+                {
+                    content:'contentcontent',
+                    time:'2022-08-01 22:55:11',
+                    avatar:'avatar',
+                    isSelf:true,
+                },
+                {
+                    content:'contentcontent',
+                    time:'2022-08-01 22:55:11',
+                    avatar:'avatar',
+                    isSelf:false,
+                },
+                {
+                    content:'contentcontent',
+                    time:'2022-08-01 22:55:11',
+                    avatar:'avatar',
+                    isSelf:true,
+                },
+                {
+                    content:'contentcontent',
+                    time:'2022-08-01 22:55:11',
+                    avatar:'avatar',
+                    isSelf:false,
+                }
+            ],
+            receiverId:null,
+            receiverName:'null',
+            editingMessage:null,
+        }
+    },
+    methods:{
+        alert(msg){
+            this.$emit('alert',msg);
+        },
+        setLoading(msg){
+            this.$emit('set_loading',msg);
+        }
+    },
+    mounted(){
+        /**
+         * get the id from the url
+         */
+        this.setLoading(getLoadMsg('正在获取聊天信息...',-1));
+        this.receiverId=this.$route.params.id;
+        /**
+         * get the receiver name and avatar  
+         */
+
+        /**
+         * get the chat info
+         */   
+        this.setLoading(getCancelLoadMsg());
+    }
+}
+</script>
+<style>
+.total-container{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.row-div{
+    display: flex;
+    flex-direction: row;
+}
+.send-btn-container{
+    height: 100%;
+    padding-left:5px;
+    padding-right: 5px;
+    align-items: center;
+}
+.refresh-btn{
+    position: fixed;
+    bottom: 60px;
+    right: 10px;
+}
+@media screen and (min-width: 600px) {
+    .full-center {
+        width: 1000px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        height: 100%;
+    }
+    .top-bar{
+        position: fixed;
+        height: 50px;
+        width: 1000px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        background-color: var(--theme-color);
+        justify-content: center;
+        color:white;
+    }
+    .message-container{
+        margin-top: 50px;
+        width: 1000px;
+        display: flex;
+        margin-bottom: 50px;
+        flex-direction: column;
+    }
+    .message-editor{
+        width: 1000px;
+        display: flex;
+        max-height: 50px;
+        flex-direction: row;
+        padding:5px;
+        position: fixed;
+        bottom: 0px;
+        background-color: white;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .full-center {
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        height: 100vh;
+    }
+    .top-bar{
+        position: fixed;
+        height: 50px;
+        width: 100vw;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        background-color: var(--theme-color);
+        justify-content: center;
+        color: white;
+    }
+    .message-container{
+        margin-top: 50px;
+        width: 100vw;
+        display: flex;
+        margin-bottom: 50px;
+        flex-direction: column;
+    }
+    .message-editor{
+        width: 100vw;
+        padding:5px;
+        display: flex;
+        max-height: 50px;
+        position: fixed;
+        bottom: 0px;
+        flex-direction: row;
+        background-color: white;
+    }
+}
+</style>

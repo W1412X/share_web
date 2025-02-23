@@ -1,115 +1,128 @@
 <template>
-  <div
-    class="overlay" 
-    v-if="msg.state"
-  >
-    <div
-      style="height: 100%; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;"
-    >
-      <v-card style="padding: 10px; width: fit-content;">
-        <div style="width: 100%; display: flex; justify-content: center;">
-          <v-progress-circular
-            v-if="msg.progress >= 0"
-            v-model="msg.progress"
-            :rotate="360"
-            :size="50"
-            :width="5"
-            color="#9c0c13"
-            style="font-weight: bold;"
-          >
-            {{ msg.progress }}%
-          </v-progress-circular>
-          <v-progress-circular
-            v-if="msg.progress < 0"
-            :rotate="360"
-            :size="50"
-            :width="5"
-            color="#9c0c13"
-            style="font-weight: bold;"
-            indeterminate
-          >
-          </v-progress-circular>
-        </div>
-        <div
-          style="
+    <div v-if="data.state" class="overlay">
+        <v-card class="card">
+            <div class="card-container">
+                <v-progress-circular v-if="data.progress >= 0" v-model="data.progress" :rotate="360" :size="50"
+                    :width="5" :color="themeColor" class="text-tiny">
+                    {{ data.progress }}%
+                </v-progress-circular>
+                <v-progress-circular v-if="data.progress < 0" :rotate="360" :size="50" :width="5" :color="themeColor"
+                    class="text-medium-bold" indeterminate>
+                </v-progress-circular>
+            </div>
+            <div style="
             width: 100%;
             display: flex;
             justify-content: center;
             color: #8a8a8a;
             font-weight: bold;
-          "
-        >
-          <v-card-text
-            style="
+          ">
+                <v-card-text style="
               max-width: 200px;
               margin-top: 15px;
               padding-top: 0px;
               margin-bottom: 5px;
               padding-bottom: 0px;
               font-weight: 600;
-            "
-          >
-            {{ msg.text }}
-          </v-card-text>
-        </div>
-      </v-card>
+            ">
+                    {{ data.text }}
+                </v-card-text>
+            </div>
+        </v-card>
     </div>
-  </div>
 </template>
-
 <script>
+import { globalProperties } from '@/main';
 import { computed } from 'vue';
-
 export default {
-  props: {
-    modelValue: {
-      type: Object,
-      default: function () {
+    name: "LoadingView",
+    props: {
+        initData: {
+            type: Object,
+            default: () => {
+                return {
+                    state: false,
+                    text: '加载中...',
+                    progress: 0
+                }
+            }
+        }
+    },
+    setup() {
+        /**
+         * get theme color  
+         */
+        const themeColor = globalProperties.$themeColor;
+        const deviceType = globalProperties.$deviceType;
         return {
-          state: false,
-          progress: 0,
-          text: '正在加载',
-        };
-      },
+            themeColor,
+            deviceType
+        }
     },
-    size: {
-      type: String,
-      default: '75',
+    data() {
+        const data = computed(() => {
+            return this.initData;
+        })
+        console.log(data.value);
+        return {
+            data
+        }
     },
-    width: {
-      type: String,
-      default: '8',
-    },
-    color: {
-      type: String,
-      default: 'rgba(156, 12, 19)',
-    },
-  },
-  setup() {},
-  data() {
-    const msg = computed(() => {
-      return this.modelValue;
-    });
-    return {
-      msg,
-    };
-  },
-};
+    methods: {}
+}
 </script>
-
 <style scoped>
-.overlay {
-  position: fixed; /* 使用 fixed 定位以覆盖整个视口 */
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* 半透明的黑色背景 */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999; /* 确保在最上层 */
+@media screen and (min-width: 600px) {
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: grid;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+    .card-container{
+        display: grid;
+        justify-content: center;
+        align-items: center;
+    }
+    .card {
+        padding: 10px;
+        width: fit-content;
+        height: fit-content;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: grid;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+    .card-container{
+        display: grid;
+        justify-content: center;
+        align-items: center;
+    }
+    .card {
+        padding: 10px;
+        width: fit-content;
+        height: fit-content;
+    }
 }
 </style>

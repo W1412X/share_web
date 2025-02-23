@@ -11,6 +11,13 @@ module.exports = defineConfig({
     });
   },
   devServer: {
-    proxy: {}
+    proxy: {},
+    /**
+     * here to ignore the error of webpack-dev-server
+     */
+    client: {
+      overlay: false
+    },
+
   }
 });
