@@ -1,6 +1,5 @@
 # sharesdu
 
-> [old one](https://github.com/W1412X/share_web)
 
 ## Project setup
 ```
@@ -26,10 +25,4 @@ npm run lint
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### introduction    
-- some forms's keys are not in the backend(such as article,post),so hide some key-value in the content  
-- here's the standard  
-  - if exsits key-value in the content,always in the front  
-  - the format is 
-    - key|value|DIVIDE|key|value ... ...
-    - end is |END|  
-    - no space
+
