@@ -24,5 +24,12 @@ npm run lint
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
-### introduction    
+### introduction
 
+- this project aimed at building a platform for sharing source,experience and knowledge between students in an university. 
+- what we provide  
+  - publish article  
+  - publish post  
+  - score course 
+- other function wait to publish  
+  - ... ...
